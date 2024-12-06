@@ -1,0 +1,17 @@
+set cut_paste_input [stack 0]
+version 13.1 v2
+push $cut_paste_input
+Reformat {
+ type scale
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ scale {{width/height>new_w/new_h?new_h/height:new_w/width}}
+ name Reformat4
+ selected true
+ xpos 683
+ ypos -479
+ addUserKnob {20 User}
+ addUserKnob {7 new_w}
+ new_w 1920
+ addUserKnob {7 new_h}
+ new_h 1080
+}

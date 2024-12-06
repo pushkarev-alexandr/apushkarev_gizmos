@@ -1,0 +1,135 @@
+#! C:/Program Files/Nuke13.1v2/nuke-13.1.2.dll -nx
+version 13.1 v2
+Gizmo {
+inputs 2
+knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='separate':\n    node\['blackpoint_to'].setVisible(kn.value())\n    node\['whitepoint_to'].setVisible(kn.value())\n    node\['blackpoint_from'].setLabel('blackpoint'+\['',' from']\[kn.value()])\n    node\['whitepoint_from'].setLabel('whitepoint'+\['',' from']\[kn.value()])"
+tile_color 0x7aa9ff00
+addUserKnob {20 user_tab l matchBlackWhite}
+addUserKnob {15 blackpoint_from l blackpoint}
+blackpoint_from {0 0 100 100}
+addUserKnob {15 whitepoint_from l whitepoint}
+whitepoint_from {100 100 200 200}
+addUserKnob {15 blackpoint_to l "blackpoint to" +HIDDEN}
+blackpoint_to {200 200 300 300}
+addUserKnob {15 whitepoint_to l "whitepoint to" +HIDDEN}
+whitepoint_to {300 300 400 400}
+addUserKnob {6 separate l "separate regions" +STARTLINE}
+addUserKnob {22 calculate T "for i in range(4):\n    nuke.execute(nuke.toNode('CurveTool'+str(i+1)),nuke.frame(),nuke.frame())" +STARTLINE}
+addUserKnob {22 bake_grade l "bake grade" -STARTLINE T "node = nuke.thisNode()\nnode\['disable'].setValue(True)\nknNames = \['blackpoint','whitepoint','black','white']\nvalues = \[]\nfor knN in knNames:\n    values.append(nuke.toNode('Grade1').knob(knN).value())\nwith nuke.root():\n    grade = nuke.createNode('Grade')\n    for i, knN in enumerate(knNames):\n        grade.knob(knN).setValue(values\[i])"}
+addUserKnob {6 show_to l "show to" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>matchBlackWhitePoint v1.1.1</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name to
+label "\[value number]"
+xpos 158
+ypos -106
+number 1
+}
+Dot {
+name Dot4
+note_font_size 30
+xpos 192
+ypos -5
+}
+set Necc42000 [stack 0]
+Dot {
+name Dot5
+note_font_size 30
+xpos 192
+ypos 58
+}
+set Necc41c00 [stack 0]
+Dot {
+name Dot1
+note_font_size 30
+xpos 192
+ypos 231
+}
+Input {
+inputs 0
+name from
+label "\[value number]"
+xpos 0
+ypos -103
+}
+Dot {
+name Dot2
+note_font_size 30
+xpos 34
+ypos -5
+}
+set Necc41000 [stack 0]
+Dot {
+name Dot3
+note_font_size 30
+xpos 34
+ypos 58
+}
+set Necc40c00 [stack 0]
+Grade {
+channels rgba
+blackpoint {{parent.CurveTool1.intensitydata} {parent.CurveTool1.intensitydata} {parent.CurveTool1.intensitydata} {parent.CurveTool1.intensitydata}}
+whitepoint {{parent.CurveTool3.intensitydata} {parent.CurveTool3.intensitydata} {parent.CurveTool3.intensitydata} {parent.CurveTool3.intensitydata}}
+black {{parent.CurveTool2.intensitydata} {parent.CurveTool2.intensitydata} {parent.CurveTool2.intensitydata} {parent.CurveTool2.intensitydata}}
+white {{parent.CurveTool4.intensitydata} {parent.CurveTool4.intensitydata} {parent.CurveTool4.intensitydata} {parent.CurveTool4.intensitydata}}
+name Grade1
+xpos 0
+ypos 135
+disable {{(parent.CurveTool1.intensitydata+parent.CurveTool2.intensitydata+parent.CurveTool3.intensitydata+parent.CurveTool4.intensitydata)==0}}
+}
+Switch {
+inputs 2
+which {{show_to}}
+name Switch1
+xpos 0
+ypos 222
+}
+Output {
+name Output1
+xpos 0
+ypos 300
+}
+push $Necc41000
+CurveTool {
+ROI {{blackpoint_from} {blackpoint_from} {blackpoint_from} {blackpoint_from}}
+autocropdata {512 214 1536 643}
+intensitydata {0 0 0 0}
+name CurveTool1
+label blackpoint
+xpos -139
+ypos -14
+}
+push $Necc40c00
+CurveTool {
+ROI {{whitepoint_from} {whitepoint_from} {whitepoint_from} {whitepoint_from}}
+autocropdata {512 214 1536 643}
+intensitydata {0 0 0 0}
+name CurveTool3
+label whitepoint
+xpos -139
+ypos 49
+}
+push $Necc41c00
+CurveTool {
+ROI {{separate?whitepoint_to:whitepoint_from} {separate?whitepoint_to:whitepoint_from} {separate?whitepoint_to:whitepoint_from} {separate?whitepoint_to:whitepoint_from}}
+autocropdata {512 214 1536 643}
+intensitydata {0 0 0 0}
+name CurveTool4
+label whitepoint
+xpos 282
+ypos 49
+}
+push $Necc42000
+CurveTool {
+ROI {{separate?blackpoint_to:blackpoint_from} {separate?blackpoint_to:blackpoint_from} {separate?blackpoint_to:blackpoint_from} {separate?blackpoint_to:blackpoint_from}}
+autocropdata {512 214 1536 643}
+intensitydata {0 0 0 0}
+name CurveTool2
+label blackpoint
+selected true
+xpos 283
+ypos -14
+}
+end_group

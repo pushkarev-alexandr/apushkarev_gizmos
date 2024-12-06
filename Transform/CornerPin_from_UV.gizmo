@@ -1,0 +1,297 @@
+#! C:/Program Files/Nuke15.0v5/nuke-15.0.5.dll -nx
+version 15.0 v5
+Gizmo {
+addUserKnob {20 user_tab l "CornerPin from UV"}
+addUserKnob {41 picker1 T Expression1.picker}
+addUserKnob {41 picker2 T Expression3.picker}
+addUserKnob {41 picker3 T Expression5.picker}
+addUserKnob {41 picker4 T Expression7.picker}
+addUserKnob {41 thr l threshold T Expression1.thr}
+addUserKnob {22 track l Track T "def track():\n    ff = nuke.root().firstFrame()\n    lf = nuke.root().lastFrame()\n    ret = nuke.getFramesAndViews('Tracking range', str(ff)+'-'+str(lf))\n    if not ret:\n        return\n    elif not ret\[0].count('-'):\n        return\n    ff = ret\[0].split('-')\[0]\n    lf = ret\[0].split('-')\[1]\n    for i in range(1,5):\n        print 'asdasd'\n        node = nuke.toNode('CurveTool'+str(i))\n        nuke.execute(node,int(ff),int(lf))\n\ntrack()" +STARTLINE}
+addUserKnob {41 maxlumapixdata1 l Translate1 T CurveTool1.maxlumapixdata}
+addUserKnob {41 maxlumapixdata2 l Translate2 T CurveTool2.maxlumapixdata}
+addUserKnob {41 maxlumapixdata3 l Translate3 T CurveTool3.maxlumapixdata}
+addUserKnob {41 maxlumapixdata4 l Translate4 T CurveTool4.maxlumapixdata}
+addUserKnob {22 create_tracker l "Create CornerPin" T "animations = \[]\nfor i in range(1,5):\n    kn = nuke.toNode('CurveTool'+str(i)).knob('maxlumapixdata')\n    animations.append(kn.animations())\n\nwith nuke.root():\n    cornerPin = nuke.createNode('CornerPin2D')\n    for i in range(1,5):\n        cornerPin.knob('to'+str(i)).copyAnimations(animations\[i-1])\n        cornerPin.knob('from'+str(i)).copyAnimations(animations\[i-1])" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CornerPin_from_UV v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 0
+ypos -36
+}
+Dot {
+name Dot1
+xpos 34
+ypos 63
+}
+set N9c014c00 [stack 0]
+Dot {
+name Dot2
+xpos 242
+ypos 63
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+in2 alpha
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 1 0 rgba.alpha 0 3"
+name Shuffle1
+xpos 208
+ypos 99
+}
+Unpremult {
+name Unpremult1
+xpos 208
+ypos 135
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 black -1 -1 rgba.alpha 0 3"
+name Shuffle2
+xpos 208
+ypos 159
+}
+Dot {
+name Dot4
+xpos 242
+ypos 222
+}
+set N9c013800 [stack 0]
+Dot {
+name Dot5
+xpos 401
+ypos 222
+}
+set N9c013400 [stack 0]
+Dot {
+name Dot6
+xpos 549
+ypos 222
+}
+set N9c013000 [stack 0]
+Dot {
+name Dot7
+xpos 695
+ypos 222
+}
+Expression {
+expr0 r<=picker.r+thr&&r>=picker.r-thr
+expr1 g<=picker.g+thr&&g>=picker.g-thr
+name Expression7
+xpos 661
+ypos 282
+addUserKnob {20 User}
+addUserKnob {18 picker}
+picker {0 0 0}
+addUserKnob {6 picker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 thr l threshold R 0 0.0005}
+thr {{parent.Expression1.thr}}
+}
+Expression {
+expr0 g!=0?r:0
+expr1 r!=0?g:0
+name Expression8
+xpos 661
+ypos 306
+}
+Dot {
+name Dot10
+xpos 695
+ypos 495
+}
+set N9c012000 [stack 0]
+Expression {
+expr0 0
+expr1 0
+expr2 clamp(r+g)
+expr3 clamp(r+g)
+name Expression12
+xpos 125
+ypos 492
+}
+push $N9c013000
+Expression {
+expr0 r<=picker.r+thr&&r>=picker.r-thr
+expr1 g<=picker.g+thr&&g>=picker.g-thr
+name Expression5
+xpos 515
+ypos 280
+addUserKnob {20 User}
+addUserKnob {18 picker}
+picker {0 0 0}
+addUserKnob {6 picker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 thr l threshold R 0 0.0005}
+thr {{parent.Expression1.thr}}
+}
+Expression {
+expr0 g!=0?r:0
+expr1 r!=0?g:0
+name Expression6
+xpos 515
+ypos 304
+}
+Dot {
+name Dot9
+xpos 549
+ypos 449
+}
+set N9c011000 [stack 0]
+Expression {
+expr0 0
+expr1 0
+expr2 clamp(r+g)
+expr3 clamp(r+g)
+name Expression11
+xpos 125
+ypos 446
+}
+push $N9c013400
+Expression {
+expr0 r<=picker.r+thr&&r>=picker.r-thr
+expr1 g<=picker.g+thr&&g>=picker.g-thr
+name Expression3
+xpos 367
+ypos 275
+addUserKnob {20 User}
+addUserKnob {18 picker}
+picker {0 0 0}
+addUserKnob {6 picker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 thr l threshold R 0 0.0005}
+thr {{parent.Expression1.thr}}
+}
+Expression {
+expr0 g!=0?r:0
+expr1 r!=0?g:0
+name Expression4
+xpos 367
+ypos 299
+}
+Dot {
+name Dot8
+xpos 401
+ypos 406
+}
+set N9c010000 [stack 0]
+Expression {
+expr0 0
+expr1 0
+expr2 clamp(r+g)
+expr3 clamp(r+g)
+name Expression10
+xpos 125
+ypos 403
+}
+push $N9c013800
+Expression {
+expr0 r<=picker.r+thr&&r>=picker.r-thr
+expr1 g<=picker.g+thr&&g>=picker.g-thr
+name Expression1
+xpos 208
+ypos 275
+addUserKnob {20 User}
+addUserKnob {18 picker}
+picker {0 0 0}
+addUserKnob {6 picker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 thr l threshold R 0 0.0005}
+thr 0.0003
+}
+Expression {
+expr0 g!=0?r:0
+expr1 r!=0?g:0
+name Expression2
+xpos 208
+ypos 299
+}
+Dot {
+name Dot3
+xpos 242
+ypos 358
+}
+set N9c00f000 [stack 0]
+Expression {
+expr0 0
+expr1 0
+expr2 clamp(r+g)
+expr3 clamp(r+g)
+name Expression9
+xpos 125
+ypos 355
+}
+push $N9c014c00
+Merge2 {
+inputs 2
+output rgb
+name Merge1
+xpos 0
+ypos 355
+}
+Merge2 {
+inputs 2
+output rgb
+name Merge2
+xpos 0
+ypos 403
+}
+Merge2 {
+inputs 2
+output rgb
+name Merge3
+xpos 0
+ypos 446
+}
+Merge2 {
+inputs 2
+output rgb
+name Merge4
+xpos 0
+ypos 492
+}
+Output {
+name Output1
+xpos 0
+ypos 642
+}
+push $N9c011000
+CurveTool {
+operation "Max Luma Pixel"
+ROI {0 0 {width} {height}}
+autocropdata {640 267 1920 803}
+name CurveTool3
+xpos 515
+ypos 539
+}
+push $N9c010000
+CurveTool {
+operation "Max Luma Pixel"
+ROI {0 0 {width} {height}}
+autocropdata {640 267 1920 803}
+name CurveTool2
+xpos 367
+ypos 539
+}
+push $N9c012000
+CurveTool {
+operation "Max Luma Pixel"
+ROI {0 0 {width} {height}}
+autocropdata {640 267 1920 803}
+name CurveTool4
+xpos 661
+ypos 539
+}
+push $N9c00f000
+CurveTool {
+operation "Max Luma Pixel"
+ROI {0 0 {width} {height}}
+autocropdata {640 267 1920 803}
+name CurveTool1
+xpos 208
+ypos 539
+}
+end_group

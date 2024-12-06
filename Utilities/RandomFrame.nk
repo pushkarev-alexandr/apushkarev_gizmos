@@ -1,0 +1,12 @@
+set cut_paste_input [stack 0]
+version 12.2 v5
+push $cut_paste_input
+NoOp {
+name NoOp1
+label "random frame"
+selected true
+xpos 4000
+ypos 5000
+addUserKnob {20 User}
+addUserKnob {22 random_frame_button l "random frame" T "import random\n\nff = nuke.root().firstFrame()\nlf = nuke.root().lastFrame()\nnuke.frame(random.randint(ff,lf))" +STARTLINE}
+}

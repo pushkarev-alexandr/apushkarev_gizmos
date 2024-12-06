@@ -1,0 +1,167 @@
+Group {
+name Normalize1
+addUserKnob {20 user_tab l Normalize}
+addUserKnob {22 bake_grade l "Bake grade" T "import nukescripts\n\nnode = nuke.thisNode()\nc1 = nuke.toNode('CurveTool1')\nc2 = nuke.toNode('CurveTool2')\nnuke.execute(c1,nuke.frame(),nuke.frame())\nnuke.execute(c2,nuke.frame(),nuke.frame())\nbp = c2\['intensitydata'].value()\nwp = c1\['intensitydata'].value()\nwith nuke.root():\n    nukescripts.clear_selection_recursive()\n    node.setSelected(True)\n    grade = nuke.createNode('Grade')\n    grade\['black_clamp'].setValue(True)\n    grade\['white_clamp'].setValue(False)\n    grade\['blackpoint'].setValue(bp)\n    grade\['whitepoint'].setValue(wp)\n    grade\['label'].setValue('normalize')\n    node\['disable'].setValue(True)" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>Normalize v1.1</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 740
+ypos 528
+}
+Dot {
+name Dot293
+note_font_size 30
+xpos 774
+ypos 640
+}
+set N49194400 [stack 0]
+Dot {
+name Dot292
+note_font_size 30
+xpos 907
+ypos 640
+}
+set N8aebbc00 [stack 0]
+Dot {
+name Dot1
+note_font_size 30
+xpos 1017
+ypos 640
+}
+Dilate {
+channels rgb
+size {{"max(input.format.w, input.format.h)*2"}}
+name Dilate1
+label max
+xpos 983
+ypos 695
+}
+Saturation {
+saturation 0
+mode Maximum
+name Saturation1
+xpos 983
+ypos 731
+}
+set N8aebb000 [stack 0]
+CurveTool {
+channels {rgba.red -rgba.green -rgba.blue none}
+ROI {{width/2-10} {height/2-10} {width/2+10} {height/2+10}}
+autocropdata {512 214 1536 643}
+name CurveTool1
+xpos 1147
+ypos 737
+}
+push $N8aebbc00
+Dilate {
+channels rgb
+size {{"-max(input.format.w, input.format.h)*2"}}
+name Dilate2
+label min
+xpos 873
+ypos 699
+}
+Invert {
+channels rgb
+name Invert1
+xpos 873
+ypos 735
+}
+Saturation {
+saturation 0
+mode Maximum
+name Saturation3
+xpos 873
+ypos 759
+}
+Invert {
+channels rgb
+name Invert2
+xpos 873
+ypos 795
+}
+set N8aeb9c00 [stack 0]
+CurveTool {
+channels {rgba.red -rgba.green -rgba.blue none}
+ROI {{width/2-10} {height/2-10} {width/2+10} {height/2+10}}
+autocropdata {512 214 1536 643}
+name CurveTool2
+xpos 1147
+ypos 795
+}
+push $N49194400
+Dot {
+name Dot3
+note_font_size 30
+xpos 631
+ypos 640
+}
+Dot {
+name Dot2
+note_font_size 30
+xpos 631
+ypos 1054
+}
+push $N8aeb9c00
+Dot {
+name Dot56
+note_font_size 30
+xpos 907
+ypos 910
+}
+set N8aeb8c00 [stack 0]
+push $N49194400
+Merge2 {
+inputs 2
+operation from
+output {rgba.red rgba.green rgba.blue -rgba.alpha}
+name Merge29
+xpos 740
+ypos 907
+}
+Clamp {
+channels rgb
+maximum_enable false
+name Clamp1
+label "negative clamp"
+xpos 740
+ypos 931
+}
+push $N8aeb8c00
+push $N8aebb000
+Dot {
+name Dot57
+note_font_size 30
+xpos 1017
+ypos 997
+}
+Merge2 {
+inputs 2
+operation from
+output {rgba.red rgba.green rgba.blue -rgba.alpha}
+name Merge30
+xpos 873
+ypos 994
+}
+Merge2 {
+inputs 2
+operation divide
+output {rgba.red rgba.green rgba.blue -rgba.alpha}
+name Merge31
+xpos 740
+ypos 994
+}
+CopyBBox {
+inputs 2
+name CopyBBox1
+xpos 740
+ypos 1051
+}
+Output {
+name Output1
+xpos 740
+ypos 1176
+}
+end_group

@@ -1,0 +1,56 @@
+#! C:/Program Files/Nuke12.2v5/nuke-12.2.5.dll -nx
+version 12.2 v5
+Group {
+name TinyHolesRemove1
+inputs 2
+addUserKnob {20 User}
+addUserKnob {41 channels T FilterErode1.channels}
+addUserKnob {41 size T FilterErode1.size}
+}
+Input {
+inputs 0
+name mask
+xpos 900
+ypos 566
+number 1
+}
+Dot {
+name Dot2
+xpos 934
+ypos 682
+}
+set N64f46400 [stack 0]
+Dot {
+name Dot1
+xpos 934
+ypos 730
+}
+push $N64f46400
+Input {
+inputs 0
+name in
+xpos 762
+ypos 568
+}
+FilterErode {
+inputs 1+1
+name FilterErode1
+label "\[value size]"
+xpos 762
+ypos 667
+}
+FilterErode {
+inputs 1+1
+channels {{{FilterErode1.channels}}}
+size {{-FilterErode1.size}}
+name FilterErode2
+label "\[value size]"
+xpos 762
+ypos 715
+}
+Output {
+name Output1
+xpos 762
+ypos 846
+}
+end_group

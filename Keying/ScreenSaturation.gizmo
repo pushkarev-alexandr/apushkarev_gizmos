@@ -1,0 +1,113 @@
+#v1.1 Pushkarev Aleksandr 2023
+Group {
+ name ScreenSaturation1
+ help "Gets saturation of selected channel by formula screen_type-(color1*weight1+color2*weight2)"
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\n\nlst = \['red','green','blue']\nif kn.name()=='separate_weights':\n    node\[lst.pop(int(node\['screen_type'].getValue()))+'_weight'].setVisible(False)\n    node\[lst\[0]+'_weight'].setVisible(kn.value())\n    node\[lst\[1]+'_weight'].setVisible(kn.value())\n    node\['weight'].setVisible(not kn.value())\nelif kn.name()=='screen_type':\n    node\[lst.pop(int(kn.getValue()))+'_weight'].setVisible(False)\n    node\[lst\[0]+'_weight'].setVisible(node\['separate_weights'].value())\n    node\[lst\[1]+'_weight'].setVisible(node\['separate_weights'].value())\n    node\['weight'].setLabel('\{\}/\{\} weight'.format(lst\[0],lst\[1]))"
+ addUserKnob {20 user_tab l ScreenSaturation}
+ addUserKnob {4 screen_type l "screen type" t "type of screen you want to find saturation from" M {red green blue ""}}
+ screen_type blue
+ addUserKnob {6 separate_weights l "separate weights" t "allow to control red/green/blue weights individually" +STARTLINE}
+ addUserKnob {7 red_weight l "red weight" +HIDDEN}
+ red_weight 0.5
+ addUserKnob {7 green_weight l "green weight" +HIDDEN}
+ green_weight 0.5
+ addUserKnob {7 blue_weight l "blue weight" +HIDDEN}
+ blue_weight 0.5
+ addUserKnob {7 weight l "red/green weight" t "bias weight for two components"}
+ weight 0.5
+ addUserKnob {4 saturation_output l output t "where to output screen saturation result" M {rgba alpha "" "" "" ""}}
+ saturation_output alpha
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ScreenSaturation v1.1</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+ }
+ Dot {
+  name Dot1
+  xpos 34
+  ypos 108
+ }
+set N1275b000 [stack 0]
+ Dot {
+  name Dot2
+  xpos 183
+  ypos 108
+ }
+ Multiply {
+  channels rgb
+  value {{separate_weights?red_weight:weight} {separate_weights?green_weight:screen_type?1-weight:weight} {separate_weights?blue_weight:1-weight} 1}
+  name Multiply1
+  label weight
+  xpos 149
+  ypos 204
+ }
+ Expression {
+  expr0 g+b
+  expr1 r+b
+  expr2 r+g
+  channel3 none
+  name Expression1
+  label sum
+  xpos 149
+  ypos 317
+ }
+push $N1275b000
+ Dot {
+  name Dot3
+  xpos 34
+  ypos 444
+ }
+set N19550000 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  output rgb
+  name Merge1
+  label result
+  xpos 149
+  ypos 435
+ }
+ Clamp {
+  channels rgb
+  maximum_enable false
+  name Clamp1
+  xpos 149
+  ypos 471
+ }
+ Expression {
+  expr3 screen_type==2?b:screen_type?g:r
+  name Expression2
+  xpos 149
+  ypos 563
+ }
+ Dot {
+  name Dot4
+  xpos 183
+  ypos 681
+ }
+push $N19550000
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 0
+  ypos 672
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  fromInput2 {{0} B}
+  mappings "4 rgba.alpha 0 3 rgba.red 0 0 rgba.alpha 0 3 rgba.green 0 1 rgba.alpha 0 3 rgba.blue 0 2 rgba.alpha 0 3 rgba.alpha 0 3"
+  name Shuffle1
+  xpos 0
+  ypos 753
+  disable {{saturation_output}}
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 874
+ }
+end_group

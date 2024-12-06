@@ -1,0 +1,101 @@
+Gizmo {
+onCreate "node = nuke.thisNode()\nkn = node\['refl_center']\nif kn.value(0)==0 and kn.value(1)==0:\n    topNode = node.input(0)\n    if topNode:\n        kn.setValue(topNode.width()/2,0)\n        kn.setValue(topNode.height()/2,1)\n    else:\n        kn.setValue(nuke.root().width()/2,0)\n        kn.setValue(nuke.root().height()/2,1)"
+tile_color 0xa57aaa00
+addUserKnob {20 mirror_tab l Mirror_AE}
+addUserKnob {12 refl_center l "Reflection Center"}
+refl_center {1024 429}
+addUserKnob {7 refl_rot l "Reflection Angle" R 0 360}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>Mirror_AE v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name src
+xpos -236
+ypos 40
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 white -1 -1 rgba.alpha 0 3"
+name Shuffle1
+label "set alpha"
+xpos -236
+ypos 98
+}
+Dot {
+name Dot1
+xpos -202
+ypos 168
+}
+set N9c00d000 [stack 0]
+Dot {
+name Dot4
+xpos -338
+ypos 168
+}
+Rectangle {
+cliptype none
+area {0 -5000 {width-area.y*2} {height-area.y}}
+name Rectangle1
+xpos -372
+ypos 316
+}
+Transform {
+rotate {{-refl_rot}}
+name Transform2
+xpos -372
+ypos 340
+}
+Transform {
+translate {{refl_center.x} {refl_center.y}}
+name Transform3
+xpos -372
+ypos 364
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop1
+xpos -372
+ypos 388
+}
+push $N9c00d000
+Dot {
+name Dot2
+xpos -77
+ypos 168
+}
+Transform {
+rotate {{-refl_rot*2}}
+scale {-1 1}
+center {{parent.refl_center} {parent.refl_center}}
+name Transform1
+label reflection
+xpos -111
+ypos 248
+}
+Dot {
+name Dot3
+xpos -77
+ypos 391
+}
+push $N9c00d000
+Keymix {
+inputs 3
+name Keymix1
+xpos -236
+ypos 382
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop2
+xpos -236
+ypos 418
+}
+Output {
+name Output1
+xpos -236
+ypos 550
+}
+end_group

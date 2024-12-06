@@ -1,0 +1,565 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name SmartIBK1
+ inputs 3
+ tile_color 0x990000
+ addUserKnob {20 user_tab l SmartIBK}
+ addUserKnob {4 screen_type l "screen type" t "Chosoe <i>pick</i> if you want to use screen color value instead of cleanplate input. Hold <i>Ctrl+Alt</i> to choose color from <i>in</i> input." M {green blue pick "" "" ""}}
+ screen_type blue
+ addUserKnob {41 screen_color l "screen color" t "Use this color as screen color if <i>pick</i> screen type is enabled" T Expression1.screen_color}
+ addUserKnob {6 color_rgb_panelDropped l "panel dropped state" +HIDDEN +STARTLINE}
+ addUserKnob {7 bias l "red green/blue bias" t "0 means only red channel will be used for calculation, 1 means only green/blue channel will be used, 0.5 means mix of red and green/blue channels. If there is a big difference between red and green/blue channel this parameter can help you fine tune your result."}
+ bias 0.5
+ addUserKnob {20 fg_color_group l "fg color" n 1}
+ fg_color_group 0
+ addUserKnob {6 pick_fg_color l "pick fg color" t "If this checkbox is enabled foreground color will be used from <i>fg color picker<i> parameter instead of <i>fg_color</i> input" +STARTLINE}
+ addUserKnob {4 pick_from l "pick color from" t "From which input get color when <i>Ctrl+Alt</i> pressed. Can be useful when you wanna drag color from despilled image connected to <i>fg_color<i/> input." M {in fg_color "" "" "" "" "" ""}}
+ addUserKnob {41 fg_color l "fg color picker" T Expression2.fg_color}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>SmartIBK v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name fg_color
+  label "\[value number]"
+  xpos 2801
+  ypos 363
+  number 2
+ }
+ Dot {
+  name Dot2
+  note_font_size 30
+  xpos 2835
+  ypos 535
+ }
+set Nac37c00 [stack 0]
+ Dot {
+  name Dot4
+  note_font_size 30
+  xpos 2725
+  ypos 535
+ }
+ Input {
+  inputs 0
+  name in
+  label "\[value number]"
+  xpos 1361
+  ypos 363
+ }
+ Dot {
+  name Dot3
+  xpos 1395
+  ypos 618
+ }
+set Nac76800 [stack 0]
+ Switch {
+  inputs 2
+  which {{pick_from}}
+  name Switch3
+  label "pick fg color from switcher"
+  xpos 2691
+  ypos 603
+ }
+ Expression {
+  expr0 fg_color.r
+  expr1 fg_color.g
+  expr2 fg_color.b
+  channel3 none
+  name Expression2
+  label "fg picker"
+  xpos 2691
+  ypos 688
+  addUserKnob {20 User}
+  addUserKnob {18 fg_color l "fg color picker" t "Use this color us foreground color instead of fg_color input if <i>pick fg color</i> checkbox is enabled."}
+  fg_color {0 0 0}
+  addUserKnob {6 fg_color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+push $Nac37c00
+ Switch {
+  inputs 2
+  which {{pick_fg_color}}
+  name Switch2
+  label "fg picker switcher"
+  xpos 2801
+  ypos 682
+ }
+ Dot {
+  name Dot10
+  xpos 2835
+  ypos 863
+ }
+set Nac77800 [stack 0]
+ Dot {
+  name Dot14
+  note_font_size 30
+  xpos 2966
+  ypos 863
+ }
+set Nac77c00 [stack 0]
+ Dot {
+  name Dot9
+  note_font_size 30
+  xpos 3098
+  ypos 863
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 rgba.blue 0 2 rgba.alpha 0 0"
+  name Shuffle3
+  label blue
+  xpos 3063
+  ypos 1027
+  disable {{screen_type==2?screen_color.g>screen_color.b:!screen_type}}
+ }
+ set Cebe28400 [stack 0]
+ Shuffle2 {
+  fromInput1 {{0} B}
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 rgba.green 0 1 rgba.alpha 0 0"
+  name Shuffle4
+  label green
+  xpos 3063
+  ypos 1063
+  disable {{screen_type==2?screen_color.g<=screen_color.b:screen_type}}
+ }
+ set Cebe28800 [stack 0]
+ Remove {
+  operation keep
+  channels alpha
+  name Remove1
+  xpos 3063
+  ypos 1099
+ }
+ set C1298c000 [stack 0]
+ Dot {
+  name Dot12
+  label "fg color screen component"
+  note_font_size 20
+  xpos 3097
+  ypos 1374
+ }
+push $Nac77c00
+ Shuffle2 {
+  fromInput1 {{0} B}
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 rgba.green 0 1 rgba.alpha 0 0"
+  name Shuffle2
+  label green
+  xpos 2932
+  ypos 1027
+  disable {{parent.Shuffle3.disable}}
+ }
+ set Cebe29000 [stack 0]
+ Shuffle2 {
+  fromInput1 {{0} B}
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 rgba.blue 0 2 rgba.alpha 0 0"
+  name Shuffle5
+  label blue
+  xpos 2932
+  ypos 1063
+  disable {{parent.Shuffle4.disable}}
+ }
+ set Cebe29400 [stack 0]
+clone $C1298c000 {
+  xpos 2932
+  ypos 1099
+  selected false
+ }
+ Dot {
+  name Dot30
+  note_font_size 30
+  xpos 2966
+  ypos 1193
+ }
+push $Nac77800
+ Shuffle2 {
+  fromInput1 {{0} B}
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 rgba.red 0 0 rgba.alpha 0 0"
+  name Shuffle1
+  label red
+  xpos 2801
+  ypos 1027
+ }
+ set Cebe29c00 [stack 0]
+clone $C1298c000 {
+  xpos 2801
+  ypos 1063
+  selected false
+ }
+ Dissolve {
+  inputs 2
+  channels alpha
+  which {{bias}}
+  name Dissolve1
+  xpos 2801
+  ypos 1178
+ }
+ set Cebe52000 [stack 0]
+ Dot {
+  name Dot11
+  label "fg color opposite component"
+  note_font_size 20
+  xpos 2835
+  ypos 1284
+ }
+ ChannelMerge {
+  inputs 2
+  operation divide
+  name ChannelMerge1
+  xpos 2801
+  ypos 1365
+ }
+ set C141fac00 [stack 0]
+ Dot {
+  name Dot13
+  label "opposite color multiplier before subtraction"
+  note_font_size 20
+  xpos 2835
+  ypos 1592
+ }
+set Nebe52c00 [stack 0]
+push $Nac76800
+ Dot {
+  name Dot1
+  xpos 1395
+  ypos 688
+ }
+set Nebe53000 [stack 0]
+ Dot {
+  name Dot27
+  xpos 1395
+  ypos 928
+ }
+set Nebe53400 [stack 0]
+ Dot {
+  name Dot17
+  xpos 1904
+  ypos 928
+ }
+set Nebe53800 [stack 0]
+ Dot {
+  name Dot6
+  note_font_size 30
+  xpos 2019
+  ypos 928
+ }
+set Nebe53c00 [stack 0]
+clone $Cebe29000 {
+  xpos 1985
+  ypos 1027
+  selected false
+ }
+clone $Cebe29400 {
+  xpos 1985
+  ypos 1063
+  selected false
+ }
+clone $C1298c000 {
+  xpos 1985
+  ypos 1099
+  selected false
+ }
+ Dot {
+  name Dot15
+  note_font_size 30
+  xpos 2019
+  ypos 1193
+ }
+push $Nebe53800
+clone $Cebe29c00 {
+  xpos 1870
+  ypos 1027
+  selected false
+ }
+clone $C1298c000 {
+  xpos 1870
+  ypos 1063
+  selected false
+ }
+clone $Cebe52000 {
+  inputs 2
+  xpos 1870
+  ypos 1178
+  selected false
+ }
+ Dot {
+  name Dot18
+  label "in opposite component"
+  note_font_size 20
+  xpos 1904
+  ypos 1374
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge2
+  xpos 1870
+  ypos 1583
+ }
+ set C141fb000 [stack 0]
+ Dot {
+  name Dot19
+  xpos 1904
+  ypos 1722
+ }
+push $Nebe53c00
+ Dot {
+  name Dot5
+  note_font_size 30
+  xpos 2134
+  ypos 928
+ }
+clone $Cebe28400 {
+  xpos 2100
+  ypos 1027
+  selected false
+ }
+clone $Cebe28800 {
+  xpos 2100
+  ypos 1063
+  selected false
+ }
+clone $C1298c000 {
+  xpos 2100
+  ypos 1099
+  selected false
+ }
+ ChannelMerge {
+  inputs 2
+  operation from
+  name ChannelMerge3
+  selected true
+  xpos 2100
+  ypos 1713
+ }
+ set C141fb800 [stack 0]
+ Dot {
+  name Dot22
+  label "in screen color saturation"
+  note_font_size 20
+  xpos 2134
+  ypos 1852
+ }
+push $Nebe52c00
+ Dot {
+  name Dot31
+  note_font_size 30
+  xpos 2835
+  ypos 1642
+ }
+push $Nebe53000
+ Expression {
+  expr0 screen_color.r
+  expr1 screen_color.g
+  expr2 screen_color.b
+  channel3 none
+  name Expression1
+  label "cleanplte picker"
+  xpos 1505
+  ypos 679
+  addUserKnob {20 User}
+  addUserKnob {18 screen_color l "screen color"}
+  screen_color {0 0 0}
+  addUserKnob {6 screen_color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+ Input {
+  inputs 0
+  name cleanplate
+  label "\[value number]"
+  xpos 1616
+  ypos 363
+  number 1
+ }
+ Switch {
+  inputs 2
+  which {{screen_type==2}}
+  name Switch1
+  label "cleanplate picker switcher"
+  xpos 1615
+  ypos 673
+ }
+ Dot {
+  name Dot28
+  xpos 1650
+  ypos 863
+ }
+set Nebec8400 [stack 0]
+ Dot {
+  name Dot16
+  xpos 2371
+  ypos 863
+ }
+set Nebec8800 [stack 0]
+ Dot {
+  name Dot8
+  note_font_size 30
+  xpos 2494
+  ypos 863
+ }
+set Nebec8c00 [stack 0]
+clone $Cebe29000 {
+  xpos 2460
+  ypos 1027
+  selected false
+ }
+clone $Cebe29400 {
+  xpos 2460
+  ypos 1063
+  selected false
+ }
+clone $C1298c000 {
+  xpos 2460
+  ypos 1099
+  selected false
+ }
+ Dot {
+  name Dot29
+  note_font_size 30
+  xpos 2494
+  ypos 1193
+ }
+push $Nebec8800
+clone $Cebe29c00 {
+  xpos 2337
+  ypos 1027
+  selected false
+ }
+clone $C1298c000 {
+  xpos 2337
+  ypos 1063
+  selected false
+ }
+clone $Cebe52000 {
+  inputs 2
+  xpos 2337
+  ypos 1178
+  selected false
+ }
+ Dot {
+  name Dot21
+  label "cleanplate opposite component"
+  note_font_size 20
+  xpos 2371
+  ypos 1374
+ }
+clone $C141fb000 {
+  inputs 2
+  xpos 2337
+  ypos 1633
+  selected false
+ }
+ Dot {
+  name Dot20
+  xpos 2371
+  ypos 1722
+ }
+push $Nebec8c00
+ Dot {
+  name Dot7
+  note_font_size 30
+  xpos 2617
+  ypos 863
+ }
+clone $Cebe28400 {
+  xpos 2583
+  ypos 1027
+  selected false
+ }
+clone $Cebe28800 {
+  xpos 2583
+  ypos 1063
+  selected false
+ }
+clone $C1298c000 {
+  xpos 2583
+  ypos 1099
+  selected false
+ }
+clone $C141fb800 {
+  inputs 2
+  xpos 2583
+  ypos 1713
+  selected false
+ }
+ Dot {
+  name Dot23
+  label "cleanplate screen color saturation"
+  note_font_size 20
+  xpos 2617
+  ypos 1852
+ }
+ Dot {
+  name Dot24
+  xpos 2617
+  ypos 1982
+ }
+clone $C141fac00 {
+  inputs 2
+  xpos 2100
+  ypos 1973
+  selected false
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 2100
+  ypos 2009
+ }
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos 2100
+  ypos 2045
+ }
+ Dot {
+  name Dot26
+  xpos 2134
+  ypos 2238
+ }
+set Nb4e9400 [stack 0]
+ Dot {
+  name Dot25
+  xpos 2134
+  ypos 2313
+ }
+push $Nb4e9400
+push $Nebec8400
+ Dot {
+  name Dot32
+  note_font_size 30
+  xpos 1650
+  ypos 2049
+ }
+push $Nebe53400
+ Merge2 {
+  inputs 2+1
+  operation from
+  invert_mask true
+  name Merge7
+  xpos 1361
+  ypos 2235
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1361
+  ypos 2304
+ }
+ Output {
+  name Output1
+  xpos 1361
+  ypos 2440
+ }
+end_group

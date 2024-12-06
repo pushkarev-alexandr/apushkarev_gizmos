@@ -1,0 +1,1017 @@
+#! C:/Program Files/Nuke15.0v5/nuke-15.0.5.dll -nx
+version 15.0 v5
+Gizmo {
+inputs 3
+knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='operation':\n    node\['src_noiseqc'].setVisible(kn.value()=='NoiseQC')\n    node\['saturation'].setVisible(kn.value()=='Saturation')\n    node\['cold_warm'].setVisible(kn.value()=='Cold/Warm Shift')\n    node\['st'].setVisible(kn.value()=='Screen Saturation Boost')\n    node\['chs'].setVisible(kn.value()=='Screen Saturation Boost')"
+addUserKnob {20 user_tab l TechCheck}
+addUserKnob {4 operation M {Input Bright Dark Contrast "Gamma Up" "Cold/Warm Shift" "Screen Saturation Boost" Saturation HighPass HSV NoiseQC "Check Negative" BoundingBox "Source Difference" "Source Difference Matte" "Prev Version Difference" "Prev Version Difference Matte"}}
+addUserKnob {22 previous_operation l "<font><img src=\"previous.png\"></font>" -STARTLINE T "node = nuke.thisNode()\nkn = node\['operation']\nif kn.getValue()>0:\n    kn.setValue(int(kn.getValue()-1))"}
+addUserKnob {22 next_operation l "<font><img src=\"next.png\"></font>" -STARTLINE T "node = nuke.thisNode()\nkn = node\['operation']\nif kn.getValue()<(kn.numValues()-1):\n    kn.setValue(int(kn.getValue()+1))"}
+addUserKnob {6 src_noiseqc l "Source NoiseQC" +HIDDEN +STARTLINE}
+addUserKnob {7 saturation +HIDDEN R 0 4}
+saturation 2
+addUserKnob {6 cold_warm l Cold/Warm +HIDDEN +STARTLINE}
+cold_warm true
+addUserKnob {4 st l screen +HIDDEN M {green blue ""}}
+addUserKnob {7 chs l saturation +HIDDEN R 0 2}
+chs 1.5
+addUserKnob {26 text l "" +STARTLINE}
+addUserKnob {7 extra_gain l gain R 0 5}
+extra_gain 1
+addUserKnob {6 mirror_horizontal l "Mirror Horizontal" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TechCheck v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name in
+xpos 0
+}
+Dot {
+name Dot1
+note_font_size 30
+xpos 31
+ypos 109
+}
+set N9e71a000 [stack 0]
+Dot {
+name Dot15
+note_font_size 30
+xpos 119
+ypos 109
+}
+set N36032800 [stack 0]
+Dot {
+name Dot16
+note_font_size 30
+xpos 264
+ypos 109
+}
+set N7d721c00 [stack 0]
+Dot {
+name Dot7
+note_font_size 30
+xpos 419
+ypos 109
+}
+set N82411c00 [stack 0]
+Dot {
+name Dot6
+note_font_size 30
+xpos 592
+ypos 109
+}
+set N6c337c00 [stack 0]
+Dot {
+name Dot35
+note_font_size 30
+xpos 763
+ypos 109
+}
+set N909e1400 [stack 0]
+Dot {
+name Dot37
+note_font_size 30
+xpos 910
+ypos 109
+}
+set N859f4800 [stack 0]
+Dot {
+name Dot2
+note_font_size 30
+xpos 1047
+ypos 109
+}
+set Nb1998400 [stack 0]
+Dot {
+name Dot14
+note_font_size 30
+xpos 1213
+ypos 109
+}
+set N897c0000 [stack 0]
+Dot {
+name Dot13
+note_font_size 30
+xpos 1387
+ypos 109
+}
+set N25657400 [stack 0]
+Dot {
+name Dot3
+note_font_size 30
+xpos 1604
+ypos 109
+}
+set Nfddcb400 [stack 0]
+Dot {
+name Dot4
+note_font_size 30
+xpos 1894
+ypos 109
+}
+set N7d540000 [stack 0]
+Dot {
+name Dot5
+note_font_size 30
+xpos 2031
+ypos 109
+}
+set N61fd800 [stack 0]
+Dot {
+name Dot11
+note_font_size 30
+xpos 2249
+ypos 109
+}
+set N1481b000 [stack 0]
+Dot {
+name Dot101
+note_font_size 30
+xpos 2515
+ypos 109
+}
+set N8b18fc00 [stack 0]
+Dot {
+name Dot99
+note_font_size 30
+xpos 2623
+ypos 109
+}
+set N2f110c00 [stack 0]
+Dot {
+name Dot26
+note_font_size 30
+xpos 3048
+ypos 135
+}
+set N1d845000 [stack 0]
+Dot {
+name Dot27
+note_font_size 30
+xpos 3166
+ypos 135
+}
+Dot {
+name Dot28
+note_font_size 30
+xpos 3166
+ypos 292
+}
+set N910f2000 [stack 0]
+Input {
+inputs 0
+name prev_version
+xpos 2770
+ypos -15
+number 2
+}
+Dot {
+name Dot29
+note_font_size 30
+xpos 2801
+ypos 167
+}
+set N8b18e400 [stack 0]
+push $N1d845000
+Group {
+inputs 2
+name DifferenceThreshold1
+xpos 3017
+ypos 215
+addUserKnob {20 user_tab l DifferenceThreshold}
+addUserKnob {41 thr l "difference threshold" T Expression1.thr}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceThreshold v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name A
+xpos -1026
+ypos 581
+number 1
+}
+Input {
+inputs 0
+name B
+xpos -826
+ypos 548
+}
+Dot {
+name Dot103
+note_font_size 30
+xpos -792
+ypos 640
+}
+set N6c3df400 [stack 0]
+Merge2 {
+inputs 2
+operation difference
+name Merge29
+xpos -1026
+ypos 687
+}
+Saturation {
+saturation 0
+mode Maximum
+name Saturation1
+xpos -1026
+ypos 711
+}
+Expression {
+expr3 r>thr
+name Expression1
+xpos -1026
+ypos 735
+addUserKnob {20 User}
+addUserKnob {7 thr l "difference threshold" R 1e-06 0.001}
+thr 0.001
+}
+push $N6c3df400
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy9
+xpos -826
+ypos 729
+}
+Output {
+name Output1
+xpos -826
+ypos 829
+}
+end_group
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.alpha 0 3 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba.blue 0 2 rgba.alpha 0 3 rgba.alpha 0 3"
+name Shuffle1
+xpos 3017
+ypos 252
+}
+Merge2 {
+inputs 2
+operation geometric
+output rgb
+name Merge3
+xpos 3017
+ypos 292
+}
+Dot {
+name Dot30
+note_font_size 30
+xpos 3048
+ypos 352
+}
+push $N910f2000
+Merge2 {
+inputs 2
+name Merge4
+xpos 3135
+ypos 352
+}
+Dot {
+name Dot38
+note_font_size 30
+xpos 3166
+ypos 505
+}
+push $N8b18e400
+push $N2f110c00
+Merge2 {
+inputs 2
+operation difference
+name Merge2
+xpos 2770
+ypos 256
+}
+Dot {
+name Dot36
+note_font_size 30
+xpos 2801
+ypos 445
+}
+push $N2f110c00
+Dot {
+name Dot98
+note_font_size 30
+xpos 2623
+ypos 266
+}
+set N6eecfc00 [stack 0]
+Input {
+inputs 0
+name src
+xpos 2343
+ypos -49
+number 1
+}
+Dot {
+name Dot32
+note_font_size 30
+xpos 2374
+ypos 35
+}
+set N9ea67800 [stack 0]
+Dot {
+name Dot24
+note_font_size 30
+xpos 2374
+ypos 189
+}
+set N9ea67400 [stack 0]
+push $N8b18fc00
+Group {
+inputs 2
+name DifferenceThreshold2
+xpos 2484
+ypos 189
+addUserKnob {20 user_tab l DifferenceThreshold}
+addUserKnob {41 thr l "difference threshold" T Expression1.thr}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceThreshold v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name A
+xpos -1026
+ypos 581
+number 1
+}
+Input {
+inputs 0
+name B
+xpos -826
+ypos 548
+}
+Dot {
+name Dot103
+note_font_size 30
+xpos -792
+ypos 640
+}
+set Nc402d400 [stack 0]
+Merge2 {
+inputs 2
+operation difference
+name Merge29
+xpos -1026
+ypos 687
+}
+Saturation {
+saturation 0
+mode Maximum
+name Saturation1
+xpos -1026
+ypos 711
+}
+Expression {
+expr3 r>thr
+name Expression1
+xpos -1026
+ypos 735
+addUserKnob {20 User}
+addUserKnob {7 thr l "difference threshold" R 1e-06 0.001}
+thr 0.001
+}
+push $Nc402d400
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy9
+xpos -826
+ypos 729
+}
+Output {
+name Output1
+xpos -826
+ypos 829
+}
+end_group
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.alpha 0 3 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba.blue 0 2 rgba.alpha 0 3 rgba.alpha 0 3"
+name Shuffle8
+xpos 2484
+ypos 226
+}
+Merge2 {
+inputs 2
+operation geometric
+output rgb
+name Merge17
+xpos 2484
+ypos 266
+}
+Dot {
+name Dot100
+note_font_size 30
+xpos 2515
+ypos 326
+}
+push $N6eecfc00
+Merge2 {
+inputs 2
+name Merge18
+xpos 2592
+ypos 326
+}
+Dot {
+name Dot31
+note_font_size 30
+xpos 2623
+ypos 401
+}
+push $N9ea67400
+Dot {
+name Dot12
+xpos 2374
+ypos 256
+}
+push $N1481b000
+Merge2 {
+inputs 2
+operation difference
+name Merge1
+xpos 2215
+ypos 256
+}
+Dot {
+name Dot25
+note_font_size 30
+xpos 2246
+ypos 368
+}
+push $N61fd800
+Expression {
+expr0 x<0||x>width||y<0||y>height?1:r
+expr1 x<0||x>width||y<0||y>height?0:g
+expr2 x<0||x>width||y<0||y>height?1:b
+name Expression2
+label "purple bbox"
+xpos 1997
+ypos 206
+}
+Crop {
+box {{input.bbox.x} {input.bbox.y} {input.bbox.w+input.bbox.x} {input.bbox.h+input.bbox.y}}
+reformat true
+crop false
+name Crop1
+label "reformat to bbox"
+xpos 1997
+ypos 250
+}
+Dot {
+name Dot17
+note_font_size 30
+xpos 2028
+ypos 341
+}
+push $N7d540000
+Expression {
+expr0 r<0||g<0||b<0?1:r
+expr3 r<0||g<0||b<0?1:0
+name Expression1
+label "check negative"
+xpos 1860
+ypos 206
+}
+Dot {
+name Dot18
+note_font_size 30
+xpos 1891
+ypos 322
+}
+push $N9ea67800
+Dot {
+name Dot33
+note_font_size 30
+xpos 1706
+ypos 35
+}
+Dot {
+name Dot34
+note_font_size 30
+xpos 1706
+ypos 177
+}
+push $Nfddcb400
+Switch {
+inputs 2
+which {{src_noiseqc}}
+name Switch2
+xpos 1573
+ypos 171
+}
+Group {
+name NoiseQC1
+xpos 1573
+ypos 223
+}
+Input {
+inputs 0
+name Input
+xpos -339
+ypos 498
+}
+Colorspace {
+colorspace_out sRGB
+name Colorspace4
+xpos -339
+ypos 538
+}
+Dot {
+name Dot51
+xpos -305
+ypos 590
+}
+set N11715800 [stack 0]
+Dot {
+name Dot52
+xpos -305
+ypos 616
+}
+set N11714000 [stack 0]
+Crop {
+box {0 0 {width} {height}}
+reformat true
+crop false
+name Crop3
+xpos -339
+ypos 665
+}
+Blur {
+size 1.4
+filter box
+quality 20
+name Blur7
+xpos -339
+ypos 722
+}
+push $N11715800
+Dot {
+name Dot35
+xpos -415
+ypos 590
+}
+Dot {
+name Dot53
+xpos -415
+ypos 806
+}
+Merge2 {
+inputs 2
+operation difference
+name Merge12
+xpos -339
+ypos 802
+}
+Multiply {
+value 50
+name Multiply5
+xpos -339
+ypos 922
+}
+push $N11714000
+Dot {
+name Dot55
+xpos -139
+ypos 616
+}
+Multiply {
+value 0.5
+name Multiply6
+xpos -173
+ypos 859
+}
+Merge2 {
+inputs 2
+operation plus
+name Plus2
+xpos -173
+ypos 928
+}
+Output {
+name Output1
+xpos -173
+ypos 1080
+}
+end_group
+Dot {
+name Dot19
+note_font_size 30
+xpos 1604
+ypos 305
+}
+push $N25657400
+Colorspace {
+colorspace_out HSV
+name Colorspace1
+xpos 1356
+ypos 203
+}
+Dot {
+name Dot20
+note_font_size 30
+xpos 1387
+ypos 301
+}
+push $N897c0000
+Group {
+name HighPass1
+knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == 'output1':\n    if n.knob('output1').getValue() == 0:\n        n.knob('HighPassAmount').setVisible(False)\n        n.knob('HighContrastAmount').setVisible(True)\n    else:\n        n.knob('HighPassAmount').setVisible(True)\n        n.knob('HighContrastAmount').setVisible(False)"
+tile_color 0xcc804eff
+note_font "Verdana Bold"
+note_font_color 0xffffffff
+xpos 1182
+ypos 217
+mapsize {0.15 0.15}
+addUserKnob {20 HighPass}
+addUserKnob {41 channels T MergeKeymix.also_merge}
+addUserKnob {4 output1 l Operation t "High Contrast, Makes details pop out while still maintaining some color\n\nHigh Pass, Makes details pop out more but becomes more grayscale" M {"High Contrast" "High Pass" "" "" "" "" "" "" ""}}
+addUserKnob {41 blurSize l "Blur Size" t "controls the blur amount of the input before the difference operation is calculated" T Blur6.size}
+addUserKnob {7 HighContrastAmount l Amount t "controls a multiply on the input before the difference is calculated\n\n(only works when operation is set to high contrast)" R 0.6 1}
+HighContrastAmount 0.8
+addUserKnob {7 HighPassAmount l Amount t "controls an offset (add) on the input before the difference is calculated\n\n(only works when operation is set to high pass)" +HIDDEN R -0.3 0}
+HighPassAmount -0.01
+addUserKnob {7 postMult l "Post Mult" R 0 4}
+postMult 1
+addUserKnob {26 ""}
+addUserKnob {41 maskChannelMask l mask -STARTLINE T MergeKeymix.maskChannelMask}
+addUserKnob {41 inject -STARTLINE T MergeKeymix.inject}
+addUserKnob {41 invert_mask l invert -STARTLINE T MergeKeymix.invert_mask}
+addUserKnob {41 fringe -STARTLINE T MergeKeymix.fringe}
+addUserKnob {41 mix T MergeKeymix.mix}
+addUserKnob {20 info l Info}
+addUserKnob {26 creator l Creator T "<b><big>Tony Lyons"}
+addUserKnob {26 desc l Description: t "blurs image and minuses with original, producing a sharpened highpass image\n\nGood for use as a sharpen tool\nvery useful as an aid to trackers and as a viewer input to check for errors" T HighPass}
+addUserKnob {26 ver l Version: T v05}
+}
+Input {
+inputs 0
+name Inputmask
+xpos 99
+ypos 428
+number 1
+}
+Dot {
+name Dot4
+label Mask
+note_font_size 41
+xpos 133
+ypos 481
+}
+Dot {
+name Dot6
+note_font_size 41
+xpos 133
+ypos 581
+}
+Input {
+inputs 0
+name Inputimg
+xpos -273
+ypos -335
+}
+AddChannels {
+channels rgba
+name AddChannels1
+xpos -273
+ypos -264
+}
+Dot {
+name Dot8
+note_font_size 41
+xpos -239
+ypos -114
+}
+set N3d729000 [stack 0]
+Dot {
+name Dot3
+note_font_size 41
+xpos -239
+ypos 43
+}
+set N3d728000 [stack 0]
+Dot {
+name Dot1
+note_font_size 41
+xpos -367
+ypos 43
+}
+Blur {
+size 10
+name Blur6
+xpos -401
+ypos 84
+}
+set N5834e400 [stack 0]
+Grade {
+channels all
+add {{parent.HighPassAmount}}
+black_clamp false
+name Grade11
+xpos -504
+ypos 139
+}
+push $N5834e400
+Grade {
+channels all
+multiply {{parent.HighContrastAmount}}
+black_clamp false
+name Grade1
+xpos -401
+ypos 138
+}
+Switch {
+inputs 2
+which {{"parent.output1==1 ? 1 : 0"}}
+name Switch1
+xpos -401
+ypos 192
+}
+Dot {
+name Dot5
+xpos -367
+ypos 244
+}
+push $N3d728000
+Merge2 {
+inputs 2
+operation from
+Achannels none
+Bchannels none
+output none
+also_merge all
+name Merge1
+label "\[ expr \{ \[value mix] == 1 ? \" \" : \[concat Mix: \[value mix]] \}]"
+xpos -273
+ypos 237
+}
+Multiply {
+value {{parent.postMult*4}}
+name Multiply1
+label "\[value value]"
+xpos -273
+ypos 300
+}
+Dot {
+name Dot17
+label A
+note_font_size 41
+xpos -239
+ypos 493
+}
+push $N3d729000
+Dot {
+name Dot9
+note_font_size 41
+xpos -580
+ypos -114
+}
+Dot {
+name Dot18
+label B
+note_font_size 41
+xpos -580
+ypos 490
+}
+Dot {
+name Dot7
+note_font_size 41
+xpos -580
+ypos 581
+}
+Merge2 {
+inputs 2+1
+operation copy
+bbox B
+Achannels none
+Bchannels none
+output none
+also_merge rgb
+name MergeKeymix
+xpos -273
+ypos 574
+}
+Output {
+name Output1
+xpos -273
+ypos 650
+}
+end_group
+Dot {
+name Dot21
+note_font_size 30
+xpos 1213
+ypos 297
+}
+push $Nb1998400
+Saturation {
+saturation {{parent.saturation}}
+name Saturation1
+xpos 1016
+ypos 202
+}
+Dot {
+name Dot22
+note_font_size 30
+xpos 1047
+ypos 291
+}
+push $N859f4800
+Group {
+name ScreenSaturationBoost2
+tile_color 0x7aa9ff00
+selected true
+xpos 879
+ypos 210
+addUserKnob {20 user_tab l ScreenSaturationBoost}
+addUserKnob {4 st l "screen type" M {green blue}}
+st {{parent.st}}
+addUserKnob {7 chs l "channel saturation" R 0 3}
+chs {{parent.chs}}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ScreenSaturationBoost v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 598
+ypos -306
+}
+Dot {
+name Dot204
+note_font_size 30
+xpos 629
+ypos -210
+}
+set N9ac1b000 [stack 0]
+Dot {
+name Dot201
+note_font_size 30
+xpos 801
+ypos -210
+}
+Expression {
+expr3 st?b-(r+g)/2:g-(r+b)/2
+name Expression1
+label "channel saturation"
+xpos 770
+ypos -102
+}
+Grade {
+channels alpha
+multiply {{chs}}
+name Grade1
+selected true
+xpos 770
+ypos -26
+}
+ChannelMerge {
+B rgba.green
+output rgba.green
+name ChannelMerge1
+xpos 770
+ypos 86
+disable {{st}}
+}
+ChannelMerge {
+B rgba.blue
+output rgba.blue
+name ChannelMerge2
+xpos 770
+ypos 193
+disable {{!st}}
+}
+Dot {
+name Dot1
+xpos 801
+ypos 329
+}
+push $N9ac1b000
+Copy {
+inputs 2
+channels rgb
+name Copy1
+xpos 598
+ypos 323
+}
+Output {
+name Output1
+xpos 598
+ypos 550
+}
+end_group
+Dot {
+name Dot23
+note_font_size 30
+xpos 910
+ypos 285
+}
+push $N909e1400
+Grade {
+white {0.616666615 0.7666666508 1.616666555 1}
+name Grade8
+label "cold shift"
+xpos 732
+ypos 189
+disable {{!cold_warm}}
+}
+Grade {
+white {1.466666698 1.066666722 0.4666666985 1}
+name Grade10
+label "warm shift"
+xpos 732
+ypos 225
+disable {{cold_warm}}
+}
+push $N6c337c00
+Grade {
+gamma 2.2
+name Grade3
+label "gamma \[value gamma]"
+xpos 561
+ypos 193
+}
+Grade {
+multiply 0.4545
+name Grade4
+label "multiply \[value multiply]"
+xpos 561
+ypos 229
+}
+push $N82411c00
+Grade {
+multiply {{1/gamma}}
+gamma 0.6
+name Grade2
+xpos 388
+ypos 217
+}
+push $N7d721c00
+Grade {
+multiply 0.3
+name Grade6
+xpos 233
+ypos 224
+}
+push $N36032800
+Grade {
+multiply 5
+name Grade5
+xpos 88
+ypos 218
+}
+push $N9e71a000
+Switch {
+inputs 17
+which {{operation}}
+name Switch1
+xpos 0
+ypos 499
+}
+Grade {
+white {{extra_gain}}
+name Grade1
+xpos 0
+ypos 581
+}
+Dot {
+name Dot8
+note_font_size 30
+xpos 31
+ypos 624
+}
+set N1481b400 [stack 0]
+Dot {
+name Dot10
+note_font_size 30
+xpos -80
+ypos 624
+}
+Dot {
+name Dot9
+note_font_size 30
+xpos -80
+ypos 757
+}
+push $N1481b400
+Mirror2 {
+flop true
+name Mirror2_1
+xpos 0
+ypos 677
+disable {{!mirror_horizontal}}
+}
+CopyBBox {
+inputs 2
+name CopyBBox1
+xpos 0
+ypos 754
+}
+Output {
+name Output1
+xpos 0
+ypos 823
+}
+end_group

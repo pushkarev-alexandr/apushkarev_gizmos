@@ -1,0 +1,221 @@
+#created by Pushkarev Aleksandr
+#v1.1
+Group {
+ name UnfoldEdges1
+ tile_color 0xa57aaa00
+ addUserKnob {20 unfold_edges_tab l UnfoldEdges}
+ addUserKnob {14 horizontal R 0 100}
+ horizontal 700
+ addUserKnob {14 vertical R 0 100}
+ vertical 500
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>UnfoldEdges v1.1</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 327
+  ypos 86
+ }
+ Crop {
+  box {0 0 {width} 0}
+  name Crop1
+  xpos 327
+  ypos 157
+ }
+ Dot {
+  name Dot1
+  xpos 361
+  ypos 273
+ }
+set Naafb7c00 [stack 0]
+ Dot {
+  name Dot9
+  note_font_size 30
+  xpos 524
+  ypos 273
+ }
+set Naafb7400 [stack 0]
+ Dot {
+  name Dot8
+  note_font_size 30
+  xpos 687
+  ypos 273
+ }
+set Naafb7000 [stack 0]
+ Dot {
+  name Dot7
+  note_font_size 30
+  xpos 850
+  ypos 273
+ }
+set Naafb6c00 [stack 0]
+ Dot {
+  name Dot6
+  note_font_size 30
+  xpos 1013
+  ypos 273
+ }
+set Naafb6800 [stack 0]
+ Dot {
+  name Dot5
+  note_font_size 30
+  xpos 1176
+  ypos 273
+ }
+set N9c1c0000 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1339
+  ypos 273
+ }
+set N9c1c0400 [stack 0]
+ Dot {
+  name Dot3
+  xpos 1502
+  ypos 273
+ }
+set N9c1c0800 [stack 0]
+ Dot {
+  name Dot2
+  xpos 1665
+  ypos 273
+ }
+ Transform {
+  scale -1
+  center {{width} 0}
+  filter impulse
+  name Transform9
+  xpos 1631
+  ypos 429
+ }
+ Dot {
+  name Dot10
+  note_font_size 30
+  xpos 1665
+  ypos 699
+ }
+push $N9c1c0800
+ Transform {
+  scale -1
+  center {{width} {height}}
+  filter impulse
+  name Transform8
+  xpos 1468
+  ypos 429
+ }
+ Dot {
+  name Dot11
+  note_font_size 30
+  xpos 1502
+  ypos 657
+ }
+push $N9c1c0400
+ Transform {
+  scale -1
+  center {0 {height}}
+  filter impulse
+  name Transform7
+  xpos 1305
+  ypos 429
+ }
+ Dot {
+  name Dot12
+  note_font_size 30
+  xpos 1339
+  ypos 637
+ }
+push $N9c1c0000
+ Transform {
+  scale -1
+  filter impulse
+  name Transform6
+  xpos 1142
+  ypos 429
+ }
+ Dot {
+  name Dot13
+  note_font_size 30
+  xpos 1176
+  ypos 617
+ }
+push $Naafb6800
+ Transform {
+  scale {1 -1}
+  center {{width/2} {height}}
+  filter impulse
+  name Transform4
+  xpos 979
+  ypos 429
+ }
+ Dot {
+  name Dot14
+  note_font_size 30
+  xpos 1013
+  ypos 597
+ }
+push $Naafb6c00
+ Transform {
+  scale {1 -1}
+  center {{width/2} 0}
+  filter impulse
+  name Transform3
+  xpos 816
+  ypos 429
+ }
+ Dot {
+  name Dot15
+  note_font_size 30
+  xpos 850
+  ypos 577
+ }
+push $Naafb7000
+ Transform {
+  scale {-1 1}
+  center {{width} {height/2}}
+  filter impulse
+  name Transform2
+  xpos 653
+  ypos 429
+ }
+ Dot {
+  name Dot16
+  note_font_size 30
+  xpos 687
+  ypos 557
+ }
+push 0
+push $Naafb7400
+ Transform {
+  scale {-1 1}
+  center {0 {height/2}}
+  filter impulse
+  name Transform1
+  xpos 490
+  ypos 429
+ }
+ Dot {
+  name Dot17
+  note_font_size 30
+  xpos 524
+  ypos 537
+ }
+push $Naafb7c00
+ Merge2 {
+  inputs 9+1
+  name Merge1
+  selected true
+  xpos 327
+  ypos 696
+ }
+ Crop {
+  box {{-horizontal.w} {-vertical.w} {width+horizontal.h} {height+vertical.h}}
+  name Crop2
+  xpos 327
+  ypos 773
+ }
+ Output {
+  name Output1
+  xpos 327
+  ypos 873
+ }
+end_group

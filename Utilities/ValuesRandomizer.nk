@@ -1,0 +1,30 @@
+set cut_paste_input [stack 0]
+version 15.0 v5
+push $cut_paste_input
+NoOp {
+name ValuesRandomizer1
+selected true
+xpos -234
+ypos -112
+addUserKnob {20 user_tab l ValuesRandomizer}
+addUserKnob {1 nodes}
+nodes Transform1|Transform2
+addUserKnob {22 set_selected l "set selected nodes" -STARTLINE T "node = nuke.thisNode()\nnames = '|'.join(\[n.name() for n in nuke.selectedNodes() if n.name()!=node.name()])\nnode\['nodes'].setValue(names)"}
+addUserKnob {22 add_knob l "add knob" T "def returnKnobs(ind):\n    n = \[1,7,7,6]\n    kn = \['knobs','from','to','int']\n    line = \['','',' -STARTLINE',' -STARTLINE']\n    lst = \[]\n    for i in range(4):\n        lst.append(f'addUserKnob \{\{\{n\[i]\} \{kn\[i]\}\{ind\}\{line\[i]\}\}\}')\n    return '\\n'.join(lst)\n\nnode = nuke.thisNode()\nfor i in range(100):\n    ind = str(i+1)\n    knobsKn = node.knob('knobs'+ind)\n    fromKn = node.knob('from'+ind)\n    toKn = node.knob('to'+ind)\n    intKn = node.knob('int'+ind)\n    if not any(\[knobsKn,fromKn,toKn,intKn]):\n        node.readKnobs(returnKnobs(i+1))\n        break" +STARTLINE}
+addUserKnob {22 remove_knob l "remove knob" -STARTLINE T "node = nuke.thisNode()\nfor i in range(1000):\n    ind = str(i+1)\n    knobsKn = node.knob('knobs'+ind)\n    fromKn = node.knob('from'+ind)\n    toKn = node.knob('to'+ind)\n    intKn = node.knob('int'+ind)\n    if not any(\[knobsKn,fromKn,toKn,intKn]):\n        break\nfor knName in \['knobs','from','to','int']:\n    kn = node.knob(f'\{knName\}\{i\}')\n    if kn:\n        node.removeKnob(kn)"}
+addUserKnob {22 randomize -STARTLINE T "import random\nsubKnMap = \{'x':0,'y':1,'z':2,\n'r':0,'g':1,'b':2,'a':3,\n'red':0,'green':1,'blue':2,'alpha':3,\n'w':0,'h':1\}\nthis = nuke.thisNode()\nnodes = this\['nodes'].value()\nfor name in nodes.split('|'):\n    node = nuke.toNode(name)\n    if not node:\n        continue\n    for i in range(1000):\n        ind = str(i+1)\n        knobsKn = this.knob('knobs'+ind)\n        fromKn = this.knob('from'+ind)\n        toKn = this.knob('to'+ind)\n        intKn = this.knob('int'+ind)\n        if not all(\[knobsKn,fromKn,toKn,intKn]):\n            break\n        knobNames = knobsKn.value()\n        if not knobNames:\n            break\n        for knName in knobNames.split('|'):\n            if knName.count('.')==1:\n                spl = knName.split('.')\n                baseName = spl\[0]\n                subKn = spl\[1]\n            else:\n                baseName = knName\n                subKn = ''\n            kn = node.knob(baseName)\n            if kn:\n                if intKn.value():\n                    rand = int(random.uniform(fromKn.value(),toKn.value()))\n                else:\n                    rand = random.uniform(fromKn.value(),toKn.value())\n                if baseName!=knName and subKnMap.get(subKn)!=None:\n                    kn.setValue(rand,subKnMap.get(subKn))\n                else:\n                    kn.setValue(rand)"}
+addUserKnob {1 knobs1}
+knobs1 translate.x|rotate
+addUserKnob {7 from1}
+from1 -10
+addUserKnob {7 to1 -STARTLINE}
+to1 10
+addUserKnob {6 int1 -STARTLINE}
+addUserKnob {1 knobs2}
+knobs2 scale
+addUserKnob {7 from2}
+from2 0.9
+addUserKnob {7 to2 -STARTLINE}
+to2 1.1
+addUserKnob {6 int2 -STARTLINE}
+}

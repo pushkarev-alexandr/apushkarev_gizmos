@@ -1,0 +1,227 @@
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+name GodRaysSmoothed1
+inputs 2
+onCreate "node = nuke.thisNode()\nkn = node\['center']\nif kn.value()==(-1,-1):\n    kn.setValue((node.width()/2,node.height()/2))"
+knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nexpr = nuke.toNode('Expression1')\ninput = nuke.toNode('Input')\nmerge = nuke.toNode('Merge1')\ntm = nuke.toNode('TransformMasked1')\nif kn.name()=='steps':\n    if kn.value()<1:\n        kn.setValue(1)\n    for tr in nuke.allNodes('Transform'):\n        nuke.delete(tr)\n    for km in nuke.allNodes('Keymix'):\n        nuke.delete(km)\n    for sw in nuke.allNodes('Switch'):\n        nuke.delete(sw)\n    for stm in nuke.allNodes('STMap'):\n        nuke.delete(stm)\n    for i in range(merge.inputs()):\n        merge.setInput(i,None)\n    steps = int(kn.value())\n    for i in range(steps*steps):\n        tr = nuke.createNode('Transform',inpanel=False)\n        tr.setSelected(False)\n        tr.setInput(0,expr)\n        tr\['translate'].setExpression('TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)')\n        tr\['rotate'].setExpression('TransformMasked1.rotate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)')\n        tr\['scale'].setExpression('(TransformMasked1.scale-1)/(steps*steps)*(\[string trimleft \[value name] Transform]-1)+1')\n        tr\['center'].setExpression('TransformMasked1.center')\n        km = nuke.createNode('Keymix',inpanel=False)\n        km.setSelected(False)\n        km\['channels'].setValue('rgb')\n        km.setInput(0,expr)\n        km.setInput(1,tr)\n        km.setInput(2,nuke.toNode('mask'))\n        sw = nuke.createNode('Switch',inpanel=False)\n        sw.setSelected(False)\n        sw\['which'].setExpression('!\[exists mask.parent.input1]')\n        sw.setInput(0,km)\n        sw.setInput(1,tr)\n        stm = nuke.createNode('STMap',inpanel=False)\n        stm.setSelected(False)\n        stm\['uv'].setValue('rgb')\n        stm\['channels'].setValue(tm\['channels'].value())\n        stm.setInput(0,input)\n        stm.setInput(1,sw)\n        merge.connectInput(0,stm)\nelif kn.name()=='max':\n    merge\['operation'].setValue(\['plus','max']\[kn.value()])"
+addUserKnob {20 user_tab l GodRaysSmoothed}
+addUserKnob {41 channels T TransformMasked1.channels}
+addUserKnob {41 translate T TransformMasked1.translate}
+addUserKnob {41 rotate T TransformMasked1.rotate}
+addUserKnob {41 scale T TransformMasked1.scale}
+addUserKnob {41 center T TransformMasked1.center}
+addUserKnob {22 set_center l "set center" -STARTLINE T "node = nuke.thisNode()\nnode\['center'].setValue((node.width()/2,node.height()/2))"}
+addUserKnob {3 steps}
+steps 2
+addUserKnob {6 max -STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>GodRaysSmoothed v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos -133
+ypos -55
+}
+set N22f92000 [stack 0]
+TransformMasked {
+center {-1 -1}
+name TransformMasked1
+xpos -293
+ypos -61
+}
+push $N22f92000
+Remove {
+operation keep
+channels {rgba.red rgba.green -rgba.blue none}
+name Remove1
+xpos 333
+ypos -55
+}
+Expression {
+expr0 (x+0.5)/width
+expr1 (y+0.5)/height
+channel2 none
+channel3 none
+name Expression1
+xpos 333
+ypos 49
+}
+set N82de7400 [stack 0]
+Transform {
+translate {{"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"} {"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+rotate {{"TransformMasked1.rotate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+scale {{"(TransformMasked1.scale-1)/(steps*steps)*(\[string trimleft \[value name] Transform]-1)+1"}}
+center {{TransformMasked1.center} {TransformMasked1.center}}
+shutteroffset centred
+name Transform4
+xpos 558
+ypos 342
+}
+set N9c523800 [stack 0]
+Input {
+inputs 0
+name mask
+xpos 114
+ypos -116
+number 1
+}
+set Ncd9a7800 [stack 0]
+push $N9c523800
+push $N82de7400
+Keymix {
+inputs 3
+channels rgb
+name Keymix4
+xpos 590
+ypos 358
+}
+Switch {
+inputs 2
+which {{"!\[exists mask.parent.input1]"}}
+name Switch4
+xpos 622
+ypos 374
+}
+push $N22f92000
+STMap {
+inputs 2
+uv rgb
+name STMap4
+xpos 654
+ypos 390
+}
+push $N82de7400
+Transform {
+translate {{"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"} {"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+rotate {{"TransformMasked1.rotate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+scale {{"(TransformMasked1.scale-1)/(steps*steps)*(\[string trimleft \[value name] Transform]-1)+1"}}
+center {{TransformMasked1.center} {TransformMasked1.center}}
+shutteroffset centred
+name Transform3
+xpos 430
+ypos 278
+}
+set N9c522800 [stack 0]
+push $Ncd9a7800
+push $N9c522800
+push $N82de7400
+Keymix {
+inputs 3
+channels rgb
+name Keymix3
+xpos 462
+ypos 294
+}
+Switch {
+inputs 2
+which {{"!\[exists mask.parent.input1]"}}
+name Switch3
+xpos 494
+ypos 310
+}
+push $N22f92000
+STMap {
+inputs 2
+uv rgb
+name STMap3
+xpos 526
+ypos 326
+}
+push 0
+push $N82de7400
+Transform {
+translate {{"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"} {"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+rotate {{"TransformMasked1.rotate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+scale {{"(TransformMasked1.scale-1)/(steps*steps)*(\[string trimleft \[value name] Transform]-1)+1"}}
+center {{TransformMasked1.center} {TransformMasked1.center}}
+shutteroffset centred
+name Transform2
+xpos 302
+ypos 214
+}
+set Nd68f7800 [stack 0]
+push $Ncd9a7800
+push $Nd68f7800
+push $N82de7400
+Keymix {
+inputs 3
+channels rgb
+name Keymix2
+xpos 334
+ypos 230
+}
+Switch {
+inputs 2
+which {{"!\[exists mask.parent.input1]"}}
+name Switch2
+xpos 366
+ypos 246
+}
+push $N22f92000
+STMap {
+inputs 2
+uv rgb
+name STMap2
+xpos 398
+ypos 262
+}
+push $N82de7400
+Transform {
+translate {{"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"} {"TransformMasked1.translate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+rotate {{"TransformMasked1.rotate/(steps*steps)*(\[string trimleft \[value name] Transform]-1)"}}
+scale {{"(TransformMasked1.scale-1)/(steps*steps)*(\[string trimleft \[value name] Transform]-1)+1"}}
+center {{TransformMasked1.center} {TransformMasked1.center}}
+shutteroffset centred
+name Transform1
+xpos 174
+ypos 150
+}
+set Nd68f6800 [stack 0]
+push $Ncd9a7800
+push $Nd68f6800
+push $N82de7400
+Keymix {
+inputs 3
+channels rgb
+name Keymix1
+xpos 206
+ypos 166
+}
+Switch {
+inputs 2
+which {{"!\[exists mask.parent.input1]"}}
+name Switch1
+xpos 238
+ypos 182
+}
+push $N22f92000
+STMap {
+inputs 2
+uv rgb
+name STMap1
+xpos 270
+ypos 198
+}
+Merge2 {
+inputs 4+1
+operation plus
+also_merge all
+name Merge1
+xpos -133
+ypos 383
+}
+Grade {
+channels {{{TransformMasked1.channels}}}
+whitepoint {{"\[set n \[inputs input]]>3?\$n-1:\$n"}}
+black_clamp false
+name Grade1
+xpos -133
+ypos 426
+disable {{parent.max}}
+}
+Output {
+name Output1
+xpos -133
+ypos 491
+}
+end_group

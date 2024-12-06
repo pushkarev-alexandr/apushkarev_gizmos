@@ -1,0 +1,182 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name ChannelToRGB1
+ onCreate "#when node is copied channels in grade changes to rgba and node can't properly bake those grades\n#so evry time node is copied channels for grades need to set explicitly\nnode = nuke.thisNode()\nkn = node.knob('ch_from')\ng1 = nuke.toNode('Grade1')\ng2 = nuke.toNode('Grade2')\nif kn.value()=='blue':\n    g1\['channels'].setValue('r')\n    g2\['channels'].setValue('g')\nelif kn.value()=='green':\n    g1\['channels'].setValue('r')\n    g2\['channels'].setValue('b')\nelif kn.value()=='red':\n    g1\['channels'].setValue('g')\n    g2\['channels'].setValue('b')"
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='ch_from':\n    g1 = nuke.toNode('Grade1')\n    g2 = nuke.toNode('Grade2')\n    if kn.value()=='blue':\n        g1\['channels'].setValue('r')\n        g2\['channels'].setValue('g')\n    elif kn.value()=='green':\n        g1\['channels'].setValue('r')\n        g2\['channels'].setValue('b')\n    elif kn.value()=='red':\n        g1\['channels'].setValue('g')\n        g2\['channels'].setValue('b')"
+ addUserKnob {20 user_tab l ChannelToRGB}
+ addUserKnob {4 ch_from l "channels from" M {red green blue}}
+ ch_from blue
+ addUserKnob {15 blackpoint}
+ blackpoint {0 0 100 100}
+ addUserKnob {15 whitepoint}
+ whitepoint {100 100 200 200}
+ addUserKnob {22 calculate T "for i in range(2):\n    nuke.execute(nuke.toNode('CurveTool'+str(i+1)),nuke.frame(),nuke.frame())" +STARTLINE}
+ addUserKnob {22 bake -STARTLINE T "node = nuke.thisNode()\nwrKn1 = nuke.toNode('Grade1').writeKnobs(nuke.TO_VALUE | nuke.WRITE_NON_DEFAULT_ONLY)\nwrKn2 = nuke.toNode('Grade2').writeKnobs(nuke.TO_VALUE | nuke.WRITE_NON_DEFAULT_ONLY)\nchannel = node\['ch_from'].value()\nnode\['disable'].setValue(True)\nwith nuke.root():\n    shuffle = nuke.createNode('Shuffle2')\n    shuffle\['in1'].setValue('rgb')\n    shuffle\['out1'].setValue('rgb')\n    for i in \['red','green','blue']:\n        shuffle\['mappings'].setValue(0,'rgba.'+channel,'rgba.'+i)\n    grade1 = nuke.createNode('Grade')\n    grade1.readKnobs(wrKn1)\n    grade2 = nuke.createNode('Grade')\n    grade2.readKnobs(wrKn2)"}
+ addUserKnob {6 difference l "check original difference" +STARTLINE}
+ addUserKnob {6 dif_to_a l "difference to alpha" -STARTLINE}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ChannelToRGB v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos -19
+ }
+ Dot {
+  name Dot1
+  note_font_size 30
+  xpos 34
+  ypos 64
+ }
+set Nea7fcc00 [stack 0]
+ Dot {
+  name Dot4
+  note_font_size 30
+  xpos 193
+  ypos 64
+ }
+set Nea7fd000 [stack 0]
+ CurveTool {
+  ROI {{whitepoint} {whitepoint} {whitepoint} {whitepoint}}
+  autocropdata {512 356 1536 1068}
+  intensitydata {0 1 2 0}
+  name CurveTool1
+  label whitepoint
+  xpos 159
+  ypos 135
+ }
+push $Nea7fd000
+ Dot {
+  name Dot5
+  note_font_size 30
+  xpos 322
+  ypos 64
+ }
+ CurveTool {
+  ROI {{blackpoint} {blackpoint} {blackpoint} {blackpoint}}
+  autocropdata {512 356 1536 1068}
+  intensitydata {0 1 2 0}
+  name CurveTool2
+  label blackpoint
+  xpos 288
+  ypos 135
+ }
+push $Nea7fcc00
+ Dot {
+  name Dot3
+  note_font_size 30
+  xpos -92
+  ypos 64
+ }
+push $Nea7fcc00
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 rgb
+  out1 rgb
+  fromInput2 {{0} B}
+  mappings "3 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2"
+  name Shuffle1
+  xpos 0
+  ypos 133
+  disable {{ch_from}}
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 rgb
+  out1 rgb
+  fromInput2 {{0} B}
+  mappings "3 rgba.green 0 1 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2"
+  name Shuffle2
+  xpos 0
+  ypos 163
+  disable {{ch_from!=1}}
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 rgb
+  out1 rgb
+  fromInput2 {{0} B}
+  mappings "3 rgba.blue 0 2 rgba.red 0 0 rgba.blue 0 2 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2"
+  name Shuffle3
+  xpos 0
+  ypos 193
+  disable {{ch_from!=2}}
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  blackpoint {{ch_from==2?CurveTool2.intensitydata.b:ch_from==1?CurveTool2.intensitydata.g:CurveTool2.intensitydata.r}}
+  whitepoint {{ch_from==2?CurveTool1.intensitydata.b:ch_from==1?CurveTool1.intensitydata.g:CurveTool1.intensitydata.r}}
+  black {{ch_from?CurveTool2.intensitydata.r:CurveTool2.intensitydata.g}}
+  white {{ch_from?CurveTool1.intensitydata.r:CurveTool1.intensitydata.g}}
+  name Grade1
+  xpos 0
+  ypos 258
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  blackpoint {{ch_from==2?CurveTool2.intensitydata.b:ch_from==1?CurveTool2.intensitydata.g:CurveTool2.intensitydata.r}}
+  whitepoint {{ch_from==2?CurveTool1.intensitydata.b:ch_from==1?CurveTool1.intensitydata.g:CurveTool1.intensitydata.r}}
+  black {{ch_from==2?CurveTool2.intensitydata.g:CurveTool2.intensitydata.b}}
+  white {{ch_from==2?CurveTool1.intensitydata.g:CurveTool1.intensitydata.b}}
+  name Grade2
+  xpos 0
+  ypos 299
+ }
+ Dot {
+  name Dot6
+  note_font_size 30
+  xpos 34
+  ypos 392
+ }
+set Nf3dc9800 [stack 0]
+ Merge2 {
+  inputs 2
+  operation difference
+  bbox B
+  name Merge1
+  xpos -126
+  ypos 389
+ }
+ Dot {
+  name Dot7
+  note_font_size 30
+  xpos -92
+  ypos 474
+ }
+set Nf3752000 [stack 0]
+ Expression {
+  expr3 r+g+b
+  name Expression1
+  xpos -126
+  ypos 559
+ }
+ Dot {
+  name Dot2
+  note_font_size 30
+  xpos -92
+  ypos 642
+ }
+push $Nf3752000
+push $Nf3dc9800
+ Switch {
+  inputs 2
+  which {{difference}}
+  name Switch1
+  xpos 0
+  ypos 465
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 0
+  ypos 633
+  disable {{!dif_to_a}}
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 738
+ }
+end_group

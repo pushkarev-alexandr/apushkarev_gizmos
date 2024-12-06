@@ -1,0 +1,92 @@
+#! C:/Program Files/Nuke15.0v5/nuke-15.0.5.dll -nx
+version 15.0 v5
+Gizmo {
+addUserKnob {20 user_tab l "Tracker from UV"}
+addUserKnob {41 picker T Expression1.picker}
+addUserKnob {41 thr l threshold T Expression1.thr}
+addUserKnob {41 go l Track T CurveTool1.go}
+addUserKnob {41 maxlumapixdata l Translate T CurveTool1.maxlumapixdata}
+addUserKnob {22 create_tracker l "Create tracker" T "curveTool = nuke.toNode('CurveTool1')\nkeysX = curveTool.knob('maxlumapixdata').animation(0).keys()\nkeysY = curveTool.knob('maxlumapixdata').animation(1).keys()\nwith nuke.root():\n    tracker = nuke.createNode('Tracker4')\n    tracks = tracker.knob('tracks')\n    tracker.knob('add_track').execute()\n    for key in keysX:\n        tracks.setValueAt(key.y,key.x,2)\n    for key in keysY:\n        tracks.setValueAt(key.y,key.x,3)\n    tracker.knob('reference_frame').setValue(nuke.frame())" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>Tracker_from_UV v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 0
+}
+Dot {
+name Dot1
+xpos 34
+ypos 99
+}
+set N9ea8fc00 [stack 0]
+Dot {
+name Dot2
+xpos 157
+ypos 99
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+in2 alpha
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 1 0 rgba.alpha 0 3"
+name Shuffle1
+xpos 123
+ypos 135
+}
+Unpremult {
+name Unpremult1
+xpos 123
+ypos 171
+}
+Expression {
+expr0 r<=picker.r+thr&&r>=picker.r-thr
+expr1 g<=picker.g+thr&&g>=picker.g-thr
+name Expression1
+xpos 123
+ypos 195
+addUserKnob {20 User}
+addUserKnob {18 picker}
+picker {0 0 0}
+addUserKnob {6 picker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 thr l threshold R 0 0.0005}
+thr 0.0003
+}
+Expression {
+expr0 g!=0?r:0
+expr1 r!=0?g:0
+name Expression2
+xpos 123
+ypos 219
+}
+Dot {
+name Dot3
+xpos 157
+ypos 279
+}
+set N9c005400 [stack 0]
+push $N9ea8fc00
+Merge2 {
+inputs 2
+operation plus
+output rgb
+name Merge1
+xpos 0
+ypos 276
+}
+Output {
+name Output1
+xpos 0
+ypos 441
+}
+push $N9c005400
+CurveTool {
+operation "Max Luma Pixel"
+ROI {0 0 {width} {height}}
+autocropdata {640 267 1920 803}
+name CurveTool1
+xpos 123
+ypos 324
+}
+end_group

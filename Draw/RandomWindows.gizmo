@@ -1,0 +1,55 @@
+Gizmo {
+inputs 0
+addUserKnob {20 user_tab l "Random Windows"}
+addUserKnob {41 format T Constant1.format}
+addUserKnob {41 rows T Expression1.rows}
+addUserKnob {41 columns T Expression1.columns}
+addUserKnob {14 padding R 0 100}
+addUserKnob {41 seed T Expression1.seed}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>RandomWindows v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Constant {
+inputs 0
+format "512 512 0 0 512 512 1 square_512"
+name Constant1
+xpos 282
+ypos 212
+postage_stamp false
+}
+Expression {
+expr3 random(ceil(x/(width/rows)),ceil(y/(height/columns)),seed)
+name Expression1
+knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='rows' or kn.name()=='columns':\n    if kn.value()<1:\n        kn.setValue(1)"
+xpos 282
+ypos 236
+addUserKnob {20 User}
+addUserKnob {3 rows}
+rows 10
+addUserKnob {3 columns}
+columns 10
+addUserKnob {3 seed}
+}
+Shuffle2 {
+fromInput1 {{0} B}
+in1 alpha
+fromInput2 {{0} B}
+mappings "4 rgba.alpha 0 0 rgba.red 0 0 rgba.alpha 0 0 rgba.green 0 1 rgba.alpha 0 0 rgba.blue 0 2 white -1 -1 rgba.alpha 0 3"
+name Shuffle1
+xpos 282
+ypos 260
+}
+Grid {
+number {{Expression1.rows} {Expression1.columns}}
+size {{padding} {padding}}
+color 0
+name Grid1
+selected true
+xpos 282
+ypos 284
+}
+Output {
+name Output1
+xpos 282
+ypos 384
+}
+end_group

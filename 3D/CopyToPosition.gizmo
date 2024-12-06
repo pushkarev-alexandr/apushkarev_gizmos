@@ -1,0 +1,102 @@
+#created by Pushkarev Aleksandr
+#v1.0
+Group {
+ name CopyToPosition
+ knobChanged "import re\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='num':\n    if kn.value()<1:\n        kn.setValue(1)\n    elif kn.value()>99:\n        kn.setValue(99)\n    ver_auth_val = node\['version_author'].value()\n    node.removeKnob(node\['version_author'])\n    for i in range(int(kn.value())):\n        p_name = 'p'+str(i+1)\n        if p_name not in node.knobs():\n            p = nuke.XY_Knob(p_name,p_name)\n            node.addKnob(p)\n            tr_geo = nuke.createNode('TransformGeo',inpanel = False)\n            tr_geo.setSelected(False)\n            tr_geo.setInput(0,nuke.toNode('obj'))\n            nuke.toNode('Scene1').connectInput(0,tr_geo)\n    for kn_name in node.knobs():\n        if re.fullmatch('p\\d\{1,2\}',kn_name):\n            i = int(kn_name\[1:])\n            if i>kn.value():\n                node.removeKnob(node\[kn_name])\n                nuke.delete(nuke.toNode('TransformGeo'+str(i)))\n                nuke.toNode('Scene1').setInput(i-1,None)\n    node.addKnob(nuke.Text_Knob('version_author','',ver_auth_val))\nelif re.fullmatch('p\\d\{1,2\}',kn.name()):\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('TransformGeo'+kn.name()\[1:]).knob('translate').setValue(sample,i)"
+ addUserKnob {20 user_tab l CopyToPosition}
+ addUserKnob {41 pp_in l "position pass in" T Shuffle1.in}
+ addUserKnob {6 show_pp l "show position pass" -STARTLINE}
+ addUserKnob {3 num l "number of points"}
+ num 1
+ addUserKnob {12 p1}
+ p1 {500 500}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CopyToPosition v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  label "\[value number]"
+  xpos 29
+  ypos -1
+ }
+ Dot {
+  name Dot1
+  xpos 63
+  ypos 171
+ }
+set N49eea400 [stack 0]
+ Dot {
+  name Dot2
+  xpos -47
+  ypos 171
+ }
+ Shuffle {
+  in rgb
+  name Shuffle1
+  label "\[value in]"
+  xpos -81
+  ypos 231
+ }
+set N49ee9c00 [stack 0]
+ NoOp {
+  name NoOp1
+  label "samples color"
+  xpos -81
+  ypos 300
+ }
+ Input {
+  inputs 0
+  name cam
+  label "\[value number]"
+  xpos -252
+  ypos 476
+  number 1
+ }
+ Input {
+  inputs 0
+  name obj
+  label "\[value number]"
+  xpos 307
+  ypos -1
+  number 2
+ }
+ TransformGeo {
+  name TransformGeo1
+  selected true
+  xpos 307
+  ypos 147
+ }
+ Scene {
+  name Scene1
+  xpos 317
+  ypos 302
+ }
+ Dot {
+  name Dot4
+  note_font_size 30
+  xpos 341
+  ypos 485
+ }
+push $N49ee9c00
+push $N49eea400
+ Switch {
+  inputs 2
+  which {{show_pp}}
+  name Switch1
+  xpos 29
+  ypos 231
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos 29
+  ypos 482
+ }
+ Output {
+  name Output1
+  xpos 29
+  ypos 796
+ }
+end_group

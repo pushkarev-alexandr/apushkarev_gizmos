@@ -1,0 +1,62 @@
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+ name ContactSheetToSequence1
+ help "Creates sequence from ContactSheet image. You have to specify appropriate rows/columns amount and Row/Columns order to get correct sequence from your image. Startframe knob sets frame from which your sequence starts. Endframe calculates automatically based on rows and columns number."
+ onCreate "node = nuke.thisNode()\nif node\['startframe'].value()==-475:\n    node\['startframe'].setValue(nuke.root().firstFrame())\n    v = int(node\['rows'].value()*node\['columns'].value()+node\['startframe'].value()-1)\n    node\['endframe'].setValue(v)"
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name() in \['rows','columns']:\n    if kn.value()<1:\n        kn.setValue(1)\nif kn.name() in \['rows','columns','startframe']:\n    v = int(node\['rows'].value()*node\['columns'].value()+node\['startframe'].value()-1)\n    node\['endframe'].setValue(v)"
+ addUserKnob {20 user_tab l ContactSheetToSequence}
+ addUserKnob {3 rows l rows/columns}
+ rows 3
+ addUserKnob {3 columns l "" -STARTLINE}
+ columns 2
+ addUserKnob {4 roworder l "Row Order" M {TopBottom BottomTop}}
+ addUserKnob {4 colorder l "Column Order" M {LeftRight RightLeft}}
+ addUserKnob {3 startframe l "Frame Range" t "From which frame you want to start your sequence. Can be any number you want."}
+ startframe -475
+ addUserKnob {3 endframe l "" t "Last frame of resulted sequence. Automatically calculated from number of rows and columns." -STARTLINE +DISABLED}
+ endframe -467
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ContactSheetToSequence v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 480
+  ypos 277
+ }
+ Crop {
+  box {{(colorder?inv_rem:rem)*fin_width} {(roworder?no_rem:inv_no_rem)*fin_height} {box.x+fin_width} {box.y+fin_height}}
+  reformat true
+  crop false
+  name Crop1
+  xpos 480
+  ypos 361
+  addUserKnob {20 User}
+  addUserKnob {3 fin_width l "final width"}
+  fin_width {{ceil(width/columns)}}
+  addUserKnob {3 fin_height l "final height" -STARTLINE}
+  fin_height {{ceil(height/rows)}}
+  addUserKnob {3 frame_offset l "frame offset"}
+  frame_offset {{frame<startframe?0:frame>endframe?rows*columns-1:frame-startframe}}
+  addUserKnob {3 no_rem l "divide without remainder"}
+  no_rem {{frame_offset//columns}}
+  addUserKnob {3 rem l remainder -STARTLINE}
+  rem {{frame_offset%columns}}
+  addUserKnob {3 inv_no_rem l "inverse without remainder"}
+  inv_no_rem {{rows-no_rem-1}}
+  addUserKnob {3 inv_rem l "inverse remainder" -STARTLINE}
+  inv_rem {{columns-rem-1}}
+ }
+ FrameRange {
+  first_frame {{startframe}}
+  last_frame {{rows*columns+startframe-1}}
+  time ""
+  name FrameRange1
+  xpos 480
+  ypos 397
+ }
+ Output {
+  name Output1
+  xpos 480
+  ypos 498
+ }
+end_group

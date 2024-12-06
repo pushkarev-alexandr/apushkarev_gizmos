@@ -1,0 +1,76 @@
+#v1.0
+#created by: Pushkarev Aleksandr
+Group {
+ name ConformRetime1
+ inputs 2
+ tile_color 0xb0a45d00
+ addUserKnob {20 user_tab l ConformRetime}
+ addUserKnob {41 timingFrame2 l Frame T Kronos1.timingFrame2}
+ addUserKnob {6 show_difference l "show difference" +STARTLINE}
+ show_difference true
+ addUserKnob {22 calc_retime l "Calculate Retime" T "#define nodes\nsrc = nuke.toNode('src')\ntarget = nuke.toNode('target')\nkrns = nuke.toNode('Kronos1')\ncurvetool = nuke.toNode('CurveTool1')\n\n#define extras\nsrcRange = src.frameRange()\ntrgtRange = target.frameRange()\nframeKn = krns.knob('timingFrame2')\n\n#search best match in all srcRange for targetFrame\ndef findBaseFrames(targetFrame):\n    nuke.frame(targetFrame)#go to target frame\n    frame = nuke.frame()\n    minFrame = srcRange.first()\n    frameKn.setValue(minFrame)\n    nuke.execute(curvetool,frame,frame)\n    intensity = curvetool\['intensitydata'].value()\n    minValue = (intensity\[0]+intensity\[1]+intensity\[2])/3\n    #search for frame with less difference, starts from second frame because first was already checked\n    for i in range(srcRange.first()+1,srcRange.last()+1):\n        frameKn.setValue(i)\n        nuke.execute(curvetool,frame,frame)\n        intensity = curvetool\['intensitydata'].value()\n        res = (intensity\[0]+intensity\[1]+intensity\[2])/3\n        if res<minValue:\n            minValue = res\n            minFrame = i\n    return minFrame\n\ndef findIntermidiateFrames(l,r):\n    width = 4\n    if l>=(r-1):\n        return\n    mFrame = int(l+(r-l)/2)#current middle frame\n    nuke.frame(mFrame)#go to this frame\n    frame = nuke.frame()\n    curFrame = int(frameKn.getValueAt(mFrame))#current value\n    ff = int(curFrame-width/2)\n    lf = int(curFrame+width/2)\n\n    minFrame = ff\n    frameKn.setValueAt(minFrame,frame)\n    nuke.execute(curvetool,frame,frame)\n    intensity = curvetool\['intensitydata'].value()\n    minValue = (intensity\[0]+intensity\[1]+intensity\[2])/3\n\n    #search for frame with less difference, starts from second frame because first was already checked\n    for i in range(ff+1,lf+1):\n        frameKn.setValueAt(i,frame)\n        nuke.execute(curvetool,frame,frame)\n        intensity = curvetool\['intensitydata'].value()\n        res = (intensity\[0]+intensity\[1]+intensity\[2])/3\n        if res<minValue:\n            minValue = res\n            minFrame = i\n    frameKn.setValueAt(minFrame,frame)\n\n    findIntermidiateFrames(l,mFrame)\n    findIntermidiateFrames(mFrame,r)\n\ndef retimeSrcToTarget():\n    if trgtRange.frames()<2:\n        nuke.message('Frame range less than 2')\n        return\n    if srcRange.frames()<trgtRange.frames():#if src shorter we can't retime\n        nuke.message('Src range is less than target range')\n        return\n    \n    initFrame = nuke.frame()\n    \n    krns\['disable'].setValue(False)#it's initialy disabled\n    frameKn.clearAnimated()\n    firstFrame = findBaseFrames(trgtRange.first())\n    lastFrame = findBaseFrames(trgtRange.last())\n    #as findCorrespondentFrame searchs all srcRange it can find firstFrame at right part of last frame, and it's wrong\n    if firstFrame>=lastFrame:\n        frameKn.setValue(0)#set initial value\n        krns\['disable'].setValue(True)#set initial value\n        nuke.message(\"Can't set base frames\")\n        return\n    else:\n        nuke.frame(trgtRange.first())\n        frameKn.setAnimated()\n        frameKn.setValueAt(firstFrame,trgtRange.first())\n        frameKn.setValueAt(lastFrame,trgtRange.last())\n    \n    findIntermidiateFrames(trgtRange.first(),trgtRange.last())\n    \n    nuke.frame(initFrame)\n    nuke.thisNode()\['timingFrame2'].setVisible(True)\n\nretimeSrcToTarget()" +STARTLINE}
+ addUserKnob {22 create_kronos l "Create Kronos" -STARTLINE T "import nukescripts\n\nthNode = nuke.thisNode()\ntoScript = nuke.toNode('Kronos1')\['timingFrame2'].toScript()\nwith nuke.root():\n    nukescripts.clear_selection_recursive()\n    thNode.setSelected(True)\n    node = nuke.createNode('Kronos')\n    node\['interpolation'].setValue('Frame')\n    node\['timing2'].setValue('Frame')\n    node\['timingFrame2'].fromScript(toScript)"}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ConformRetime v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name target
+  label "\[value number]"
+  xpos 179
+  ypos -84
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 213
+  ypos 163
+ }
+ Input {
+  inputs 0
+  name src
+  label "\[value number]"
+  xpos 0
+  ypos -83
+ }
+ Kronos {
+  input.first 0
+  input.last 0
+  retimedChannels all
+  interpolation Frame
+  timing2 Frame
+  timingFrame2 0
+  motionEstimation Regularized
+  name Kronos1
+  xpos 0
+  ypos 51
+  disable true
+ }
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge1
+  xpos 0
+  ypos 160
+  disable {{!show_difference}}
+ }
+ Dot {
+  name Dot2
+  xpos 34
+  ypos 237
+ }
+set N8554ac00 [stack 0]
+ Output {
+  name Output1
+  xpos 0
+  ypos 317
+ }
+push $N8554ac00
+ CurveTool {
+  ROI {0 0 {width} {height}}
+  autocropdata {480 270 1440 810}
+  intensitydata {0 0 0 0}
+  name CurveTool1
+  xpos 97
+  ypos 234
+ }
+end_group

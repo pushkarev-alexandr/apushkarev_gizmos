@@ -1,0 +1,7 @@
+NoOp {
+ name StoreSelection1
+ addUserKnob {20 user_tab l StoreSelection}
+ addUserKnob {22 store_button l "Store Selection" T "nuke.thisNode()\['stored_node_names'].setValue(' '.join(\[n.name() for n in nuke.selectedNodes()]))" +STARTLINE}
+ addUserKnob {22 restore_button l "Restore Selection" T "import nukescripts\n\nnukescripts.clear_selection_recursive()\n\nfor name in nuke.thisNode()\['stored_node_names'].value().split(' '):\n    node = nuke.toNode(name)\n    if node:\n        node.setSelected(True)" +STARTLINE}
+ addUserKnob {1 stored_node_names l "stored node names" +INVISIBLE}
+}

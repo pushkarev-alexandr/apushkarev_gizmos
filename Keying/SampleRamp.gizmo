@@ -1,0 +1,122 @@
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+name SampleRamp1
+knobChanged "kn = nuke.thisKnob()\nif kn.name()=='smpl' and kn.value()<1:\n    kn.setValue(1)"
+tile_color 0xc0c0c000
+addUserKnob {20 user_tab l SampleRamp}
+addUserKnob {41 p0 l "point 0" T Ramp1.p0}
+addUserKnob {41 p1 l "point 1" T Ramp1.p1}
+addUserKnob {3 smpl l "sample size"}
+smpl 1
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>SampleRamp v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 10
+ypos -105
+}
+Dot {
+name Dot1
+note_font_size 30
+xpos 41
+ypos -21
+}
+set N67d35800 [stack 0]
+Dot {
+name Dot2
+note_font_size 30
+xpos 297
+ypos -21
+}
+set N67d35400 [stack 0]
+Ramp {
+output alpha
+replace true
+p0 {459 176}
+p1 {560 599}
+name Ramp1
+xpos 266
+ypos 57
+}
+Dot {
+name Dot3
+note_font_size 30
+xpos 297
+ypos 128
+}
+set Nc316e000 [stack 0]
+push $N67d35400
+Dot {
+name Dot4
+note_font_size 30
+xpos 482
+ypos -21
+}
+Grade {
+multiply 0
+add {{"\[sample this r Ramp1.p1.x Ramp1.p1.y smpl smpl]"} {"\[sample this g Ramp1.p1.x Ramp1.p1.y smpl smpl]"} {"\[sample this b Ramp1.p1.x Ramp1.p1.y smpl smpl]"} 0}
+name Grade2
+xpos 451
+ypos 63
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy2
+xpos 451
+ypos 158
+}
+Premult {
+name Premult2
+xpos 451
+ypos 194
+}
+Dot {
+name Dot5
+note_font_size 30
+xpos 482
+ypos 301
+}
+push $Nc316e000
+Invert {
+channels alpha
+name Invert1
+xpos 120
+ypos 135
+}
+push $N67d35800
+Grade {
+multiply 0
+add {{"\[sample this r Ramp1.p0.x Ramp1.p0.y smpl smpl]"} {"\[sample this g Ramp1.p0.x Ramp1.p0.y smpl smpl]"} {"\[sample this b Ramp1.p0.x Ramp1.p0.y smpl smpl]"} 0}
+name Grade1
+xpos 10
+ypos 63
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos 10
+ypos 135
+}
+Premult {
+name Premult1
+xpos 10
+ypos 171
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge1
+xpos 10
+ypos 334
+}
+Output {
+name Output1
+xpos 10
+ypos 534
+}
+end_group

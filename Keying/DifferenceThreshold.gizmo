@@ -1,0 +1,67 @@
+#! C:/Program Files/Nuke15.0v4/nuke-15.0.4.dll -nx
+version 15.0 v4
+Gizmo {
+inputs 2
+addUserKnob {20 user_tab l DifferenceThreshold}
+addUserKnob {41 thr l "difference threshold" T Expression1.thr}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceThreshold v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name A
+xpos -1026
+ypos 581
+number 1
+}
+Input {
+inputs 0
+name B
+xpos -826
+ypos 548
+}
+Dot {
+name Dot103
+note_font_size 30
+xpos -792
+ypos 640
+}
+set N41024800 [stack 0]
+Merge2 {
+inputs 2
+operation difference
+name Merge29
+xpos -1026
+ypos 687
+}
+Saturation {
+saturation 0
+mode Maximum
+name Saturation1
+xpos -1026
+ypos 711
+}
+Expression {
+expr3 r>thr
+name Expression1
+selected true
+xpos -1026
+ypos 735
+addUserKnob {20 User}
+addUserKnob {7 thr l "difference threshold" R 1e-06 0.001}
+thr 0.001
+}
+push $N41024800
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy9
+xpos -826
+ypos 729
+}
+Output {
+name Output1
+xpos -826
+ypos 829
+}
+end_group

@@ -1,0 +1,150 @@
+#v1.1 Pushkarev Aleksandr 2023
+Group {
+ name ChromakeyTimeEcho1
+ knobChanged "import nukescripts, re\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nrgb = \['red','green','blue']\nif kn.name()=='backward' or kn.name()=='forward':\n    #validate values\n    if kn.value()<0:\n        kn.setValue(0)\n\n    #delete all TimeOffset and MergeExpression nodes to create new\n    for n in nuke.allNodes('TimeOffset')+nuke.allNodes('MergeExpression'):\n        if n.name()!='TimeOffset1' and n.name()!='TimeOffset2' and not re.fullmatch(r'MergeExpression\[1,2,3]',n.name()):\n            nuke.delete(n)\n    #create and place new TimeOffsets\n    for j,bfMode in enumerate(\['backward','forward']):\n        newTO = \[]\n        nukescripts.clear_selection_recursive()\n        for i in range(int(node\[bfMode].value()-1)):\n            to = nuke.createNode('TimeOffset',inpanel=False)\n            newTO.append(to)\n            to\['time_offset'].setValue(-2*j+1)\n            if i==0:\n                to.setInput(0,nuke.toNode('TimeOffset'+str(j+1)))\n                to.autoplace()\n        if newTO:\n            to.setSelected(False)\n            nuke.toNode('MergeExpression'+str(j+1)).setSelected(True)\n            nuke.nodeCopy('%clippboard%')\n            newME = \[]\n            for i in newTO:\n                me = nuke.nodePaste('%clippboard%')\n                newME.append(me)\n                nukescripts.swapAB(me)\n                me.autoplace()\n            me.setSelected(False)\n            for i,me in enumerate(newME):\n                me.setInput(1,newTO\[i])\nelif kn.name()=='separate_weights':\n    node\[rgb.pop(int(node\['screen_type'].getValue()))+'_weight'].setVisible(False)\n    node\[rgb\[0]+'_weight'].setVisible(kn.value())\n    node\[rgb\[1]+'_weight'].setVisible(kn.value())\n    node\['weight'].setVisible(not kn.value())\nelif kn.name()=='screen_type':\n    node\[rgb.pop(int(kn.getValue()))+'_weight'].setVisible(False)\n    node\[rgb\[0]+'_weight'].setVisible(node\['separate_weights'].value())\n    node\[rgb\[1]+'_weight'].setVisible(node\['separate_weights'].value())\n    node\['weight'].setLabel('\{\}/\{\} weight'.format(rgb\[0],rgb\[1]))"
+ tile_color 0xb0a45d00
+ addUserKnob {20 user_tab l ChromakeyTimeEcho}
+ addUserKnob {4 screen_type l "screen type" M {red green blue}}
+ screen_type blue
+ addUserKnob {6 separate_weights l "separate weights" +STARTLINE}
+ addUserKnob {7 weight l "red/green weight"}
+ weight 0.5
+ addUserKnob {7 red_weight l "red weight" +HIDDEN}
+ red_weight 0.5
+ addUserKnob {7 green_weight l "green weight" +HIDDEN}
+ green_weight 0.5
+ addUserKnob {7 blue_weight l "blue weight" +HIDDEN}
+ blue_weight 0.5
+ addUserKnob {3 backward}
+ addUserKnob {3 forward}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ChromakeyTimeEcho v1.1</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+ }
+ Dot {
+  name Dot149
+  note_font_size 30
+  xpos 34
+  ypos 112
+ }
+set Nf3847800 [stack 0]
+ Dot {
+  name Dot2
+  note_font_size 30
+  xpos 166
+  ypos 112
+ }
+set Nf3847400 [stack 0]
+ Dot {
+  name Dot3
+  note_font_size 30
+  xpos 276
+  ypos 112
+ }
+ TimeOffset {
+  time_offset -1
+  time ""
+  name TimeOffset2
+  xpos 242
+  ypos 180
+ }
+push $Nf3847400
+ MergeExpression {
+  inputs 2
+  temp_name0 Aw1
+  temp_expr0 (screen_type?Ar:Ag)*(separate_weights?(screen_type?red_weight:green_weight):weight)
+  temp_name1 Aw2
+  temp_expr1 (screen_type<2?Ab:Ag)*(separate_weights?(screen_type<2?blue_weight:green_weight):1-weight)
+  temp_name2 Bw1
+  temp_expr2 (screen_type?Br:Bg)*(separate_weights?(screen_type?red_weight:green_weight):weight)
+  temp_name3 Bw2
+  temp_expr3 (screen_type<2?Bb:Bg)*(separate_weights?(screen_type<2?blue_weight:green_weight):1-weight)
+  expr0 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ar:Br
+  expr1 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ag:Bg
+  expr2 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ab:Bb
+  name MergeExpression2
+  xpos 132
+  ypos 186
+  disable {{!forward}}
+ }
+ Dot {
+  name Dot4
+  note_font_size 30
+  xpos 166
+  ypos 488
+ }
+set N1d03c000 [stack 0]
+ Dot {
+  name Dot5
+  note_font_size 30
+  xpos 166
+  ypos 569
+ }
+push $N1d03c000
+push $Nf3847800
+ Dot {
+  name Dot1
+  note_font_size 30
+  xpos -76
+  ypos 112
+ }
+ TimeOffset {
+  time_offset 1
+  time ""
+  name TimeOffset1
+  xpos -110
+  ypos 180
+ }
+push $Nf3847800
+ MergeExpression {
+  inputs 2
+  temp_name0 Aw1
+  temp_expr0 (screen_type?Ar:Ag)*(separate_weights?(screen_type?red_weight:green_weight):weight)
+  temp_name1 Aw2
+  temp_expr1 (screen_type<2?Ab:Ag)*(separate_weights?(screen_type<2?blue_weight:green_weight):1-weight)
+  temp_name2 Bw1
+  temp_expr2 (screen_type?Br:Bg)*(separate_weights?(screen_type?red_weight:green_weight):weight)
+  temp_name3 Bw2
+  temp_expr3 (screen_type<2?Bb:Bg)*(separate_weights?(screen_type<2?blue_weight:green_weight):1-weight)
+  expr0 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ar:Br
+  expr1 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ag:Bg
+  expr2 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ab:Bb
+  name MergeExpression1
+  xpos 0
+  ypos 186
+  disable {{!backward}}
+ }
+ MergeExpression {
+  inputs 2
+  temp_name0 Aw1
+  temp_expr0 (screen_type?Ar:Ag)*(separate_weights?(screen_type?red_weight:green_weight):weight)
+  temp_name1 Aw2
+  temp_expr1 (screen_type<2?Ab:Ag)*(separate_weights?(screen_type<2?blue_weight:green_weight):1-weight)
+  temp_name2 Bw1
+  temp_expr2 (screen_type?Br:Bg)*(separate_weights?(screen_type?red_weight:green_weight):weight)
+  temp_name3 Bw2
+  temp_expr3 (screen_type<2?Bb:Bg)*(separate_weights?(screen_type<2?blue_weight:green_weight):1-weight)
+  expr0 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ar:Br
+  expr1 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ag:Bg
+  expr2 (screen_type==2?Ab:screen_type?Ag:Ar)-(Aw1+Aw2)>(screen_type==2?Bb:screen_type?Bg:Br)-(Bw1+Bw2)?Ab:Bb
+  name MergeExpression3
+  xpos 0
+  ypos 485
+  disable {{!(backward&&forward)}}
+ }
+ Switch {
+  inputs 2
+  which {{!backward&&forward}}
+  name Switch1
+  xpos 0
+  ypos 560
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 650
+ }
+end_group

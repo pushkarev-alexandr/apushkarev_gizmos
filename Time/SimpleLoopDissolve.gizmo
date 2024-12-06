@@ -1,0 +1,36 @@
+#created by Pushkarev Aleksandr
+#v1.1
+Group {
+ name SimpleLoopDissolve1
+ knobChanged "node=nuke.thisNode()\nkn=nuke.thisKnob()\ninp = nuke.toNode('Input')\nif kn.name()=='loop_num':\n    appClip=nuke.toNode('AppendClip1')\n    if kn.value()<0:\n        kn.setValue(0)\n    for i in range(appClip.inputs()):\n        appClip.setInput(i,None)\n    for i in range(int(kn.value())+1):\n        appClip.setInput(i,inp)\nelif kn.name()=='dissolve':\n    if kn.value()<0:\n        kn.setValue(0)\nif kn.name()=='loop_num' or kn.name()=='dissolve' or kn.name()=='inputChange':\n    ff = inp.firstFrame()\n    loop_num = node\['loop_num'].value()\n    node\['range_first_frame'].setValue(ff)\n    last_frame = ff+(inp.lastFrame()-ff)*(loop_num+1)+loop_num-node\['dissolve'].value()*loop_num\n    node\['range_last_frame'].setValue(last_frame)"
+ tile_color 0xb0a45d00
+ addUserKnob {20 user_tab l SimpleLoopDissolve}
+ addUserKnob {3 loop_num l "Loop Number"}
+ addUserKnob {3 dissolve l "Cross Dissolve"}
+ addUserKnob {3 range_first_frame l "Output Range" +DISABLED}
+ range_first_frame 1
+ addUserKnob {3 range_last_frame l "" -STARTLINE +DISABLED}
+ range_last_frame 1
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>SimpleLoopDissolve v1.1</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos -2
+ }
+ AppendClip {
+  dissolve {{parent.dissolve}}
+  firstFrame {{input0.first_frame}}
+  meta_from_first false
+  time ""
+  name AppendClip1
+  xpos 0
+  ypos 144
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+end_group

@@ -1,0 +1,16 @@
+set cut_paste_input [stack 0]
+version 13.1 v2
+push $cut_paste_input
+Write {
+ file "\[value result_file_path]"
+ name Write1
+ selected true
+ xpos 799
+ ypos -153
+ addUserKnob {20 user_tab l "Render Folder"}
+ addUserKnob {1 copy_from l "read node"}
+ addUserKnob {2 filename l "new folder"}
+ addUserKnob {3 deep l "keep subfolders"}
+ addUserKnob {43 result_file_path +INVISIBLE}
+ result_file_path "\[\nproc slashCheck \{s\} \{\n  if \{\$s eq \"\"\} \{return \$s\} elseif \{\[string index \$s end]!=\"/\"\} \{return \$s/\} \{return \$s\}\n\}\nif \{\[exists \[value copy_from]]\} \{\n  return \[slashCheck \[value filename]]\[join \[lrange \[file split \[value \[value copy_from].result_file_path]] end-\[value deep] end] /]\n\} \{return \"no such node\"\}\n]"
+}

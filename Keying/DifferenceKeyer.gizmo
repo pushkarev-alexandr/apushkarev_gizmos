@@ -1,0 +1,274 @@
+Gizmo {
+inputs 3
+tile_color 0xff0000
+addUserKnob {20 user_tab l DifferenceKeyer}
+addUserKnob {4 dif_ch l "difference channel" M {red green blue luminance hue saturation ""}}
+dif_ch luminance
+addUserKnob {6 premult +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceKeyer v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name c
+xpos 747
+ypos -781
+number 1
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+name Shuffle1
+label "r ot alpha"
+xpos 747
+ypos -657
+disable {{dif_ch!=0}}
+}
+set C9c433c00 [stack 0]
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.green 0 1 rgba.alpha 0 3"
+name Shuffle2
+label "g ot alpha"
+xpos 749
+ypos -583
+disable {{dif_ch!=1}}
+}
+set C9c433800 [stack 0]
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 0 3"
+name Shuffle3
+label "b ot alpha"
+xpos 749
+ypos -487
+disable {{dif_ch!=2}}
+}
+set Cb8c85c00 [stack 0]
+Dot {
+name Dot1
+note_font_size 30
+xpos 783
+ypos -407
+}
+set Nb8c85800 [stack 0]
+Saturation {
+saturation 0
+name Saturation1
+xpos 859
+ypos -365
+disable {{dif_ch!=3}}
+}
+set C7a44dc00 [stack 0]
+Colorspace {
+colorspace_out HSL
+name Colorspace1
+xpos 859
+ypos -311
+disable {{dif_ch!=4}}
+}
+set C7a44c000 [stack 0]
+set N7a44c000 [stack 0]
+Dot {
+name Dot4
+note_font_size 30
+xpos 900
+ypos -70
+}
+push $N7a44c000
+push $Nb8c85800
+Copy {
+inputs 2
+from0 rgba.red
+to0 rgba.alpha
+name Copy1
+xpos 749
+ypos -165
+disable {{dif_ch<3||dif_ch>40}}
+}
+set C7a44d400 [stack 0]
+Copy {
+inputs 2
+from0 rgba.green
+to0 rgba.alpha
+name Copy2
+xpos 749
+ypos -40
+disable {{dif_ch!=5}}
+}
+set C7a44d000 [stack 0]
+Dot {
+name Dot183
+note_font_size 30
+xpos 783
+ypos 361
+}
+set N7a44cc00 [stack 0]
+Dot {
+name Dot184
+note_font_size 30
+xpos 783
+ypos 459
+}
+Input {
+inputs 0
+name core_color
+xpos 1006
+ypos -781
+number 2
+}
+clone $C9c433c00 {
+xpos 1021
+ypos -651
+selected false
+}
+clone $C9c433800 {
+xpos 1023
+ypos -567
+selected false
+}
+clone $Cb8c85c00 {
+xpos 1023
+ypos -473
+selected false
+}
+Dot {
+name Dot2
+note_font_size 30
+xpos 1057
+ypos -383
+}
+set N9ce31400 [stack 0]
+clone $C7a44dc00 {
+xpos 1170
+ypos -348
+selected false
+}
+clone $C7a44c000 {
+xpos 1161
+ypos -291
+selected false
+}
+set N9ce31c00 [stack 0]
+Dot {
+name Dot6
+note_font_size 30
+xpos 1184
+ypos -33
+}
+push $N9ce31c00
+push $N9ce31400
+clone $C7a44d400 {
+inputs 2
+xpos 1023
+ypos -156
+selected false
+}
+clone $C7a44d000 {
+inputs 2
+xpos 1023
+ypos -33
+selected false
+}
+ChannelMerge {
+inputs 2
+operation from
+name ChannelMerge2
+xpos 1023
+ypos 450
+}
+push $N7a44cc00
+Input {
+inputs 0
+name fg
+xpos 1296
+ypos -781
+}
+clone $C9c433c00 {
+xpos 1296
+ypos -655
+selected false
+}
+clone $C9c433800 {
+xpos 1292
+ypos -572
+selected false
+}
+clone $Cb8c85c00 {
+xpos 1292
+ypos -465
+selected false
+}
+Dot {
+name Dot3
+note_font_size 30
+xpos 1331
+ypos -374
+}
+set N9e708000 [stack 0]
+clone $C7a44dc00 {
+xpos 1446
+ypos -357
+selected false
+}
+clone $C7a44c000 {
+xpos 1430
+ypos -298
+selected false
+}
+set N9e708800 [stack 0]
+Dot {
+name Dot5
+note_font_size 30
+xpos 1502
+ypos -58
+}
+push $N9e708800
+push $N9e708000
+clone $C7a44d400 {
+inputs 2
+xpos 1297
+ypos -147
+selected false
+}
+clone $C7a44d000 {
+inputs 2
+xpos 1297
+ypos -37
+selected false
+}
+ChannelMerge {
+inputs 2
+operation from
+name ChannelMerge1
+xpos 1297
+ypos 352
+}
+MergeExpression {
+inputs 2
+expr3 Ba/Aa
+name MergeExpression1
+label divide
+xpos 1297
+ypos 450
+}
+Clamp {
+channels alpha
+name Clamp1
+xpos 1297
+ypos 561
+}
+Premult {
+name Premult1
+xpos 1297
+ypos 597
+disable {{!premult}}
+}
+Output {
+name Output1
+xpos 1297
+ypos 748
+}
+end_group

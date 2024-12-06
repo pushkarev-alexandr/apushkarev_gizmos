@@ -1,0 +1,194 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name ExponentialBlur1
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='iterations':\n    if kn.value()<0:\n        kn.setValue(0)\n    elif kn.value()>100:\n        kn.setValue(100)\n    for blur in nuke.allNodes('Blur'):\n        nuke.delete(blur)\n    for i in range(int(kn.value())):\n        blur = nuke.createNode('Blur',inpanel=False)\n        blur\['channels'].setValue('rgba')\n        blur\['size'].setExpression('base-1+pow(\[string trimleft \[value name] \[class]],power)')\n        blur.setInput(0,nuke.toNode('Input'))\n    merge = nuke.toNode('Merge1')\n    for i in range(merge.inputs()):\n        merge.setInput(i,None)\n    for blur in nuke.allNodes('Blur'):\n        merge.connectInput(0,blur)\n    if kn.value()==0:\n        merge.connectInput(0,nuke.toNode('Input'))"
+ tile_color 0xcc804e00
+ addUserKnob {20 user_tab l ExponentialBlur}
+ addUserKnob {41 operation t "How to combine blured inputs together" T Merge1.operation}
+ addUserKnob {7 base l "start size" t "From what blur size to start increasing blur" R 0 10}
+ base 1
+ addUserKnob {7 power t "Values between 0 and 1 means slow increasing of blur. Values greater than 1 means fast blur increasing. 1 means linear blur increasing over every iteration." R 0 4}
+ power 1
+ addUserKnob {3 iterations t "Number of iterations. Every iterations means one more blur. 100 is maximum number of iterations.\nIf you use plus operation every iteration will add more blured images, so your image will became brighter."}
+ iterations 20
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ExponentialBlur v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+ }
+set Ndc64c00 [stack 0]
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur1
+  xpos 0
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur2
+  xpos 110
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur3
+  xpos 220
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur4
+  xpos 330
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur5
+  xpos 440
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur6
+  xpos 550
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur7
+  xpos 660
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur8
+  xpos 770
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur9
+  xpos 880
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur10
+  xpos 990
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur11
+  xpos 1100
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur12
+  xpos 1210
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur13
+  xpos 1320
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur14
+  xpos 1430
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur15
+  xpos 1540
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur16
+  xpos 1650
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur17
+  xpos 1760
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur18
+  xpos 1870
+  ypos 24
+ }
+push 0
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur19
+  xpos 1980
+  ypos 24
+ }
+push $Ndc64c00
+ Blur {
+  channels rgba
+  size {{"base-1+pow(\[string trimleft \[value name] \[class]],power)"}}
+  name Blur20
+  xpos 2090
+  ypos 24
+ }
+ Merge2 {
+  inputs 20+1
+  operation plus
+  name Merge1
+  xpos 0
+  ypos 224
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+end_group

@@ -1,0 +1,80 @@
+#! C:/Program Files/Nuke12.2v5/nuke-12.2.5.dll -nx
+version 12.2 v5
+Gizmo {
+inputs 2
+tile_color 0xc0c0c000
+}
+Input {
+inputs 0
+name uv
+label "\[value number]"
+xpos -11
+ypos 97
+number 1
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop2
+xpos -11
+ypos 133
+}
+Input {
+inputs 0
+name img
+label "\[value number]"
+xpos 99
+ypos 35
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop1
+xpos 99
+ypos 71
+}
+BlinkScript {
+inputs 2
+recompileCount 16
+ProgramGroup 1
+KernelDescription "2 \"UnwrapTexture\" iterate pixelWise 91a37ae8ee51cedbe16985bb24e7ff038cf9de9c1f6f27b469db3f15fcea53d3 3 \"src\" Read Point \"uv\" Read Point \"dst\" Write Random 0 0 0"
+kernelSource "\nkernel UnwrapTexture : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead> src;\n  Image<eRead> uv;\n  Image<eWrite, eAccessRandom> dst;\n\n  void process(int2 pos) \{\n    dst(uv(0)*src.bounds.x2,uv(1)*src.bounds.y2)=src();\n  \}\n\};\n"
+useGPUIfAvailable false
+rebuild ""
+rebuild_finalise ""
+name BlinkScript1
+xpos 99
+ypos 127
+}
+Dot {
+name Dot1
+xpos 133
+ypos 199
+}
+set N16b48c00 [stack 0]
+Dot {
+name Dot2
+xpos 243
+ypos 199
+}
+FilterErode {
+channels rgba
+size -1
+name FilterErode1
+xpos 209
+ypos 262
+}
+push $N16b48c00
+Merge2 {
+inputs 2
+operation under
+name Merge1
+xpos 99
+ypos 262
+}
+Output {
+name Output1
+xpos 99
+ypos 326
+}
+end_group

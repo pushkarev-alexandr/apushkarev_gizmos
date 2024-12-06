@@ -1,0 +1,335 @@
+add_layer {P P.red P.green P.blue P.alpha}
+Group {
+name CornerPin_from_Position_pass1
+knobChanged "\nimport math\n\ndef cameraProjectionMatrix(cameraNode, frame, imageformat):\n    ## modified code from nukescripts/Snap3D\n\n    # Matrix to transform points into camera-relative coords.\n    wm = nuke.math.Matrix4()\n    for i in range(16):\n        wm\[i] = cameraNode\['world_matrix'].getValueAt(frame, i)\n    \n    wm.transpose()\n    camTransform = wm.inverse()\n\n    # Matrix to take the camera projection knobs into account\n    roll = float(cameraNode\['winroll'].getValueAt(frame, 0))\n    scale_x = float(cameraNode\['win_scale'].getValueAt(frame, 0))\n    scale_y = float(cameraNode\['win_scale'].getValueAt(frame, 1))\n    translate_x = float(cameraNode\['win_translate'].getValueAt(frame, 0))\n    translate_y = float(cameraNode\['win_translate'].getValueAt(frame, 1))\n    m = nuke.math.Matrix4()\n    m.makeIdentity()\n    m.rotateZ(math.radians(roll))\n    m.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)\n    m.translate(-translate_x, -translate_y, 0.0)\n\n    # Projection matrix based on the focal length, aperture and clipping planes of the camera\n    focal_length = float(cameraNode\['focal'].getValueAt(frame))\n    h_aperture = float(cameraNode\['haperture'].getValueAt(frame))\n    near = float(cameraNode\['near'].getValueAt(frame))\n    far = float(cameraNode\['far'].getValueAt(frame))\n    projection_mode = int(cameraNode\['projection_mode'].getValueAt(frame))\n    p = nuke.math.Matrix4()\n    p.projection(focal_length / h_aperture, near, far, projection_mode == 0)\n\n    # Matrix to translate the projected points into normalised pixel coords\n    imageAspect = float(imageformat.height()) / float(imageformat.width())\n\n    t = nuke.math.Matrix4()\n    t.makeIdentity()\n    t.translate(1.0, 1.0 - (1.0 - imageAspect / float(imageformat.pixelAspect())), 0.0)\n\n    # Matrix to scale normalised pixel coords into actual pixel coords.\n    x_scale = float(imageformat.width()) / 2.0\n    y_scale = x_scale * imageformat.pixelAspect()\n    s = nuke.math.Matrix4()\n    s.makeIdentity()\n    s.scale(x_scale, y_scale, 1.0)\n\n    return s * t * p * m * camTransform\n\ndef getMatrix(node):\n    ret = nuke.math.Matrix4()\n    for i in range(16):\n        ret\[i] = node\['world_matrix'].getValue(i)\n    return ret\n\ndef setMatrixAt(node, matrix):\n    for i in range(16):\n        node\['matrix'].setValue(matrix\[i], i)\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='p1':\n    #set Axis3 position\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('Axis3').knob('translate').setValue(sample,i)\n    #set Axis2 inverse matrix\n    inverse = getMatrix(nuke.toNode('Axis1')).inverse()\n    setMatrixAt(nuke.toNode('Axis2'),inverse)\nelif kn.name()=='p2':\n    #set Axis3 position\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('Axis4').knob('translate').setValue(sample,i)\n    #set Axis2 inverse matrix\n    inverse = getMatrix(nuke.toNode('Axis1')).inverse()\n    setMatrixAt(nuke.toNode('Axis2'),inverse)\nelif kn.name()=='p3':\n    #set Axis3 position\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('Axis5').knob('translate').setValue(sample,i)\n    #set Axis2 inverse matrix\n    inverse = getMatrix(nuke.toNode('Axis1')).inverse()\n    setMatrixAt(nuke.toNode('Axis2'),inverse)\nelif kn.name()=='p4':\n    #set Axis3 position\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('Axis6').knob('translate').setValue(sample,i)\n    #set Axis2 inverse matrix\n    inverse = getMatrix(nuke.toNode('Axis1')).inverse()\n    setMatrixAt(nuke.toNode('Axis2'),inverse)\n"
+tile_color 0xa57aaa00
+gl_color 0xff0000ff
+addUserKnob {20 user_tab l CornerPin_from_Position}
+addUserKnob {41 pp_in l "position pass in" T Shuffle1.in}
+addUserKnob {6 show_pp l "show position pass" -STARTLINE}
+addUserKnob {12 p1}
+p1 {100 100}
+addUserKnob {12 p2}
+p2 {400 100}
+addUserKnob {12 p3}
+p3 {400 400}
+addUserKnob {12 p4}
+p4 {100 400}
+addUserKnob {22 create_btn l "create cornerpin" T "import math\n\ndef cameraProjectionMatrix(cameraNode, frame, imageformat):\n    ## modified code from nukescripts/Snap3D\n\n    # Matrix to transform points into camera-relative coords.\n    wm = nuke.math.Matrix4()\n    for i in range(16):\n        wm\[i] = cameraNode\['world_matrix'].getValueAt(frame, i)\n    \n    wm.transpose()\n    camTransform = wm.inverse()\n\n    # Matrix to take the camera projection knobs into account\n    roll = float(cameraNode\['winroll'].getValueAt(frame, 0))\n    scale_x = float(cameraNode\['win_scale'].getValueAt(frame, 0))\n    scale_y = float(cameraNode\['win_scale'].getValueAt(frame, 1))\n    translate_x = float(cameraNode\['win_translate'].getValueAt(frame, 0))\n    translate_y = float(cameraNode\['win_translate'].getValueAt(frame, 1))\n    m = nuke.math.Matrix4()\n    m.makeIdentity()\n    m.rotateZ(math.radians(roll))\n    m.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)\n    m.translate(-translate_x, -translate_y, 0.0)\n\n    # Projection matrix based on the focal length, aperture and clipping planes of the camera\n    focal_length = float(cameraNode\['focal'].getValueAt(frame))\n    h_aperture = float(cameraNode\['haperture'].getValueAt(frame))\n    near = float(cameraNode\['near'].getValueAt(frame))\n    far = float(cameraNode\['far'].getValueAt(frame))\n    projection_mode = int(cameraNode\['projection_mode'].getValueAt(frame))\n    p = nuke.math.Matrix4()\n    p.projection(focal_length / h_aperture, near, far, projection_mode == 0)\n\n    # Matrix to translate the projected points into normalised pixel coords\n    imageAspect = float(imageformat.height()) / float(imageformat.width())\n\n    t = nuke.math.Matrix4()\n    t.makeIdentity()\n    t.translate(1.0, 1.0 - (1.0 - imageAspect / float(imageformat.pixelAspect())), 0.0)\n\n    # Matrix to scale normalised pixel coords into actual pixel coords.\n    x_scale = float(imageformat.width()) / 2.0\n    y_scale = x_scale * imageformat.pixelAspect()\n    s = nuke.math.Matrix4()\n    s.makeIdentity()\n    s.scale(x_scale, y_scale, 1.0)\n\n    return s * t * p * m * camTransform\n\ndef createTracker():\n    #----get framerange----\n    ff = nuke.root().firstFrame()\n    lf = nuke.root().lastFrame()\n    res = nuke.getFramesAndViews('',str(ff)+'-'+str(lf))\n    if not res:\n        return\n    if res\[0].count('-')==1:\n        spl = res\[0].split('-')\n        if not (spl\[0] and spl\[1] and spl\[0].isdigit() and spl\[1].isdigit()):\n            return\n        ff = int(spl\[0])\n        lf = int(spl\[1])\n    elif res\[0].isdigit():\n        ff = int(res\[0])\n        lf = int(res\[0])\n    else:\n        return\n    #--------\n    \n    node = nuke.thisNode()\n    if node.input(0):\n        imageformat = node.input(0).format()\n    else:\n        imageformat = nuke.root()\['format'].value()\n    with nuke.root():\n        cornerpin = nuke.createNode('CornerPin2D')\n        for i in range(1,5):\n            cornerpin.knob('to'+str(int(i))).setAnimated()\n            cornerpin.knob('from'+str(int(i))).setAnimated()\n    with node:\n        for i in range(ff,lf+1):\n            camMatrix = cameraProjectionMatrix(nuke.toNode('DummyCam'), i, imageformat)\n            for j in range(4):\n                axis_wm = nuke.toNode('Axis'+str(int(3+j))).knob('world_matrix')\n                values = \[axis_wm.getValueAt(i,3), axis_wm.getValueAt(i,7), axis_wm.getValueAt(i,11)]\n                tPos = camMatrix * nuke.math.Vector4(values\[0], values\[1], values\[2], 1.0)\n                to = cornerpin.knob('to'+str(int(j+1)))\n                frm = cornerpin.knob('from'+str(int(j+1)))\n                to.setValueAt(tPos.x/tPos.w,i,0)\n                to.setValueAt(tPos.y/tPos.w,i,1)\n                frm.setValueAt(tPos.x/tPos.w,i,0)\n                frm.setValueAt(tPos.y/tPos.w,i,1)\n\ncreateTracker()" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CornerPin_from_Position_pass v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+addUserKnob {20 marker_tab l Marker}
+addUserKnob {18 marker_color l color}
+marker_color {1 0 0}
+addUserKnob {6 marker_color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 marker_scale l scale}
+marker_scale 0.1
+addUserKnob {7 marker_opacity l opacity}
+marker_opacity 1
+addUserKnob {6 marker_wireframe l wireframe +STARTLINE}
+}
+Input {
+inputs 0
+name camera
+label "\[value number]"
+xpos 200
+ypos -127
+number 1
+}
+Camera {
+projection_mode {{"\[expression \[value the_cam]projection_mode(\[value the_frame])]"}}
+focal {{"\[expression \[value the_cam]focal(\[value the_frame])]"}}
+haperture {{"\[expression \[value the_cam]haperture(\[value the_frame])]"}}
+vaperture {{"\[expression \[value the_cam]vaperture(\[value the_frame])]"}}
+near {{"\[expression \[value the_cam]near(\[value the_frame])]"}}
+far {{"\[expression \[value the_cam]far(\[value the_frame])]"}}
+win_translate {{"\[expression \[value the_cam]win_translate.u(\[value the_frame])]"} {"\[expression \[value the_cam]win_translate.v(\[value the_frame])]"}}
+win_scale {{"\[expression \[value the_cam]win_scale.u(\[value the_frame])]"} {"\[expression \[value the_cam]win_scale.v(\[value the_frame])]"}}
+winroll {{"\[expression \[value the_cam]winroll(\[value the_frame])]"}}
+focal_point {{"\[expression \[value the_cam]focal_point(\[value the_frame])]"}}
+fstop {{"\[expression \[value the_cam]fstop(\[value the_frame])]"}}
+name DummyCam
+help "DummyCam by Adrian Pueyo\n\nCamera that apart from the matrices also grabs all the \"Projection\" values from the upstream camera that it's connected to. Turns into a default Camera if no Camera connected. Can also be used inside of groups and gizmos, as many levels deep as you want :D All using live and super fast TCL.\n\nUpdated v1.1: Now grabs the correct frame too (thanks Erwan Leroy for the idea).\n\nUpdated v1.3: Now accepts Nuke13's Camera3\n\nadrianpueyo.com, 2019-2021"
+onCreate "n = nuke.thisNode()\nfor k in \[\"projection_mode\",\"focal\",\"haperture\",\"vaperture\",\"near\",\"far\",\"win_translate\",\"win_scale\",\"winroll\",\"focal_point\",\"fstop\"]:\n    n\[k].setFlag(0x0000000010000000)"
+xpos 210
+ypos -7
+addUserKnob {20 DummyCam l Defaults}
+addUserKnob {43 the_cam +INVISIBLE}
+the_cam "\[\n#DummyCam v1.3 - Updated 5 May 2021.\nset starting_point \"this.input0\"\nset default \"this.d_\"\n\n# If cam has no inputs, return the default.\nif \{\[exists \$starting_point]\} \{\n    set x \[node \$starting_point]\n\} \{ \n    return \$default\n\}\n\nset finished 0\nwhile \{\$finished != 1\} \{\n\n    # First look for a Cam or Input or topnode.\n    while \{\[class \$x] != \"Camera3\" && \[class \$x] != \"Camera2\" && \[class \$x] != \"Camera\" && \[class \$x] != \"Input\" && \$x != \[topnode \$x]\} \{\n        set x \[node \$x.input0]\n    \}\n\n    # Then, check if node is a cam (and return), and otherwise, if it's an input, see if the parent exists and move to it.\n    if \{\[class \$x]==\"Camera3\"||\[class \$x]==\"Camera2\"||\[class \$x]==\"Camera\"\} \{\n        set x \[append x \".\"]\n        return \$x\n    \} \{ \n        if \{ \[class \$x]==\"Input\" \} \{ \n            set inp \"\$x.parent.input\"\n            set inputNum \[value \$x.number]\n            set inp \[append inp \$inputNum]\n            if \{ \[exists \$inp] \} \{\n                set x \[node \$inp]\n            \} \{ \n                set finished 1\n            \}\n        \} \{ \n            set finished 1\n        \}\n    \}\n\}\nreturn \$default\n]"
+addUserKnob {43 the_frame +INVISIBLE}
+the_frame "\[\nset the_camera \[string trimright \[value the_cam] .]\nif \{\[exists \$the_camera]\} \{\n    return \[value \$the_camera.frame]\n\} \{ \n    return \[frame]\n\}\n]"
+addUserKnob {4 d_projection_mode l projection M {perspective orthographic uv spherical ""}}
+addUserKnob {7 d_focal l "focal length" R 0 100}
+d_focal 50
+addUserKnob {7 d_haperture l "horiz aperture" R 0 50}
+d_haperture 24.576
+addUserKnob {7 d_vaperture l "vert aperture" R 0 50}
+d_vaperture 18.672
+addUserKnob {7 d_near l near R 0 10}
+d_near 0.1
+addUserKnob {7 d_far l far R 0 10000}
+d_far 10000
+addUserKnob {30 d_win_translate l "window translate"}
+addUserKnob {30 d_win_scale l "window scale"}
+d_win_scale {1 1}
+addUserKnob {7 d_winroll l "window roll" R 0 45}
+addUserKnob {7 d_focal_point l "focal distance" R 0 10}
+d_focal_point 2
+addUserKnob {7 d_fstop l fstop R 0 30}
+d_fstop 16
+addUserKnob {26 version l " " t "Updated 5 May 2021" T "<span style=\"color:#666\"><br/><b>DummyCam v1.3</b> - <a href=\"http://www.adrianpueyo.com\" style=\"color:#666;text-decoration: none;\">adrianpueyo.com</a>, 2019-2021</span>"}
+}
+Input {
+inputs 0
+name axis
+label "\[value number]"
+xpos 358
+ypos -124
+number 2
+}
+Axis2 {
+name Axis1
+label "get information"
+xpos 368
+ypos 16
+}
+Axis2 {
+useMatrix true
+name Axis2
+label "inverse matrix"
+xpos 368
+ypos 134
+}
+set Na2f97800 [stack 0]
+Axis2 {
+name Axis6
+label "3d position"
+xpos 1355
+ypos 312
+}
+Dot {
+name Dot12
+xpos 1379
+ypos 416
+}
+Constant {
+inputs 0
+color {{marker_color} {marker_color} {marker_color} 1}
+name Constant1
+xpos 529
+ypos -97
+}
+Dot {
+name Dot9
+xpos 563
+ypos 67
+}
+set Na2d8e800 [stack 0]
+Dot {
+name Dot10
+xpos 885
+ypos 67
+}
+set Na2d8ec00 [stack 0]
+Dot {
+name Dot11
+xpos 1228
+ypos 67
+}
+set Na2d8f000 [stack 0]
+Dot {
+name Dot13
+xpos 1550
+ypos 67
+}
+Sphere {
+render_mode {{marker_wireframe?5:4}}
+rows 4
+columns 6
+uniform_scale {{pow(pow2(DummyCam.world_matrix.3-Axis6.world_matrix.3)+pow2(DummyCam.world_matrix.7-Axis6.world_matrix.7)+pow2(DummyCam.world_matrix.11-Axis6.world_matrix.11),0.5)*DummyCam.haperture/DummyCam.focal*0.0075*marker_scale}}
+name Sphere4
+xpos 1516
+ypos 331
+}
+TransformGeo {
+inputs 2
+name TransformGeo4
+xpos 1516
+ypos 412
+}
+push $Na2f97800
+Axis2 {
+name Axis5
+label "3d position"
+xpos 1033
+ypos 311
+}
+Dot {
+name Dot8
+xpos 1057
+ypos 415
+}
+push $Na2d8f000
+Sphere {
+render_mode {{marker_wireframe?5:4}}
+rows 4
+columns 6
+uniform_scale {{pow(pow2(DummyCam.world_matrix.3-Axis5.world_matrix.3)+pow2(DummyCam.world_matrix.7-Axis5.world_matrix.7)+pow2(DummyCam.world_matrix.11-Axis5.world_matrix.11),0.5)*DummyCam.haperture/DummyCam.focal*0.0075*marker_scale}}
+name Sphere3
+xpos 1194
+ypos 330
+}
+TransformGeo {
+inputs 2
+name TransformGeo3
+xpos 1194
+ypos 411
+}
+push $Na2f97800
+Axis2 {
+name Axis4
+label "3d position"
+xpos 690
+ypos 302
+}
+Dot {
+name Dot7
+xpos 714
+ypos 406
+}
+push $Na2d8ec00
+Sphere {
+render_mode {{marker_wireframe?5:4}}
+rows 4
+columns 6
+uniform_scale {{pow(pow2(DummyCam.world_matrix.3-Axis4.world_matrix.3)+pow2(DummyCam.world_matrix.7-Axis4.world_matrix.7)+pow2(DummyCam.world_matrix.11-Axis4.world_matrix.11),0.5)*DummyCam.haperture/DummyCam.focal*0.0075*marker_scale}}
+name Sphere2
+xpos 851
+ypos 321
+}
+TransformGeo {
+inputs 2
+name TransformGeo2
+xpos 851
+ypos 402
+}
+push $Na2f97800
+Axis2 {
+name Axis3
+label "3d position"
+xpos 368
+ypos 300
+}
+Dot {
+name Dot3
+xpos 392
+ypos 404
+}
+push $Na2d8e800
+Sphere {
+render_mode {{marker_wireframe?5:4}}
+rows 4
+columns 6
+uniform_scale {{pow(pow2(DummyCam.world_matrix.3-Axis3.world_matrix.3)+pow2(DummyCam.world_matrix.7-Axis3.world_matrix.7)+pow2(DummyCam.world_matrix.11-Axis3.world_matrix.11),0.5)*DummyCam.haperture/DummyCam.focal*0.0075*marker_scale}}
+name Sphere1
+xpos 529
+ypos 319
+}
+TransformGeo {
+inputs 2
+name TransformGeo1
+xpos 529
+ypos 400
+}
+Scene {
+inputs 4
+name Scene1
+xpos 539
+ypos 462
+}
+Dot {
+name Dot4
+xpos 563
+ypos 564
+}
+Input {
+inputs 0
+name in
+label "\[value number]"
+xpos 0
+ypos -125
+}
+Dot {
+name Dot1
+xpos 34
+ypos 171
+}
+set N7a8f7c00 [stack 0]
+Dot {
+name Dot2
+xpos -76
+ypos 171
+}
+Shuffle {
+in P
+name Shuffle1
+label "\[value in]"
+xpos -110
+ypos 239
+}
+set N7a692400 [stack 0]
+push $N7a8f7c00
+Switch {
+inputs 2
+which {{show_pp}}
+name Switch1
+label "\[value which]"
+xpos 0
+ypos 239
+}
+Dot {
+name Dot6
+xpos 34
+ypos 564
+}
+set N7a692c00 [stack 0]
+Remove {
+name Remove1
+xpos 90
+ypos 552
+}
+ScanlineRender {
+inputs 3
+conservative_shader_sampling false
+motion_vectors_type distance
+name ScanlineRender1
+xpos 200
+ypos 560
+}
+Dot {
+name Dot5
+xpos 234
+ypos 673
+}
+push $N7a692c00
+Merge2 {
+inputs 2
+mix {{marker_opacity}}
+name Merge1
+xpos 0
+ypos 669
+}
+Output {
+name Output1
+xpos 0
+ypos 744
+}
+push $N7a692400
+NoOp {
+name NoOp1
+label "samples color"
+selected true
+xpos -110
+ypos 300
+}
+end_group

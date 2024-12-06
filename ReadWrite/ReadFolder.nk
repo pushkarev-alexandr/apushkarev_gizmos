@@ -1,0 +1,28 @@
+set cut_paste_input [stack 0]
+version 13.1 v2
+Read {
+ inputs 0
+ file_type jpeg
+ file "\[value result_file_path]"
+ first {{"\[llength \[value find_files]]>0?startFrame:1"}}
+ last {{"\[llength \$final_lst]>0?startFrame+\[llength \$final_lst]-1:1"}}
+ origfirst {{"\[llength \[value find_files]]>0?startFrame:1"}}
+ origlast {{"\[llength \$final_lst]>0?startFrame+\[llength \$final_lst]-1:1"}}
+ origset true
+ name Read1
+ selected true
+ xpos 115
+ ypos -171
+ addUserKnob {20 user_tab l "Read Folder"}
+ addUserKnob {2 filename l "Folder to Read From"}
+ addUserKnob {4 fileType l "Fyle Type Filter" M {exr png jpg hdr}}
+ fileType jpg
+ addUserKnob {3 startFrame l "Start Frame"}
+ startFrame 1
+ addUserKnob {43 find_files +INVISIBLE}
+ find_files "\[\nproc slashCheck \{s\} \{\n  if \{\[string index \$s end]!=\"/\"\} \{return \$s/\} \{return \$s\}\n\}\n\nproc findFiles \{basedir pattern\} \{\n  set basedir \[slashCheck \$basedir]\n  set fileList \{\}\n  foreach fileName \[glob -nocomplain -type \{f r\} -path \$basedir \$pattern] \{\n    lappend fileList \$fileName\n  \}\n  foreach dirName \[glob -nocomplain -type \{d  r\} -path \$basedir *] \{\n    set subDirList \[findFiles \$dirName \$pattern]\n    if \{ \[llength \$subDirList] > 0 \} \{\n      foreach subDirFile \$subDirList \{\n        lappend fileList \$subDirFile\n      \}\n    \}\n  \}\n  return \$fileList\n\}\n\nif \{\[file isdirectory \[value filename]]\} \{\n  set final_lst \[findFiles \[value filename] *.\[value fileType]]\n\} \{\n  set final_lst \{\}\n\}\n]"
+ addUserKnob {43 result_file_path +INVISIBLE}
+ result_file_path "\[\nproc getIndex \{llen\} \{\n  set f \[frame]\n  set sf \[value startFrame]\n  if \{\[expr \$f-\$sf]<0\} \{\n    return 0\n  \} elseif \{\$f>=\[expr \$sf+\$llen]\} \{\n    return \[expr \$llen-1]\n  \} else \{return \[expr \$f-\$sf]\}\n\}\nvalue find_files\nset l \[llength \$final_lst]\nif \{\$l>0\} \{lindex \$final_lst \[getIndex \$l]\} \{return \"can't find anything\"\}\n]"
+ addUserKnob {43 final_sequence_range +INVISIBLE}
+ final_sequence_range "\[\nif \{\$l>0\} \{return \[value startFrame]-\[expr \[value startFrame]+\[llength \$final_lst]-1]\} \{\n  return 0-0\n\}\n]"
+}

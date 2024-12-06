@@ -1,0 +1,45 @@
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+ name TexturePainter1
+ inputs 2
+ knobChanged "n = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='position':\n    if n\['enable'].value():\n        v = kn.value()\n        p = n\['prev_pos'].value()\n        dist = math.sqrt(pow(v\[0]-p\[0],2)+pow(v\[1]-p\[1],2))\n        if dist>n\['step'].value():\n            import random\n            n\['prev_pos'].setValue(v)\n            tr = nuke.createNode('Transform',inpanel=False)\n            tr.setSelected(False)\n            tr\['translate'].setExpression(f'\{v\[0]\}-width/2',0)\n            tr\['translate'].setExpression(f'\{v\[1]\}-height/2',1)\n            tr\['rotate'].setValue(random.random()*360)\n            tr\['scale'].setExpression(f'lerp(parent.scale0,parent.scale1,\{random.random()\})')\n            tr\['center'].setExpression('width/2',0)\n            tr\['center'].setExpression('height/2',1)\n            tr.setInput(0,nuke.toNode('texture'))\n            merge = nuke.allNodes('Merge2')\[0]\n            if merge.inputs()<merge.maxInputs():\n                merge.connectInput(0,tr)\n            else:\n                newMerge = nuke.createNode('Merge2',inpanel=False)\n                newMerge.setSelected(False)\n                newMerge.setInput(0,merge)\n                newMerge.connectInput(0,tr)\n                nuke.toNode('Output1').setInput(0,newMerge)\nelif kn.name()=='enable':\n    n\['gl_color'].setValue(\[4278190335,536805631]\[kn.value()])"
+ gl_color 0xff0000ff
+ addUserKnob {20 user_tab l TexturePainter}
+ addUserKnob {6 enable l Enable +STARTLINE}
+ addUserKnob {12 position}
+ position {200 200}
+ addUserKnob {7 step R 0 500}
+ step 10
+ addUserKnob {12 prev_pos l "previous position" +INVISIBLE}
+ prev_pos {928 166}
+ addUserKnob {7 scale0 l "scale range"}
+ scale0 0.5
+ addUserKnob {7 scale1 l "" -STARTLINE R 1 2}
+ scale1 1.5
+ addUserKnob {22 clear T "for node in nuke.allNodes('Transform'):\n    nuke.delete(node)\nfor node in nuke.allNodes('Merge2'):\n    if node.name()!='Merge1':\n        nuke.delete(node)\nmerge = nuke.toNode('Merge1')\nfor i in range(merge.inputs()):\n    merge.setInput(i,None)\nmerge.setInput(0,nuke.toNode('Input'))" +STARTLINE}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TexturePainter v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos -34
+ }
+ Merge2 {
+  name Merge1
+  xpos 0
+  ypos 99
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+ Input {
+  inputs 0
+  name texture
+  xpos 150
+  ypos -35
+  number 1
+ }
+end_group

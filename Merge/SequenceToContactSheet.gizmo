@@ -1,0 +1,50 @@
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+ name SequenceToContactSheet1
+ help "Creates contactsheet image from input sequence. Specify number of frames you want to include in image by changing number of rows and columns."
+ onCreate "node = nuke.thisNode()\nif node\['startframe'].value()==-475:\n    node\['startframe'].setValue(nuke.root().firstFrame())\n    v = int(node\['rows'].value()*node\['columns'].value()+node\['startframe'].value()-1)\n    node\['endframe'].setValue(v)"
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name() in \['rows','columns']:\n    if kn.value()<1:\n        kn.setValue(1)\nif kn.name() in \['rows','columns','startframe']:\n    v = int(node\['rows'].value()*node\['columns'].value()+node\['startframe'].value()-1)\n    node\['endframe'].setValue(v)"
+ onCreate "node = nuke.thisNode()\nif node\['startframe'].value()==-475:\n    node\['startframe'].setValue(nuke.root().firstFrame())\n    v = int(node\['rows'].value()*node\['columns'].value()+node\['startframe'].value()-1)\n    node\['endframe'].setValue(v)"
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name() in \['rows','columns']:\n    if kn.value()<1:\n        kn.setValue(1)\nif kn.name() in \['rows','columns','startframe']:\n    v = int(node\['rows'].value()*node\['columns'].value()+node\['startframe'].value()-1)\n    node\['endframe'].setValue(v)"
+ addUserKnob {20 user_tab l SequenceToContactSheet}
+ addUserKnob {3 rows l rows/columns}
+ rows 3
+ addUserKnob {3 columns l "" -STARTLINE}
+ columns 3
+ addUserKnob {4 roworder l "Row Order" M {TopBottom BottomTop}}
+ addUserKnob {4 colorder l "Column Order" M {LeftRight RightLeft}}
+ addUserKnob {3 startframe l "Frame Range"}
+ startframe -475
+ addUserKnob {3 endframe l "" -STARTLINE +DISABLED}
+ endframe -467
+ addUserKnob {7 res_mult l "Resolution Multiplier" t "Final image resolution multiplier. Resulting image can be large in size, you can prevent it by multiplying resolution by number less than one." R 0.01 1}
+ res_mult 1
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>SequenceToContactSheet v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 480
+  ypos 193
+ }
+ ContactSheet {
+  width {{width*columns*res_mult*pixel_aspect}}
+  height {{height*rows*res_mult}}
+  rows {{parent.rows}}
+  columns {{parent.columns}}
+  center true
+  roworder {{parent.roworder}}
+  colorder {{parent.colorder}}
+  splitinputs true
+  startframe {{parent.startframe}}
+  endframe {{rows*columns+parent.startframe-1}}
+  name ContactSheet1
+  xpos 480
+  ypos 343
+ }
+ Output {
+  name Output1
+  xpos 480
+  ypos 487
+ }
+end_group

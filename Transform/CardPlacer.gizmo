@@ -1,0 +1,168 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name CardPlacer1
+ inputs 3
+ addUserKnob {20 user_tab l CardPlacer}
+ addUserKnob {41 picker T NoOp1.picker}
+ addUserKnob {13 translate_offset l "translate offset"}
+ addUserKnob {13 rot l rotate}
+ addUserKnob {7 sc l scale R 0 10}
+ sc 1
+ addUserKnob {6 on_top l "always on top" +STARTLINE}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CardPlacer v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name cam
+  xpos 371
+  ypos -14
+  number 2
+ }
+ Input {
+  inputs 0
+  name card_img
+  selected true
+  xpos 184
+  ypos -19
+  number 1
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 alpha
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 white -1 -1 rgba.alpha 0 0"
+  name Shuffle4
+  label "set alpha"
+  xpos 184
+  ypos 5
+ }
+ Card2 {
+  translate {{parent.NoOp1.picker+translate_offset.x} {parent.NoOp1.picker+translate_offset.y} {parent.NoOp1.picker+translate_offset.z}}
+  rotate {{rot.x} {rot.y} {rot.z}}
+  uniform_scale {{sc}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  xpos 184
+  ypos 82
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type off
+  MB_channel none
+  name ScanlineRender1
+  xpos 250
+  ypos 146
+ }
+set N7f244c00 [stack 0]
+ Dot {
+  name Dot2
+  note_font_size 30
+  xpos 329
+  ypos 353
+ }
+ Input {
+  inputs 0
+  name in
+  xpos 0
+  ypos -22
+ }
+ Dot {
+  name Dot1
+  xpos 34
+  ypos 119
+ }
+set N6f4ba800 [stack 0]
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 depth
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 depth.Z 0 0 rgba.alpha 0 0"
+  name Shuffle3
+  xpos 67
+  ypos 209
+ }
+push $N7f244c00
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 depth
+  out1 alpha
+  fromInput2 {{0} B}
+  mappings "1 depth.Z 0 0 rgba.alpha 0 0"
+  name Shuffle2
+  xpos 169
+  ypos 201
+ }
+ Expression {
+  expr3 a==0?0:1/a
+  name Expression1
+  xpos 169
+  ypos 237
+ }
+ MergeExpression {
+  inputs 2
+  expr3 Ba!=0&&Ba<Aa
+  name MergeExpression1
+  xpos 142
+  ypos 304
+ }
+ Premult {
+  name Premult1
+  xpos 142
+  ypos 328
+ }
+ Switch {
+  inputs 2
+  which {{on_top}}
+  name Switch1
+  xpos 165
+  ypos 384
+ }
+push $N6f4ba800
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 0
+  ypos 400
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 499
+ }
+push $N6f4ba800
+add_layer {P P.x P.y P.z P.red P.green P.blue}
+ Shuffle2 {
+  fromInput1 {{0} B}
+  in1 P
+  out1 rgb
+  fromInput2 {{0} B}
+  mappings "3 P.x 0 0 rgba.red 0 0 P.y 0 1 rgba.green 0 1 P.z 0 2 rgba.blue 0 2"
+  name Shuffle1
+  xpos -127
+  ypos 137
+ }
+ NoOp {
+  name NoOp1
+  xpos -203
+  ypos 185
+  addUserKnob {20 User}
+  addUserKnob {18 picker}
+  picker {0 0 0}
+  addUserKnob {6 picker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+end_group
