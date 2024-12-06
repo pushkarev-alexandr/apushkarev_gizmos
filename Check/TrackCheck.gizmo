@@ -1,5 +1,6 @@
 #v1.0 Pushkarev Aleksandr 2024
-Gizmo {
+Group {
+name TrackCheck1
 onCreate "node = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    range = nuke.activeViewer().node().playbackRange()\n    kn1.setValue(range.first())\n    kn2.setValue(range.last())"
 addUserKnob {20 user_tab l TrackCheck}
 addUserKnob {41 ff l "first frame" T FrameHold2.firstFrame}
