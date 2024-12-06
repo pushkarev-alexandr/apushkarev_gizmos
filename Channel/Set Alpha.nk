@@ -1,0 +1,10 @@
+#v1.0 Pushkarev Aleksandr 2024
+Shuffle2 {
+fromInput1 {{0} B}
+in1 none
+out1 alpha
+fromInput2 {{0} B}
+mappings "1 white -1 -1 rgba.alpha 0 0"
+name Shuffle1
+label "set alpha"
+}
