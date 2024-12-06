@@ -1,0 +1,122 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+name TransformMaskedSmooth1
+onCreate "node = nuke.thisNode()\nif node\['center'].value()==(-1,-1):\n    root = nuke.root()\n    node\['center'].setValue((root.width()/2,root.height()/2))"
+tile_color 0xa57aaa00
+addUserKnob {20 user_tab l TransformMasked}
+addUserKnob {41 channels T C_STMap1.channels}
+addUserKnob {41 translate T Transform1.translate}
+addUserKnob {41 rotate T Transform1.rotate}
+addUserKnob {41 scale T Transform1.scale}
+addUserKnob {41 center T Transform1.center}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TransformMaskedSmooth v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos -834
+ypos 546
+}
+Dot {
+name Dot70
+note_font_size 30
+xpos -803
+ypos 607
+}
+set N4cc1c000 [stack 0]
+Dot {
+name Dot2
+note_font_size 30
+xpos -567
+ypos 607
+}
+Remove {
+operation keep
+channels rgb
+name Remove1
+xpos -598
+ypos 665
+}
+Expression {
+expr0 (x+0.5)/width
+expr1 (y+.5)/height
+expr2 0
+name Expression1
+xpos -598
+ypos 689
+}
+Dot {
+name Dot5
+note_font_size 30
+selected true
+xpos -567
+ypos 734
+}
+set N1a80d000 [stack 0]
+Transform {
+center {-1 -1}
+black_outside false
+shutteroffset centred
+name Transform1
+xpos -721
+ypos 803
+}
+Dot {
+name Dot4
+note_font_size 30
+xpos -690
+ypos 882
+}
+set N1a80cc00 [stack 0]
+Dot {
+name Dot3
+note_font_size 30
+xpos -690
+ypos 967
+}
+Input {
+inputs 0
+name mask
+xpos -442
+ypos 882
+number 1
+}
+push $N1a80cc00
+push $N1a80d000
+Keymix {
+inputs 3
+channels rgb
+bbox B
+name Keymix1
+xpos -598
+ypos 882
+disable {{"!\[exists parent.input1]"}}
+}
+Switch {
+inputs 2
+which 1
+name Switch1
+xpos -598
+ypos 961
+disable {{!Keymix1.disable}}
+}
+Dot {
+name Dot1
+note_font_size 30
+xpos -567
+ypos 1030
+}
+push $N4cc1c000
+C_STMap2_1 {
+inputs 2
+uv rgb
+name C_STMap1
+xpos -834
+ypos 1024
+}
+Output {
+name Output1
+xpos -834
+ypos 1115
+}
+end_group
