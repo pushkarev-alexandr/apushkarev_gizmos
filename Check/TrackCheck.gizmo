@@ -4,7 +4,7 @@ name TrackCheck1
 onCreate "node = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    range = nuke.activeViewer().node().playbackRange()\n    kn1.setValue(range.first())\n    kn2.setValue(range.last())"
 addUserKnob {20 user_tab l TrackCheck}
 addUserKnob {41 ff l "first frame" T FrameHold2.firstFrame}
-addUserKnob {41 lf l "first frame" T FrameHold1.firstFrame}
+addUserKnob {41 lf l "last frame" T FrameHold1.firstFrame}
 addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TrackCheck v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
 }
 Input {
