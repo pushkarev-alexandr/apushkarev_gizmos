@@ -1,11 +1,10 @@
-#! C:/Program Files/Nuke12.2v5/nuke-12.2.5.dll -nx
-version 12.2 v5
+#v1.0 Pushkarev Aleksandr 2022
 Group {
 name TinyHolesRemove1
-inputs 2
-addUserKnob {20 User}
+addUserKnob {20 user_tab l TinyHolesRemove}
 addUserKnob {41 channels T FilterErode1.channels}
 addUserKnob {41 size T FilterErode1.size}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TinyHolesRemove v1.0</b> | Pushkarev Aleksandr | 2022</span>"}
 }
 Input {
 inputs 0
@@ -19,13 +18,13 @@ name Dot2
 xpos 934
 ypos 682
 }
-set N64f46400 [stack 0]
+set N5e0c0c00 [stack 0]
 Dot {
 name Dot1
 xpos 934
 ypos 730
 }
-push $N64f46400
+push $N5e0c0c00
 Input {
 inputs 0
 name in
