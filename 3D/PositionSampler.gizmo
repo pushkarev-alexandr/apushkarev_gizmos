@@ -1,7 +1,7 @@
+#v1.0 Pushkarev Aleksandr 2023
 add_layer {P P.red P.green P.blue P.alpha}
 Group {
 name PositionSampler1
-knobChanged "\nimport math\n\ndef cameraProjectionMatrix(cameraNode, frame, imageformat):\n    ## modified code from nukescripts/Snap3D\n\n    # Matrix to transform points into camera-relative coords.\n    wm = nuke.math.Matrix4()\n    for i in range(16):\n        wm\[i] = cameraNode\['world_matrix'].getValueAt(frame, i)\n    \n    wm.transpose()\n    camTransform = wm.inverse()\n\n    # Matrix to take the camera projection knobs into account\n    roll = float(cameraNode\['winroll'].getValueAt(frame, 0))\n    scale_x = float(cameraNode\['win_scale'].getValueAt(frame, 0))\n    scale_y = float(cameraNode\['win_scale'].getValueAt(frame, 1))\n    translate_x = float(cameraNode\['win_translate'].getValueAt(frame, 0))\n    translate_y = float(cameraNode\['win_translate'].getValueAt(frame, 1))\n    m = nuke.math.Matrix4()\n    m.makeIdentity()\n    m.rotateZ(math.radians(roll))\n    m.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)\n    m.translate(-translate_x, -translate_y, 0.0)\n\n    # Projection matrix based on the focal length, aperture and clipping planes of the camera\n    focal_length = float(cameraNode\['focal'].getValueAt(frame))\n    h_aperture = float(cameraNode\['haperture'].getValueAt(frame))\n    near = float(cameraNode\['near'].getValueAt(frame))\n    far = float(cameraNode\['far'].getValueAt(frame))\n    projection_mode = int(cameraNode\['projection_mode'].getValueAt(frame))\n    p = nuke.math.Matrix4()\n    p.projection(focal_length / h_aperture, near, far, projection_mode == 0)\n\n    # Matrix to translate the projected points into normalised pixel coords\n    imageAspect = float(imageformat.height()) / float(imageformat.width())\n\n    t = nuke.math.Matrix4()\n    t.makeIdentity()\n    t.translate(1.0, 1.0 - (1.0 - imageAspect / float(imageformat.pixelAspect())), 0.0)\n\n    # Matrix to scale normalised pixel coords into actual pixel coords.\n    x_scale = float(imageformat.width()) / 2.0\n    y_scale = x_scale * imageformat.pixelAspect()\n    s = nuke.math.Matrix4()\n    s.makeIdentity()\n    s.scale(x_scale, y_scale, 1.0)\n\n    return s * t * p * m * camTransform\n\ndef getMatrix(node):\n    ret = nuke.math.Matrix4()\n    for i in range(16):\n        ret\[i] = node\['world_matrix'].getValue(i)\n    return ret\n\ndef setMatrixAt(node, matrix):\n    for i in range(16):\n        node\['matrix'].setValue(matrix\[i], i)\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='point_to_track':\n    #set Axis3 position\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('Axis3').knob('translate').setValue(sample,i)\n    #set Axis2 inverse matrix\n    inverse = getMatrix(nuke.toNode('Axis1')).inverse()\n    setMatrixAt(nuke.toNode('Axis2'),inverse)\n"
 addUserKnob {20 user_tab l PositionSampler}
 addUserKnob {41 pp_in l "position pass in" T Shuffle1.in}
 addUserKnob {6 show_pp l "show position pass" -STARTLINE}
@@ -19,7 +19,7 @@ name Dot1
 xpos 34
 ypos 171
 }
-set N26acc800 [stack 0]
+set Ne0aa7000 [stack 0]
 Dot {
 name Dot2
 xpos -76
@@ -32,8 +32,8 @@ label "\[value in]"
 xpos -110
 ypos 239
 }
-set N26acd400 [stack 0]
-push $N26acc800
+set Ne0aa7800 [stack 0]
+push $Ne0aa7000
 Switch {
 inputs 2
 which {{show_pp}}
@@ -46,7 +46,7 @@ name Output1
 xpos 0
 ypos 666
 }
-push $N26acd400
+push $Ne0aa7800
 NoOp {
 name NoOp1
 xpos -110
