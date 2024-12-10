@@ -1,0 +1,110 @@
+#v1.0 Pushkarev Aleksandr 2024
+add_layer {P P.red P.green P.blue P.alpha}
+add_layer {N N.red N.green N.blue N.alpha}
+Group {
+name AOV_Sampler1
+onCreate "node = nuke.thisNode()\nif node\['smpl'].value()==(-1,-1):\n    node\['smpl'].setValue((nuke.root().width()/2,nuke.root().height()/2))"
+addUserKnob {20 user_tab l AOV_Sampler}
+addUserKnob {12 smpl l sample}
+smpl {-1 -1}
+addUserKnob {41 channel1 T Shuffle1.in}
+addUserKnob {41 values1 T NoOp1.values}
+addUserKnob {41 channel2 T Shuffle2.in}
+addUserKnob {41 values2 T NoOp2.values}
+addUserKnob {41 channel3 T Shuffle3.in}
+addUserKnob {41 values3 T NoOp3.values}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>AOV_Sampler v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+Input {
+inputs 0
+name Input
+label "\[value number]"
+xpos 3
+}
+Dot {
+name Dot1
+xpos 34
+ypos 171
+}
+set Nf1802000 [stack 0]
+Output {
+name Output1
+xpos 3
+ypos 666
+}
+push $Nf1802000
+Dot {
+name Dot2
+xpos 244
+ypos 171
+}
+set Nf1802800 [stack 0]
+Shuffle {
+in P
+name Shuffle1
+label "\[value in]"
+selected true
+xpos 213
+ypos 239
+}
+NoOp {
+name NoOp1
+xpos 213
+ypos 316
+addUserKnob {20 User}
+addUserKnob {18 values}
+values {{"\[sample this r parent.smpl.x parent.smpl.y]"} {"\[sample this g parent.smpl.x parent.smpl.y]"} {"\[sample this b parent.smpl.x parent.smpl.y]"}}
+addUserKnob {6 values_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+push $Nf1802800
+Dot {
+name Dot3
+xpos 412
+ypos 171
+}
+set Nf1803400 [stack 0]
+Dot {
+name Dot4
+xpos 580
+ypos 171
+}
+Shuffle {
+in none
+name Shuffle3
+label "\[value in]"
+xpos 549
+ypos 239
+}
+NoOp {
+name NoOp3
+xpos 549
+ypos 316
+addUserKnob {20 User}
+addUserKnob {18 values}
+values {{"\[sample this r parent.smpl.x parent.smpl.y]"} {"\[sample this g parent.smpl.x parent.smpl.y]"} {"\[sample this b parent.smpl.x parent.smpl.y]"}}
+addUserKnob {6 values_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+push $Nf1803400
+Shuffle {
+in N
+name Shuffle2
+label "\[value in]"
+xpos 381
+ypos 239
+}
+NoOp {
+name NoOp2
+xpos 381
+ypos 316
+addUserKnob {20 User}
+addUserKnob {18 values}
+values {{"\[sample this r parent.smpl.x parent.smpl.y]"} {"\[sample this g parent.smpl.x parent.smpl.y]"} {"\[sample this b parent.smpl.x parent.smpl.y]"}}
+addUserKnob {6 values_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 color_rgb_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+end_group
