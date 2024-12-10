@@ -1,4 +1,5 @@
 #v1.0 Pushkarev Aleksandr 2023
+add_layer {P P.red P.green P.blue P.alpha}
 Group {
  name CopyToPosition1
  knobChanged "import re\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='num':\n    if kn.value()<1:\n        kn.setValue(1)\n    elif kn.value()>99:\n        kn.setValue(99)\n    ver_auth_val = node\['version_author'].value()\n    node.removeKnob(node\['version_author'])\n    for i in range(int(kn.value())):\n        p_name = 'p'+str(i+1)\n        if p_name not in node.knobs():\n            p = nuke.XY_Knob(p_name,p_name)\n            node.addKnob(p)\n            tr_geo = nuke.createNode('TransformGeo',inpanel = False)\n            tr_geo.setSelected(False)\n            tr_geo.setInput(0,nuke.toNode('obj'))\n            nuke.toNode('Scene1').connectInput(0,tr_geo)\n    for kn_name in node.knobs():\n        if re.fullmatch('p\\d\{1,2\}',kn_name):\n            i = int(kn_name\[1:])\n            if i>kn.value():\n                node.removeKnob(node\[kn_name])\n                nuke.delete(nuke.toNode('TransformGeo'+str(i)))\n                nuke.toNode('Scene1').setInput(i-1,None)\n    node.addKnob(nuke.Text_Knob('version_author','',ver_auth_val))\nelif re.fullmatch('p\\d\{1,2\}',kn.name()):\n    noop = nuke.toNode('NoOp1')\n    rgb = \['red','green','blue']\n    for i,c in enumerate(rgb):\n        sample = noop.sample(c,kn.value(0),kn.value(1))\n        nuke.toNode('TransformGeo'+kn.name()\[1:]).knob('translate').setValue(sample,i)"
@@ -30,7 +31,7 @@ set N49eea400 [stack 0]
   ypos 171
  }
  Shuffle {
-  in rgb
+  in P
   name Shuffle1
   label "\[value in]"
   xpos -81
