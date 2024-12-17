@@ -1,0 +1,42 @@
+#v1.0 Pushkarev Aleksandr 2024
+StickyNote {
+inputs 0
+name StickyNote1
+label "нужно выставить формат\nк которому нужно вернутсья"
+xpos 983
+ypos -253
+}
+StickyNote {
+inputs 0
+name StickyNote2
+label "скейл чтобы сохранить баундинбокс"
+xpos 979
+ypos -389
+bookmark true
+}
+StickyNote {
+inputs 0
+name StickyNote3
+label "нода которая съедает баундинбокс"
+xpos 982
+ypos -320
+bookmark true
+}
+push $cut_paste_input
+Reformat {
+type scale
+format "2048 858 0 0 2048 858 1 2048_858"
+scale {{inputs?max((max(-input.bbox.x,input.bbox.r-input.width)*2+input.width)/input.width,(max(-input.bbox.y,input.bbox.t-input.height)*2+input.height)/input.height):1}}
+resize none
+pbb true
+name Reformat1
+xpos 876
+ypos -395
+}
+Reformat {
+resize none
+pbb true
+name Reformat2
+xpos 876
+ypos -253
+}
