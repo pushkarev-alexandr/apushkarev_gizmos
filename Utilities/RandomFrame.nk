@@ -1,12 +1,8 @@
-set cut_paste_input [stack 0]
-version 12.2 v5
-push $cut_paste_input
+#v1.0 Pushkarev Aleksandr 2023
 NoOp {
 name NoOp1
-label "random frame"
-selected true
-xpos 4000
-ypos 5000
-addUserKnob {20 User}
-addUserKnob {22 random_frame_button l "random frame" T "import random\n\nff = nuke.root().firstFrame()\nlf = nuke.root().lastFrame()\nnuke.frame(random.randint(ff,lf))" +STARTLINE}
+label "Random Frame"
+addUserKnob {20 user_tab l "Random Frame"}
+addUserKnob {22 random_frame_button l "Random Frame" T "import random\n\nff = nuke.root().firstFrame()\nlf = nuke.root().lastFrame()\nnuke.frame(random.randint(ff,lf))" +STARTLINE}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>Random Frame v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }
