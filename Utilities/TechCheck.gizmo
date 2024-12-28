@@ -1,7 +1,5 @@
-#! C:/Program Files/Nuke15.0v5/nuke-15.0.5.dll -nx
-version 15.0 v5
-Gizmo {
-inputs 3
+Group {
+name TechCheck1
 knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='operation':\n    node\['src_noiseqc'].setVisible(kn.value()=='NoiseQC')\n    node\['saturation'].setVisible(kn.value()=='Saturation')\n    node\['cold_warm'].setVisible(kn.value()=='Cold/Warm Shift')\n    node\['st'].setVisible(kn.value()=='Screen Saturation Boost')\n    node\['chs'].setVisible(kn.value()=='Screen Saturation Boost')"
 addUserKnob {20 user_tab l TechCheck}
 addUserKnob {4 operation M {Input Bright Dark Contrast "Gamma Up" "Cold/Warm Shift" "Screen Saturation Boost" Saturation HighPass HSV NoiseQC "Check Negative" BoundingBox "Source Difference" "Source Difference Matte" "Prev Version Difference" "Prev Version Difference Matte"}}
