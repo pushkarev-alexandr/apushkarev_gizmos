@@ -1,8 +1,6 @@
-#v1.0
-#created by: Pushkarev Aleksandr
+#v1.0 Pushkarev Aleksandr 2023
 Group {
  name ConformRetime1
- inputs 2
  tile_color 0xb0a45d00
  addUserKnob {20 user_tab l ConformRetime}
  addUserKnob {41 timingFrame2 l Frame T Kronos1.timingFrame2}
