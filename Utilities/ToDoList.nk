@@ -1,8 +1,8 @@
-#v1.0 Pushkarev Aleksandr 2025
+#v1.1 Pushkarev Aleksandr 2025
 NoOp {
 name NoOp1
 label ToDoList
 addUserKnob {20 user_tab l ToDo}
 addUserKnob {1 task}
-addUserKnob {22 add -STARTLINE T "node = nuke.thisNode()\ntxt = node\['task'].value()\nif txt:\n    for i in range(1,1000):\n        if f'task\{i\}' not in node.writeKnobs().split():\n            kn = nuke.Boolean_Knob(f'task\{i\}',txt)\n            kn.setFlag(nuke.STARTLINE)\n            node.addKnob(kn)\n            kn = nuke.PyScript_Knob(f'remove\{i\}','<font><img src=\"cross.png\"></font>','nuke.thisNode().removeKnob(nuke.thisNode()\[nuke.thisKnob().name().replace(\"remove\",\"task\")]);nuke.thisNode().removeKnob(nuke.thisKnob())')\n            node.addKnob(kn)\n            break\nelse:\n    nuke.message('Enter task text')"}
+addUserKnob {22 add -STARTLINE T "node = nuke.thisNode()\ntxt = node\['task'].value()\nif txt:\n    for i in range(1,1000):\n        if f'task\{i\}' not in node.writeKnobs().split():\n            kn = nuke.Boolean_Knob(f'task\{i\}',txt)\n            kn.setFlag(nuke.STARTLINE)\n            node.addKnob(kn)\n            kn = nuke.PyScript_Knob(f'remove\{i\}','<font><img src=\"cross.png\"></font>','nuke.thisNode().removeKnob(nuke.thisNode()\[nuke.thisKnob().name().replace(\"remove\",\"task\")]);nuke.thisNode().removeKnob(nuke.thisKnob())')\n            node.addKnob(kn)\n            node\['task'].setValue('')\n            break\nelse:\n    nuke.message('Enter task text')"}
 }
