@@ -1,6 +1,5 @@
-#! C:/Program Files/Nuke15.0v5/nuke-15.0.5.dll -nx
-version 15.0 v5
-Gizmo {
+Group {
+name CornerPin_from_UV1
 addUserKnob {20 user_tab l "CornerPin from UV"}
 addUserKnob {41 picker1 T Expression1.picker}
 addUserKnob {41 picker2 T Expression3.picker}
