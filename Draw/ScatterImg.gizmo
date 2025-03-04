@@ -1,0 +1,59 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name ScatterImg1
+ knobChanged "kn = nuke.thisKnob()\nif kn.name()=='amount':\n    if kn.value()<0:\n        kn.setValue(0)\n    for node in nuke.allNodes('Transform')+nuke.allNodes('Merge2'):\n        nuke.delete(node)\n    mergeLast = None\n    for i in range(int(kn.value())):\n        transform = nuke.createNode('Transform',inpanel=False)\n        transform\['translate'].setExpression('random(\{0\}+pos_seed*512,\{1\}+pos_seed*723,\{2\}+pos_seed*935)*bg.width-center'.format(i+6456,i+3548,i+1245),0)\n        transform\['translate'].setExpression('random(\{0\}+pos_seed*294,\{1\}+pos_seed*192,\{2\}+pos_seed*649)*bg.height-center'.format(i+7689,i+4135,i+6948),1)\n        transform\['rotate'].setExpression('parent.rotate+random(\{0\}+rot_seed*183,\{1\}+rot_seed*948,\{2\}+rot_seed*382)*360*rot_rand'.format(i+9382,i+6835,i+1927))\n        transform\['scale'].setExpression('parent.scale*(sc_rand?lerp(min_scale,max_scale,random(\{0\}+sc_seed*254,\{1\}+sc_seed*736,\{2\}+sc_seed*234)):1)'.format(i+1829,i+9253,i+4263))\n        transform\['center'].setExpression('width/2',0)\n        transform\['center'].setExpression('height/2',1)\n        transform.setInput(0,nuke.toNode('img_to_scatter'))\n        merge = nuke.createNode('Merge2',inpanel=False)\n        merge\['bbox'].setValue('union')\n        merge\['operation'].setExpression('parent.operation')\n        merge.setInput(0,\[mergeLast,nuke.toNode('bg')]\[not mergeLast])\n        merge.setInput(1,transform)\n        mergeLast = merge\n    nuke.toNode('Output1').setInput(0,\[mergeLast,nuke.toNode('bg')]\[not mergeLast])\nelif kn.name()=='rot_rand':\n    nuke.thisNode()\['rot_seed'].setEnabled(kn.value())\nelif kn.name()=='sc_rand':\n    nuke.thisNode()\['sc_seed'].setEnabled(kn.value())\n    nuke.thisNode()\['min_scale'].setEnabled(kn.value())\n    nuke.thisNode()\['max_scale'].setEnabled(kn.value())"
+ dope_sheet true
+ addUserKnob {20 scatter_tab l ScatterImg}
+ addUserKnob {4 operation M {atop average color-burn color-dodge conjoint-over copy difference disjoint-over divide exclusion from geometric hard-light "hypot\t\t\tdiagonal" in mask matte max min minus multiply out over overlay plus screen soft-light stencil under xor}}
+ operation over
+ addUserKnob {3 amount}
+ amount 1
+ addUserKnob {7 pos_seed l "position seed" R 0 100}
+ addUserKnob {26 rotation_divider l Rotation}
+ addUserKnob {7 rotate l "global rotation" R -180 180}
+ addUserKnob {7 rot_seed l "rotation seed" +DISABLED R 0 100}
+ addUserKnob {6 rot_rand l "random rotation" -STARTLINE}
+ addUserKnob {26 scale_divider l Scale}
+ addUserKnob {14 scale l "global scale" R 0 100}
+ scale 1
+ addUserKnob {7 sc_seed l "scale seed" +DISABLED R 0 100}
+ addUserKnob {6 sc_rand l "random scale" -STARTLINE}
+ addUserKnob {7 min_scale l "min scale" +DISABLED}
+ addUserKnob {7 max_scale l "max scale" -STARTLINE +DISABLED}
+ max_scale 1
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ScatterImg v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name img_to_scatter
+  xpos 152
+  ypos 4
+  number 1
+ }
+ Transform {
+  translate {{random(6456+pos_seed*512,3548+pos_seed*723,1245+pos_seed*935)*bg.width-center} {random(7689+pos_seed*294,4135+pos_seed*192,6948+pos_seed*649)*bg.height-center}}
+  rotate {{parent.rotate+random(9382+rot_seed*183,6835+rot_seed*948,1927+rot_seed*382)*360*rot_rand}}
+  scale {{parent.scale*(sc_rand?lerp(min_scale,max_scale,random(1829+sc_seed*254,9253+sc_seed*736,4263+sc_seed*234)):1)}}
+  center {{width/2} {height/2}}
+  name Transform1
+  xpos 152
+  ypos 88
+ }
+ Input {
+  inputs 0
+  name bg
+  xpos 0
+ }
+ Merge2 {
+  inputs 2
+  operation {{parent.operation}}
+  name Merge1
+  xpos 0
+  ypos 88
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 517
+ }
+end_group
