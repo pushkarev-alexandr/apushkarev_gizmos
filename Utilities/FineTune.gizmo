@@ -1,0 +1,86 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+name FineTune1
+addUserKnob {20 user_tab l FineTune}
+addUserKnob {1 knToChange l "knob to change"}
+knToChange Grade1.white
+addUserKnob {26 text l Range: T " "}
+addUserKnob {7 from}
+from 1.2
+addUserKnob {7 to}
+to 1.8
+addUserKnob {15 bbox}
+bbox {0 0 200 200}
+addUserKnob {22 calculate T "substeps = 20\n\ndef calc():\n    thisNode = nuke.thisNode()\n    curveTool = nuke.toNode('CurveTool1')\n    \n    #check knToChange\n    knToChange = thisNode\['knToChange'].value()\n    if knToChange.count('.')!=1:\n        nuke.message(\"Check 'knob to change'\")\n        return\n    spl = knToChange.split('.')\n    node = nuke.toNode(spl\[0])\n    if not node:\n        nuke.message(\"Can't find '\"+spl\[0]+\"' node\")\n        return\n    knob = node.knob(spl\[1])\n    if not knob:\n        nuke.message(\"Knob '\"+spl\[1]+\"' doesn't exist\")\n        return\n    \n    power = thisNode\['power'].value()\n    substepsN = int(thisNode\['substepsN'].value())\n    deep = int(thisNode\['deep'].value())\n    left = thisNode\['from'].value()\n    right = thisNode\['to'].value()\n    \n    initialHalfWidth = (right-left)/2\n    closeValue = left+initialHalfWidth\n    knob.setValue(closeValue)\n    nuke.execute(curveTool,nuke.frame(),nuke.frame())\n    minDifference = curveTool\['intensitydata'].value(0)\n    \n    for d in range(deep):\n        widthEachWay = initialHalfWidth/pow(power,d)\n        center = closeValue\n        substep = widthEachWay/substepsN\n\n        cur = center\n        knob.setValue(cur)\n        nuke.execute(curveTool,nuke.frame(),nuke.frame())\n        newMin = curveTool\['intensitydata'].value(0)\n        if newMin<minDifference:\n            minDifference = newMin\n            closeValue = cur\n        for i in range(substepsN):\n            cur = center+substep*(i+1)\n            knob.setValue(cur)\n            nuke.execute(curveTool,nuke.frame(),nuke.frame())\n            newMin = curveTool\['intensitydata'].value(0)\n            if newMin<minDifference:\n                minDifference = newMin\n                closeValue = cur\n            cur = center-substep*(i+1)\n            knob.setValue(cur)\n            nuke.execute(curveTool,nuke.frame(),nuke.frame())\n            newMin = curveTool\['intensitydata'].value(0)\n            if newMin<minDifference:\n                minDifference = newMin\n                closeValue = cur\n    knob.setValue(closeValue)\n\ncalc()" +STARTLINE}
+addUserKnob {6 show_dif l "show difference" +STARTLINE}
+show_dif true
+addUserKnob {20 group l advanced n 1}
+addUserKnob {7 power l "power of range decreasing" t "Power of decreasing initial search range with every deep iteration. Used in <i>initialHalfWidth/pow(power,d)</i>\n\nShould always be grater than 1. If set to less than 1, search range starts to increasing rather than decreasing.\n\nThe grater value gives more precise result but requires more substeps to not fall out of target range.\nValue of 1 means no decreasing at all." R 1 10}
+power 5
+addUserKnob {3 substepsN l "substeps number" t "Number of steps to check values at each deep iteration in both direction."}
+substepsN 5
+addUserKnob {3 deep t "Number of iterations to search for more precise result. With every iteration range of search decreases."}
+deep 5
+addUserKnob {20 endGroup n -1}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>FineTune v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name target
+xpos 136
+ypos 1
+number 1
+}
+Input {
+inputs 0
+name in
+xpos -21
+}
+Dot {
+name Dot2
+xpos 13
+ypos 148
+}
+set Nc754ac00 [stack 0]
+Merge2 {
+inputs 2
+operation difference
+name Merge1
+xpos 136
+ypos 145
+}
+Dot {
+name Dot3
+xpos 170
+ypos 286
+}
+set Nc754a400 [stack 0]
+push $Nc754ac00
+Switch {
+inputs 2
+which {{show_dif}}
+name Switch1
+xpos -21
+ypos 283
+}
+Output {
+name Output1
+xpos -21
+ypos 485
+}
+push $Nc754a400
+Saturation {
+saturation 0
+name Saturation1
+xpos 136
+ypos 349
+}
+CurveTool {
+ROI {{bbox} {bbox} {bbox} {bbox}}
+autocropdata {512 389 1536 1167}
+intensitydata {{curve x1 4.945762319e-05} {curve x1 4.945762319e-05} {curve x1 4.945762319e-05} {curve x1 0.0217203955}}
+name CurveTool1
+xpos 136
+ypos 373
+}
+end_group
