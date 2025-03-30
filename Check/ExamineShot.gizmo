@@ -1,244 +1,244 @@
-#! C:/Program Files/Nuke12.2v5/nuke-12.2.5.dll -nx
-version 12.2 v5
-Gizmo {
-onCreate "\nnode = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    kn1.setValue(nuke.root().firstFrame())\n    kn2.setValue(nuke.root().lastFrame())\n"
-addUserKnob {20 user_tab l ExamineShot}
-addUserKnob {3 ff l "first frame"}
-ff -1
-addUserKnob {3 lf l "last frame"}
-lf -1
-addUserKnob {41 mult l "Resolution Multiplier" T ContactSheet1.mult}
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name ExamineShot1
+ onCreate "\nnode = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    kn1.setValue(nuke.root().firstFrame())\n    kn2.setValue(nuke.root().lastFrame())\n"
+ addUserKnob {20 user_tab l ExamineShot}
+ addUserKnob {3 ff l "first frame"}
+ ff -1
+ addUserKnob {3 lf l "last frame"}
+ lf -1
+ addUserKnob {41 mult l "Resolution Multiplier" T ContactSheet1.mult}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ExamineShot v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }
-Input {
-inputs 0
-name Input
-xpos 0
-ypos -10
-}
-set N92e38400 [stack 0]
-Text2 {
-font_size_toolbar 100
-font_width_toolbar 100
-font_height_toolbar 100
-message "\[expr (\[value lf]-\[value ff])/6*5+\[value ff]]"
-old_message {{45 49}
-  }
-old_expression_markers {{0 1}
-  }
-box {0 0 {width} {height}}
-yjustify bottom
-transforms {{0 2}
-  }
-cursor_position 43
-global_font_scale {{Text1.global_font_scale}}
-center {1024 540}
-cursor_initialised true
-autofit_bbox false
-initial_cursor_position {{0 1080}
-  }
-group_animations {{0} imported: 0 selected: items: "root transform/"}
-animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
-  }
-name Text6
-xpos 249
-ypos 96
-}
-FrameHold {
-first_frame {{int((lf-ff)/6*5+ff)}}
-name FrameHold6
-xpos 249
-ypos 120
-}
-push $N92e38400
-Text2 {
-font_size_toolbar 100
-font_width_toolbar 100
-font_height_toolbar 100
-message "\[expr (\[value lf]-\[value ff])/6*4+\[value ff]]"
-old_message {{45 49}
-  }
-old_expression_markers {{0 1}
-  }
-box {0 0 {width} {height}}
-yjustify bottom
-transforms {{0 2}
-  }
-cursor_position 43
-global_font_scale {{Text1.global_font_scale}}
-center {1024 540}
-cursor_initialised true
-autofit_bbox false
-initial_cursor_position {{0 1080}
-  }
-group_animations {{0} imported: 0 selected: items: "root transform/"}
-animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
-  }
-name Text5
-xpos 147
-ypos 96
-}
-FrameHold {
-first_frame {{int((lf-ff)/6*4+ff)}}
-name FrameHold5
-xpos 147
-ypos 120
-}
-push $N92e38400
-Text2 {
-font_size_toolbar 100
-font_width_toolbar 100
-font_height_toolbar 100
-message "\[expr (\[value lf]-\[value ff])/6*3+\[value ff]]"
-old_message {{45 49}
-  }
-old_expression_markers {{0 1}
-  }
-box {0 0 {width} {height}}
-yjustify bottom
-transforms {{0 2}
-  }
-cursor_position 43
-global_font_scale {{Text1.global_font_scale}}
-center {1024 540}
-cursor_initialised true
-autofit_bbox false
-initial_cursor_position {{0 1080}
-  }
-group_animations {{0} imported: 0 selected: items: "root transform/"}
-animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
-  }
-name Text4
-xpos 47
-ypos 96
-}
-FrameHold {
-first_frame {{int((lf-ff)/6*3+ff)}}
-name FrameHold4
-xpos 47
-ypos 120
-}
-push $N92e38400
-Text2 {
-font_size_toolbar 100
-font_width_toolbar 100
-font_height_toolbar 100
-message "\[expr (\[value lf]-\[value ff])/6*2+\[value ff]]"
-old_message {{50 51 57}
-  }
-old_expression_markers {{0 2}
-  }
-box {0 0 {width} {height}}
-yjustify bottom
-transforms {{0 2}
-  }
-cursor_position 43
-global_font_scale {{Text1.global_font_scale}}
-center {1024 540}
-cursor_initialised true
-autofit_bbox false
-initial_cursor_position {{0 1080}
-  }
-group_animations {{0} imported: 0 selected: items: "root transform/"}
-animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
-  }
-name Text3
-selected true
-xpos -53
-ypos 96
-}
-FrameHold {
-first_frame {{int((lf-ff)/6*2+ff)}}
-name FrameHold3
-xpos -53
-ypos 120
-}
-push $N92e38400
-Text2 {
-font_size_toolbar 100
-font_width_toolbar 100
-font_height_toolbar 100
-message "\[expr (\[value lf]-\[value ff])/6*1+\[value ff]]"
-old_message {{49 55 48}
-  }
-old_expression_markers {{0 2}
-  }
-box {0 0 {width} {height}}
-yjustify bottom
-transforms {{0 2}
-  }
-cursor_position 43
-global_font_scale {{Text1.global_font_scale}}
-center {1024 540}
-cursor_initialised true
-autofit_bbox false
-initial_cursor_position {{0 1080}
-  }
-group_animations {{0} imported: 0 selected: items: "root transform/"}
-animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
-  }
-name Text2
-xpos -153
-ypos 96
-}
-FrameHold {
-first_frame {{int((lf-ff)/6*1+ff)}}
-name FrameHold2
-xpos -153
-ypos 120
-}
-push $N92e38400
-Text2 {
-font_size_toolbar 100
-font_width_toolbar 100
-font_height_toolbar 100
-message "\[value ff]"
-old_message {{45 49}
-  }
-old_expression_markers {{0 1}
-  }
-box {0 0 {width} {height}}
-yjustify bottom
-transforms {{0 2}
-  }
-cursor_position 9
-center {1024 540}
-cursor_initialised true
-autofit_bbox false
-initial_cursor_position {{0 1080}
-  }
-group_animations {{0} imported: 0 selected: items: "root transform/"}
-animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
-  }
-name Text1
-xpos -253
-ypos 96
-}
-FrameHold {
-first_frame {{int((lf-ff)/6*0+ff)}}
-name FrameHold1
-xpos -253
-ypos 120
-}
-ContactSheet {
-inputs 6
-width {{width*columns*mult}}
-height {{height*rows*mult}}
-rows {{splitinputs?ceil((abs(endframe-startframe)+1)/columns):ceil(inputs/columns)}}
-columns 2
-center true
-roworder TopBottom
-startframe 1
-endframe 1
-name ContactSheet1
-xpos 0
-ypos 237
-addUserKnob {20 user_tab l Resolution}
-addUserKnob {7 mult l "Resolution Multiplier"}
-mult 0.5
-}
-Output {
-name Output1
-xpos 0
-ypos 310
-}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos -10
+ }
+set Nf1045400 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[expr (\[value lf]-\[value ff])/6*5+\[value ff]]"
+  old_message {{45 49}
+    }
+  old_expression_markers {{0 1}
+    }
+  box {0 0 {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 43
+  global_font_scale {{Text1.global_font_scale}}
+  center {1024 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
+    }
+  name Text6
+  xpos 249
+  ypos 96
+ }
+ FrameHold {
+  firstFrame {{int((lf-ff)/6*5+ff)}}
+  name FrameHold6
+  xpos 249
+  ypos 120
+ }
+push $Nf1045400
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[expr (\[value lf]-\[value ff])/6*4+\[value ff]]"
+  old_message {{45 49}
+    }
+  old_expression_markers {{0 1}
+    }
+  box {0 0 {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 43
+  global_font_scale {{Text1.global_font_scale}}
+  center {1024 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
+    }
+  name Text5
+  xpos 147
+  ypos 96
+ }
+ FrameHold {
+  firstFrame {{int((lf-ff)/6*4+ff)}}
+  name FrameHold5
+  xpos 147
+  ypos 120
+ }
+push $Nf1045400
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[expr (\[value lf]-\[value ff])/6*3+\[value ff]]"
+  old_message {{45 49}
+    }
+  old_expression_markers {{0 1}
+    }
+  box {0 0 {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 43
+  global_font_scale {{Text1.global_font_scale}}
+  center {1024 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
+    }
+  name Text4
+  xpos 47
+  ypos 96
+ }
+ FrameHold {
+  firstFrame {{int((lf-ff)/6*3+ff)}}
+  name FrameHold4
+  xpos 47
+  ypos 120
+ }
+push $Nf1045400
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[expr (\[value lf]-\[value ff])/6*2+\[value ff]]"
+  old_message {{50 51 57}
+    }
+  old_expression_markers {{0 2}
+    }
+  box {0 0 {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 43
+  global_font_scale {{Text1.global_font_scale}}
+  center {1024 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
+    }
+  name Text3
+  xpos -53
+  ypos 96
+ }
+ FrameHold {
+  firstFrame {{int((lf-ff)/6*2+ff)}}
+  name FrameHold3
+  xpos -53
+  ypos 120
+ }
+push $Nf1045400
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[expr (\[value lf]-\[value ff])/6*1+\[value ff]]"
+  old_message {{49 55 48}
+    }
+  old_expression_markers {{0 2}
+    }
+  box {0 0 {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 43
+  global_font_scale {{Text1.global_font_scale}}
+  center {1024 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
+    }
+  name Text2
+  xpos -153
+  ypos 96
+ }
+ FrameHold {
+  firstFrame {{int((lf-ff)/6*1+ff)}}
+  name FrameHold2
+  xpos -153
+  ypos 120
+ }
+push $Nf1045400
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value ff]"
+  old_message {{45 49}
+    }
+  old_expression_markers {{0 1}
+    }
+  box {0 0 {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 9
+  center {1024 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 540 0 0 1 1 0 0 0 0}
+    }
+  name Text1
+  xpos -253
+  ypos 96
+ }
+ FrameHold {
+  firstFrame {{int((lf-ff)/6*0+ff)}}
+  name FrameHold1
+  xpos -253
+  ypos 120
+ }
+ ContactSheet {
+  inputs 6
+  width {{width*columns*mult}}
+  height {{height*rows*mult}}
+  rows {{splitinputs?ceil((abs(endframe-startframe)+1)/columns):ceil(inputs/columns)}}
+  columns 2
+  center true
+  roworder TopBottom
+  startframe 1
+  endframe 1
+  name ContactSheet1
+  xpos 0
+  ypos 237
+  addUserKnob {20 user_tab l Resolution}
+  addUserKnob {7 mult l "Resolution Multiplier"}
+  mult 0.5
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 310
+ }
 end_group

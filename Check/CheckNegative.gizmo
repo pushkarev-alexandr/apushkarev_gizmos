@@ -1,27 +1,27 @@
 #v1.0 Pushkarev Aleksandr 2023
 Group {
-name CheckNegative1
-addUserKnob {20 user_tab l CheckNegative}
-addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CheckNegative v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+ name CheckNegative1
+ addUserKnob {20 user_tab l CheckNegative}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CheckNegative v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }
-Input {
-inputs 0
-name Input
-xpos 509
-ypos 98
-}
-Expression {
-expr0 r<0||g<0||b<0?1:r
-expr3 r<0||g<0||b<0?1:0
-name Expression1
-label "check negative"
-selected true
-xpos 509
-ypos 165
-}
-Output {
-name Output1
-xpos 509
-ypos 255
-}
+ Input {
+  inputs 0
+  name Input
+  xpos 509
+  ypos 98
+ }
+ Expression {
+  expr0 r<0||g<0||b<0?1:r
+  expr3 r<0||g<0||b<0?1:0
+  name Expression1
+  label "check negative"
+  selected true
+  xpos 509
+  ypos 165
+ }
+ Output {
+  name Output1
+  xpos 509
+  ypos 255
+ }
 end_group

@@ -1,63 +1,63 @@
 #v1.1 Pushkarev Aleksandr 2024
 Group {
-name TrackCheck1
-onCreate "node = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    range = nuke.activeViewer().node().playbackRange()\n    kn1.setValue(range.first())\n    kn2.setValue(range.last())"
-knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='mode':\n    node\['sw_frames'].setVisible(bool(kn.getValue()))"
-addUserKnob {20 user_tab l TrackCheck}
-addUserKnob {41 ff l "first frame" T FrameHold2.firstFrame}
-addUserKnob {41 lf l "last frame" T FrameHold1.firstFrame}
-addUserKnob {4 mode M {difference switch ""}}
-addUserKnob {6 sw_frames l "switch frames" -STARTLINE +HIDDEN}
-addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TrackCheck v1.1</b> | Pushkarev Aleksandr | 2024</span>"}
+ name TrackCheck1
+ onCreate "node = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    range = nuke.activeViewer().node().playbackRange()\n    kn1.setValue(range.first())\n    kn2.setValue(range.last())"
+ knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='mode':\n    node\['sw_frames'].setVisible(bool(kn.getValue()))"
+ addUserKnob {20 user_tab l TrackCheck}
+ addUserKnob {41 ff l "first frame" T FrameHold2.firstFrame}
+ addUserKnob {41 lf l "last frame" T FrameHold1.firstFrame}
+ addUserKnob {4 mode M {difference switch ""}}
+ addUserKnob {6 sw_frames l "switch frames" -STARTLINE +HIDDEN}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TrackCheck v1.1</b> | Pushkarev Aleksandr | 2024</span>"}
 }
-Input {
-inputs 0
-name Input
-xpos 0
-}
-set Nd9a79c00 [stack 0]
-FrameHold {
-firstFrame -1
-name FrameHold1
-xpos 113
-ypos 172
-}
-set N46e7080 [stack 0]
-push $Nd9a79c00
-FrameHold {
-firstFrame -1
-name FrameHold2
-xpos -129
-ypos 174
-}
-set N46e7600 [stack 0]
-Switch {
-inputs 2
-which {{sw_frames}}
-name Switch1
-selected true
-xpos 99
-ypos 295
-}
-push $N46e7080
-push $N46e7600
-Merge2 {
-inputs 2
-operation difference
-name Merge1
-xpos 0
-ypos 304
-}
-Switch {
-inputs 2
-which {{mode}}
-name Switch2
-xpos 0
-ypos 372
-}
-Output {
-name Output1
-xpos 0
-ypos 477
-}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+ }
+set Nf1044800 [stack 0]
+ FrameHold {
+  firstFrame -1
+  name FrameHold1
+  xpos 113
+  ypos 172
+ }
+set N3208d800 [stack 0]
+push $Nf1044800
+ FrameHold {
+  firstFrame -1
+  name FrameHold2
+  xpos -129
+  ypos 174
+ }
+set N3208d200 [stack 0]
+ Switch {
+  inputs 2
+  which {{sw_frames}}
+  name Switch1
+  selected true
+  xpos 99
+  ypos 295
+ }
+push $N3208d800
+push $N3208d200
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge1
+  xpos 0
+  ypos 304
+ }
+ Switch {
+  inputs 2
+  which {{mode}}
+  name Switch2
+  xpos 0
+  ypos 372
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 477
+ }
 end_group
