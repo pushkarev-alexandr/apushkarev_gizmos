@@ -1,134 +1,135 @@
-Gizmo {
-inputs 3
-tile_color 0x7aa9ff00
-addUserKnob {20 User l "Hue/Sat Transfer"}
-addUserKnob {41 color T Grade1.add}
-addUserKnob {26 ""}
-addUserKnob {41 mix T Dissolve2.which}
-addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>HueSaturationTransfer v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name HueSaturationTransfer1
+ tile_color 0x7aa9ff00
+ addUserKnob {20 User l "Hue/Sat Transfer"}
+ addUserKnob {41 color T Grade1.add}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix T Dissolve2.which}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>HueSaturationTransfer v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }
-Input {
-inputs 0
-name mask
-label "\[value number]"
-xpos 110
-ypos 440
-number 2
-}
-Input {
-inputs 0
-name Input
-label "\[value number]"
-xpos 0
-ypos -14
-}
-Dot {
-name Dot1
-note_font_size 30
-xpos 34
-ypos 93
-}
-set N9c019800 [stack 0]
-Dot {
-name Dot4
-note_font_size 30
-xpos -110
-ypos 93
-}
-Dot {
-name Dot3
-note_font_size 30
-xpos -110
-ypos 449
-}
-set N9c019000 [stack 0]
-Input {
-inputs 0
-name fromImg
-label "\[value number]"
-xpos 244
-ypos 194
-number 1
-}
-push $N9c019800
-Dot {
-name Dot2
-note_font_size 30
-xpos 168
-ypos 93
-}
-Grade {
-multiply 0
-add {0 0 0 0}
-black_clamp false
-name Grade1
-xpos 134
-ypos 142
-}
-Switch {
-inputs 2
-which {{"\[exists parent.input1]"}}
-name Switch1
-xpos 134
-ypos 194
-}
-Colorspace {
-colorspace_out HSV
-name Colorspace1
-xpos 134
-ypos 254
-}
-set C9c017c00 [stack 0]
-push $N9c019800
-clone $C9c017c00 {
-xpos 0
-ypos 176
-selected false
-}
-Shuffle2 {
-inputs 2
-fromInput1 {{1} B A}
-in1 rgb
-out1 rgb
-fromInput2 {{0} B A}
-in2 rgb
-mappings "3 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 1 2 rgba.blue 0 2"
-name Shuffle1
-xpos 0
-ypos 260
-}
-Colorspace {
-colorspace_in HSV
-name Colorspace3
-xpos 0
-ypos 331
-}
-Keymix {
-inputs 3
-invertMask true
-bbox B
-name Keymix1
-xpos 0
-ypos 440
-disable {{"!\[exists parent.input2]"}}
-}
-push $N9c019000
-Dot {
-name Dot5
-note_font_size 30
-xpos -110
-ypos 551
-}
-Dissolve {
-inputs 2
-which 1
-name Dissolve2
-xpos 0
-ypos 536
-}
-Output {
-name Output1
-xpos 0
-ypos 663
-}
+ Input {
+  inputs 0
+  name mask
+  label "\[value number]"
+  xpos 110
+  ypos 440
+  number 2
+ }
+ Input {
+  inputs 0
+  name Input
+  label "\[value number]"
+  xpos 0
+  ypos -14
+ }
+ Dot {
+  name Dot1
+  note_font_size 30
+  xpos 34
+  ypos 93
+ }
+set Ne6336000 [stack 0]
+ Dot {
+  name Dot4
+  note_font_size 30
+  xpos -110
+  ypos 93
+ }
+ Dot {
+  name Dot3
+  note_font_size 30
+  xpos -110
+  ypos 449
+ }
+set Ne6337c00 [stack 0]
+ Input {
+  inputs 0
+  name fromImg
+  label "\[value number]"
+  xpos 244
+  ypos 194
+  number 1
+ }
+push $Ne6336000
+ Dot {
+  name Dot2
+  note_font_size 30
+  xpos 168
+  ypos 93
+ }
+ Grade {
+  multiply 0
+  add {0 0 0 0}
+  black_clamp false
+  name Grade1
+  xpos 134
+  ypos 142
+ }
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input1]"}}
+  name Switch1
+  xpos 134
+  ypos 194
+ }
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  xpos 134
+  ypos 254
+ }
+ set Cf1044400 [stack 0]
+push $Ne6336000
+clone $Cf1044400 {
+  xpos 0
+  ypos 176
+  selected false
+ }
+ Shuffle2 {
+  inputs 2
+  fromInput1 {{1} B A}
+  in1 rgb
+  out1 rgb
+  fromInput2 {{0} B A}
+  in2 rgb
+  mappings "3 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.blue 1 2 rgba.blue 0 2"
+  name Shuffle1
+  xpos 0
+  ypos 260
+ }
+ Colorspace {
+  colorspace_in HSV
+  name Colorspace3
+  xpos 0
+  ypos 331
+ }
+ Keymix {
+  inputs 3
+  invertMask true
+  bbox B
+  name Keymix1
+  xpos 0
+  ypos 440
+  disable {{"!\[exists parent.input2]"}}
+ }
+push $Ne6337c00
+ Dot {
+  name Dot5
+  note_font_size 30
+  xpos -110
+  ypos 551
+ }
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve2
+  xpos 0
+  ypos 536
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 663
+ }
 end_group
