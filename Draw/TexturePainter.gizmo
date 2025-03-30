@@ -1,7 +1,6 @@
 #v1.0 Pushkarev Aleksandr 2024
 Group {
  name TexturePainter1
- inputs 2
  knobChanged "n = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='position':\n    if n\['enable'].value():\n        v = kn.value()\n        p = n\['prev_pos'].value()\n        dist = math.sqrt(pow(v\[0]-p\[0],2)+pow(v\[1]-p\[1],2))\n        if dist>n\['step'].value():\n            import random\n            n\['prev_pos'].setValue(v)\n            tr = nuke.createNode('Transform',inpanel=False)\n            tr.setSelected(False)\n            tr\['translate'].setExpression(f'\{v\[0]\}-width/2',0)\n            tr\['translate'].setExpression(f'\{v\[1]\}-height/2',1)\n            tr\['rotate'].setValue(random.random()*360)\n            tr\['scale'].setExpression(f'lerp(parent.scale0,parent.scale1,\{random.random()\})')\n            tr\['center'].setExpression('width/2',0)\n            tr\['center'].setExpression('height/2',1)\n            tr.setInput(0,nuke.toNode('texture'))\n            merge = nuke.allNodes('Merge2')\[0]\n            if merge.inputs()<merge.maxInputs():\n                merge.connectInput(0,tr)\n            else:\n                newMerge = nuke.createNode('Merge2',inpanel=False)\n                newMerge.setSelected(False)\n                newMerge.setInput(0,merge)\n                newMerge.connectInput(0,tr)\n                nuke.toNode('Output1').setInput(0,newMerge)\nelif kn.name()=='enable':\n    n\['gl_color'].setValue(\[4278190335,536805631]\[kn.value()])"
  gl_color 0xff0000ff
  addUserKnob {20 user_tab l TexturePainter}

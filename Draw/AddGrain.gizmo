@@ -1,9 +1,9 @@
-#! C:/Program Files/Nuke13.1v2/nuke-13.1.2.dll -nx
-version 13.1 v2
-Gizmo {
- inputs 4
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name AddGrain1
  addUserKnob {20 user_tab l AddGrain}
  addUserKnob {22 calc_button l Calculate T "import nuke\nimport math\nimport re\n\ndef arange(start, end, step):\n  while start <= end:\n    yield float(start)\n    start += step\n\ndef analyze(node):\n  with node:\n    # get nodes for sampling\n    ex = nuke.toNode('Expression1')\n    sa = nuke.toNode('MergeExpression1')\n    ct = nuke.toNode('CurveTool1')\n    # and their knob values we need\n    ik = ct\['intensitydata']\n    mn = ex\['mn_e'].getValue()\n    mx = ex\['mx_e'].getValue()\n    sw = ex\['sw'].getValue()\n    # sample frames are blended together, so it doesn't matter what frame we're on\n    fr = nuke.frame()\n    # get lut and reset it\n    lut = nuke.toNode('ColorLookup1')\['lut']\n    lut.fromScript('red \{curve\}\\ngreen \{curve\}\\nblue \{curve\}')\n    chl = \['red', 'green', 'blue']\n    # generate sample list in stops from middle grey\n    samples = list(arange(mn, mx, sw))\n    task = nuke.ProgressTask('Analysis In Progress:')\n\n    for i, ch in enumerate(chl):\n      sa\['ch'].setValue(i)\n      ik.clearAnimated()\n      # store previous sample\n      pvy = 0\n      for s in samples:\n        if task.isCancelled():\n          return\n        task.setMessage('channel: \{0\}\\n sample: \{1\}'.format(chl\[i], s))\n        # set sample to current position\n        ex\['p'].setValue(s)\n        # get sample values from curvetool\n        nuke.execute(ct, fr, fr)\n        v = ik.getValue()\n        vn = v\[3] # alpha value for normalization\n        if vn != 0:\n          vy = (v\[0] / vn) / (v\[1] / vn) # normalize by target \n          vx = v\[2] / vn\n          # make sure sample values do not decrease\n          if vy > pvy:\n            lut.setValueAt(vy, vx, i+1)\n            pvy = vy\n        else:\n          # skip if no samples at the exposure in image\n          #print('no samples at \{0\} stops'.format(s))\n          pass\n        \n    ex\['p'].setValue(0)\n    del task\n    # continue first and last keyframes in lut\n    lutc = re.sub(r'(x\\d+.\\d+ \\d+.\\d+)\[^.]*\}', r'C \\1\}', lut.toScript())\n    lutc = re.sub(r'(\{curve )', r'\\1C ', lutc)\n    lut.fromScript(lutc)\n\nanalyze(nuke.thisNode())" +STARTLINE}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>AddGrain v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }
  Input {
   inputs 0
