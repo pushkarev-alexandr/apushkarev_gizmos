@@ -1,0 +1,60 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+ name CameraRelocator1
+ help "Creates axis to relocate camera to referense postion and orientation in reference frame"
+ onCreate "kn = nuke.thisNode()\['ref_frame']\nif kn.value()==-1:\n    kn.setValue(nuke.frame())"
+ addUserKnob {20 user_tab l CameraRelocator}
+ addUserKnob {3 ref_frame l "reference frame"}
+ ref_frame -1
+ addUserKnob {22 current_frame l "current frame" -STARTLINE T "nuke.thisNode()\['ref_frame'].setValue(nuke.frame())"}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>CameraRelocator v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+ Input {
+  inputs 0
+  name target
+  xpos 944
+  ypos 684
+  number 1
+ }
+ Axis2 {
+  useMatrix true
+  matrix {
+      {{Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)}}
+      {{Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)}}
+      {{Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)}}
+      {{Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} {Mid_Axis.matrix(ref_frame)/Mid_Axis.matrix.15(ref_frame)} 1}
+    }
+  name Out_Axis
+  xpos 816
+  ypos 663
+ }
+ Output {
+  name Output1
+  xpos 806
+  ypos 816
+ }
+ Input {
+  inputs 0
+  name source
+  xpos 806
+  ypos 401
+ }
+ Axis2 {
+  name In_Axis
+  xpos 816
+  ypos 498
+ }
+ Axis2 {
+  inputs 0
+  useMatrix true
+  matrix {
+      {{In_Axis.world_matrix.5*In_Axis.world_matrix.10*In_Axis.world_matrix.15+In_Axis.world_matrix.6*In_Axis.world_matrix.11*In_Axis.world_matrix.13+In_Axis.world_matrix.7*In_Axis.world_matrix.9*In_Axis.world_matrix.14-In_Axis.world_matrix.5*In_Axis.world_matrix.11*In_Axis.world_matrix.14-In_Axis.world_matrix.6*In_Axis.world_matrix.9*In_Axis.world_matrix.15-In_Axis.world_matrix.7*In_Axis.world_matrix.10*In_Axis.world_matrix.13} {In_Axis.world_matrix.1*In_Axis.world_matrix.11*In_Axis.world_matrix.14+In_Axis.world_matrix.2*In_Axis.world_matrix.9*In_Axis.world_matrix.15+In_Axis.world_matrix.3*In_Axis.world_matrix.10*In_Axis.world_matrix.13-In_Axis.world_matrix.1*In_Axis.world_matrix.10*In_Axis.world_matrix.15-In_Axis.world_matrix.2*In_Axis.world_matrix.11*In_Axis.world_matrix.13-In_Axis.world_matrix.3*In_Axis.world_matrix.9*In_Axis.world_matrix.14} {In_Axis.world_matrix.1*In_Axis.world_matrix.6*In_Axis.world_matrix.15+In_Axis.world_matrix.2*In_Axis.world_matrix.7*In_Axis.world_matrix.13+In_Axis.world_matrix.3*In_Axis.world_matrix.5*In_Axis.world_matrix.14-In_Axis.world_matrix.1*In_Axis.world_matrix.7*In_Axis.world_matrix.14-In_Axis.world_matrix.2*In_Axis.world_matrix.5*In_Axis.world_matrix.15-In_Axis.world_matrix.3*In_Axis.world_matrix.6*In_Axis.world_matrix.13} {In_Axis.world_matrix.1*In_Axis.world_matrix.7*In_Axis.world_matrix.10+In_Axis.world_matrix.2*In_Axis.world_matrix.5*In_Axis.world_matrix.11+In_Axis.world_matrix.3*In_Axis.world_matrix.6*In_Axis.world_matrix.9-In_Axis.world_matrix.1*In_Axis.world_matrix.6*In_Axis.world_matrix.11-In_Axis.world_matrix.2*In_Axis.world_matrix.7*In_Axis.world_matrix.9-In_Axis.world_matrix.3*In_Axis.world_matrix.5*In_Axis.world_matrix.10}}
+      {{In_Axis.world_matrix.4*In_Axis.world_matrix.11*In_Axis.world_matrix.14+In_Axis.world_matrix.6*In_Axis.world_matrix.8*In_Axis.world_matrix.15+In_Axis.world_matrix.7*In_Axis.world_matrix.10*In_Axis.world_matrix.12-In_Axis.world_matrix.4*In_Axis.world_matrix.10*In_Axis.world_matrix.15-In_Axis.world_matrix.6*In_Axis.world_matrix.11*In_Axis.world_matrix.12-In_Axis.world_matrix.7*In_Axis.world_matrix.8*In_Axis.world_matrix.14} {In_Axis.world_matrix.0*In_Axis.world_matrix.10*In_Axis.world_matrix.15+In_Axis.world_matrix.2*In_Axis.world_matrix.11*In_Axis.world_matrix.12+In_Axis.world_matrix.3*In_Axis.world_matrix.8*In_Axis.world_matrix.14-In_Axis.world_matrix.0*In_Axis.world_matrix.11*In_Axis.world_matrix.14-In_Axis.world_matrix.2*In_Axis.world_matrix.8*In_Axis.world_matrix.15-In_Axis.world_matrix.3*In_Axis.world_matrix.10*In_Axis.world_matrix.12} {In_Axis.world_matrix.0*In_Axis.world_matrix.7*In_Axis.world_matrix.14+In_Axis.world_matrix.2*In_Axis.world_matrix.4*In_Axis.world_matrix.15+In_Axis.world_matrix.3*In_Axis.world_matrix.6*In_Axis.world_matrix.12-In_Axis.world_matrix.0*In_Axis.world_matrix.6*In_Axis.world_matrix.15-In_Axis.world_matrix.2*In_Axis.world_matrix.7*In_Axis.world_matrix.12-In_Axis.world_matrix.3*In_Axis.world_matrix.4*In_Axis.world_matrix.14} {In_Axis.world_matrix.0*In_Axis.world_matrix.6*In_Axis.world_matrix.11+In_Axis.world_matrix.2*In_Axis.world_matrix.7*In_Axis.world_matrix.8+In_Axis.world_matrix.3*In_Axis.world_matrix.4*In_Axis.world_matrix.10-In_Axis.world_matrix.0*In_Axis.world_matrix.7*In_Axis.world_matrix.10-In_Axis.world_matrix.2*In_Axis.world_matrix.4*In_Axis.world_matrix.11-In_Axis.world_matrix.3*In_Axis.world_matrix.6*In_Axis.world_matrix.8}}
+      {{In_Axis.world_matrix.4*In_Axis.world_matrix.9*In_Axis.world_matrix.15+In_Axis.world_matrix.5*In_Axis.world_matrix.11*In_Axis.world_matrix.12+In_Axis.world_matrix.7*In_Axis.world_matrix.8*In_Axis.world_matrix.13-In_Axis.world_matrix.4*In_Axis.world_matrix.11*In_Axis.world_matrix.13-In_Axis.world_matrix.5*In_Axis.world_matrix.8*In_Axis.world_matrix.15-In_Axis.world_matrix.7*In_Axis.world_matrix.9*In_Axis.world_matrix.12} {In_Axis.world_matrix.0*In_Axis.world_matrix.11*In_Axis.world_matrix.13+In_Axis.world_matrix.1*In_Axis.world_matrix.8*In_Axis.world_matrix.15+In_Axis.world_matrix.3*In_Axis.world_matrix.9*In_Axis.world_matrix.12-In_Axis.world_matrix.0*In_Axis.world_matrix.9*In_Axis.world_matrix.15-In_Axis.world_matrix.1*In_Axis.world_matrix.11*In_Axis.world_matrix.12-In_Axis.world_matrix.3*In_Axis.world_matrix.8*In_Axis.world_matrix.13} {In_Axis.world_matrix.0*In_Axis.world_matrix.5*In_Axis.world_matrix.15+In_Axis.world_matrix.1*In_Axis.world_matrix.7*In_Axis.world_matrix.12+In_Axis.world_matrix.3*In_Axis.world_matrix.4*In_Axis.world_matrix.13-In_Axis.world_matrix.0*In_Axis.world_matrix.7*In_Axis.world_matrix.13-In_Axis.world_matrix.1*In_Axis.world_matrix.4*In_Axis.world_matrix.15-In_Axis.world_matrix.3*In_Axis.world_matrix.5*In_Axis.world_matrix.12} {In_Axis.world_matrix.0*In_Axis.world_matrix.7*In_Axis.world_matrix.9+In_Axis.world_matrix.1*In_Axis.world_matrix.4*In_Axis.world_matrix.11+In_Axis.world_matrix.3*In_Axis.world_matrix.5*In_Axis.world_matrix.8-In_Axis.world_matrix.0*In_Axis.world_matrix.5*In_Axis.world_matrix.11-In_Axis.world_matrix.1*In_Axis.world_matrix.7*In_Axis.world_matrix.8-In_Axis.world_matrix.3*In_Axis.world_matrix.4*In_Axis.world_matrix.9}}
+      {{In_Axis.world_matrix.4*In_Axis.world_matrix.10*In_Axis.world_matrix.13+In_Axis.world_matrix.5*In_Axis.world_matrix.8*In_Axis.world_matrix.14+In_Axis.world_matrix.6*In_Axis.world_matrix.9*In_Axis.world_matrix.12-In_Axis.world_matrix.4*In_Axis.world_matrix.9*In_Axis.world_matrix.14-In_Axis.world_matrix.5*In_Axis.world_matrix.10*In_Axis.world_matrix.12-In_Axis.world_matrix.6*In_Axis.world_matrix.8*In_Axis.world_matrix.13} {In_Axis.world_matrix.0*In_Axis.world_matrix.9*In_Axis.world_matrix.14+In_Axis.world_matrix.1*In_Axis.world_matrix.10*In_Axis.world_matrix.12+In_Axis.world_matrix.2*In_Axis.world_matrix.8*In_Axis.world_matrix.13-In_Axis.world_matrix.0*In_Axis.world_matrix.10*In_Axis.world_matrix.13-In_Axis.world_matrix.1*In_Axis.world_matrix.8*In_Axis.world_matrix.14-In_Axis.world_matrix.2*In_Axis.world_matrix.9*In_Axis.world_matrix.12} {In_Axis.world_matrix.0*In_Axis.world_matrix.6*In_Axis.world_matrix.13+In_Axis.world_matrix.1*In_Axis.world_matrix.4*In_Axis.world_matrix.14+In_Axis.world_matrix.2*In_Axis.world_matrix.5*In_Axis.world_matrix.12-In_Axis.world_matrix.0*In_Axis.world_matrix.5*In_Axis.world_matrix.14-In_Axis.world_matrix.1*In_Axis.world_matrix.6*In_Axis.world_matrix.12-In_Axis.world_matrix.2*In_Axis.world_matrix.4*In_Axis.world_matrix.13} {In_Axis.world_matrix.0*In_Axis.world_matrix.5*In_Axis.world_matrix.10+In_Axis.world_matrix.1*In_Axis.world_matrix.6*In_Axis.world_matrix.8+In_Axis.world_matrix.2*In_Axis.world_matrix.4*In_Axis.world_matrix.9-In_Axis.world_matrix.0*In_Axis.world_matrix.6*In_Axis.world_matrix.9-In_Axis.world_matrix.1*In_Axis.world_matrix.4*In_Axis.world_matrix.10-In_Axis.world_matrix.2*In_Axis.world_matrix.5*In_Axis.world_matrix.8}}
+    }
+  name Mid_Axis
+  xpos 700
+  ypos 600
+ }
+end_group
