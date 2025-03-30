@@ -1,89 +1,88 @@
-#! C:/Program Files/Nuke12.2v5/nuke-12.2.5.dll -nx
-version 12.2 v5
+#v1.0 Pushkarev Aleksandr 2023
 Group {
-name TextureUnwraper1
-inputs 2
-addUserKnob {20 user_tab l Texture_unwraper}
-addUserKnob {30 tile}
-tile {1 1}
-addUserKnob {20 group l "points control" n 1}
-group 0
-addUserKnob {41 detail l "point detail" T PositionToPoints1.detail}
-addUserKnob {41 pointSize l "point size" T PositionToPoints1.pointSize}
-addUserKnob {7 res l resolution R 100 5000}
-res 2000
-addUserKnob {20 endGroup n -1}
+ name TextureUnwraper1
+ addUserKnob {20 user_tab l TextureUnwraper}
+ addUserKnob {30 tile}
+ tile {1 1}
+ addUserKnob {20 group l "points control" n 1}
+ group 0
+ addUserKnob {41 detail l "point detail" T PositionToPoints1.detail}
+ addUserKnob {41 pointSize l "point size" T PositionToPoints1.pointSize}
+ addUserKnob {7 res l resolution R 100 5000}
+ res 2000
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TextureUnwraper v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }
-Camera2 {
-inputs 0
-translate {{tile.u/2} {tile.v/2} 1}
-projection_mode orthographic
-haperture {{focal*tile.u}}
-vaperture {{focal*tile.v}}
-name Camera1
-xpos 110
-ypos 206
-}
-Input {
-inputs 0
-name uv
-xpos -110
-ypos 137
-number 1
-}
-Input {
-inputs 0
-name texture
-xpos 0
-ypos 73
-}
-PositionToPoints2 {
-inputs 2
-display textured
-render_mode textured
-detail 1
-name PositionToPoints1
-xpos 0
-ypos 137
-}
-Reformat {
-inputs 0
-type "to box"
-box_width {{res*tile.u}}
-box_height {{res*tile.v}}
-resize none
-center false
-name Reformat1
-xpos -110
-ypos 227
-}
-ScanlineRender {
-inputs 3
-conservative_shader_sampling false
-motion_vectors_type distance
-name ScanlineRender1
-xpos 0
-ypos 227
-}
-Reformat {
-type "to box"
-box_width {{root.width*tile.u}}
-box_height {{root.height*tile.v}}
-resize distort
-name Reformat2
-xpos 0
-ypos 291
-}
-Crop {
-box {0 0 {width} {height}}
-crop false
-name Crop1
-xpos 0
-ypos 315
-}
-Output {
-name Output1
-xpos 0
-ypos 417
-}
+ Camera2 {
+  inputs 0
+  translate {{tile.u/2} {tile.v/2} 1}
+  projection_mode orthographic
+  haperture {{focal*tile.u}}
+  vaperture {{focal*tile.v}}
+  name Camera1
+  xpos 110
+  ypos 206
+ }
+ Input {
+  inputs 0
+  name uv
+  xpos -110
+  ypos 137
+  number 1
+ }
+ Input {
+  inputs 0
+  name texture
+  xpos 0
+  ypos 73
+ }
+ PositionToPoints2 {
+  inputs 2
+  display textured
+  render_mode textured
+  detail 1
+  name PositionToPoints1
+  xpos 0
+  ypos 137
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width {{res*tile.u}}
+  box_height {{res*tile.v}}
+  resize none
+  center false
+  name Reformat1
+  xpos -110
+  ypos 227
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos 0
+  ypos 227
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.width*tile.u}}
+  box_height {{root.height*tile.v}}
+  resize distort
+  name Reformat2
+  xpos 0
+  ypos 291
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  crop false
+  name Crop1
+  xpos 0
+  ypos 315
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 417
+ }
 end_group

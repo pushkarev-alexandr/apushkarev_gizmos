@@ -1,52 +1,52 @@
-#! C:/Program Files/Nuke15.0v4/nuke-15.0.4.dll -nx
-version 15.0 v4
-Gizmo {
-addUserKnob {20 user_tab l TangentWorldNormalConvert}
-addUserKnob {4 mode M {tangent->world world->tangent ""}}
-addUserKnob {6 half_red_green l "red/green 0.5" +STARTLINE}
-addUserKnob {6 half_blue l "blue 0.5" +STARTLINE}
-half_blue true
-addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TangentWorldNormalConvert v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+ name TangentWorldNormalConvert1
+ addUserKnob {20 user_tab l TangentWorldNormalConvert}
+ addUserKnob {4 mode M {tangent->world world->tangent ""}}
+ addUserKnob {6 half_red_green l "red/green 0.5" +STARTLINE}
+ addUserKnob {6 half_blue l "blue 0.5" +STARTLINE}
+ half_blue true
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TangentWorldNormalConvert v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
 }
-Input {
-inputs 0
-name Input
-xpos 509
-ypos 108
-}
-Expression {
-temp_name0 half_rg
-temp_expr0 half_red_green?0.5:128/255
-temp_name1 half_b
-temp_expr1 half_blue?0.5:128/255
-expr0 (r-half_rg)*2
-expr1 (g-half_rg)*2
-expr2 (b-half_b)*2
-channel3 none
-name Expression1
-label "tangent to world"
-xpos 509
-ypos 155
-disable {{mode}}
-}
-Expression {
-temp_name0 half_rg
-temp_expr0 half_red_green?0.5:128/255
-temp_name1 half_b
-temp_expr1 half_blue?0.5:128/255
-expr0 r/2+half_rg
-expr1 g/2+half_rg
-expr2 b/2+half_b
-channel3 none
-name Expression2
-label "world to tangent"
-xpos 509
-ypos 203
-disable {{!mode}}
-}
-Output {
-name Output1
-xpos 509
-ypos 295
-}
+ Input {
+  inputs 0
+  name Input
+  xpos 509
+  ypos 108
+ }
+ Expression {
+  temp_name0 half_rg
+  temp_expr0 half_red_green?0.5:128/255
+  temp_name1 half_b
+  temp_expr1 half_blue?0.5:128/255
+  expr0 (r-half_rg)*2
+  expr1 (g-half_rg)*2
+  expr2 (b-half_b)*2
+  channel3 none
+  name Expression1
+  label "tangent to world"
+  xpos 509
+  ypos 155
+  disable {{mode}}
+ }
+ Expression {
+  temp_name0 half_rg
+  temp_expr0 half_red_green?0.5:128/255
+  temp_name1 half_b
+  temp_expr1 half_blue?0.5:128/255
+  expr0 r/2+half_rg
+  expr1 g/2+half_rg
+  expr2 b/2+half_b
+  channel3 none
+  name Expression2
+  label "world to tangent"
+  xpos 509
+  ypos 203
+  disable {{!mode}}
+ }
+ Output {
+  name Output1
+  xpos 509
+  ypos 295
+ }
 end_group
