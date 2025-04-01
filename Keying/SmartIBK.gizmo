@@ -1,7 +1,6 @@
 #v1.0 Pushkarev Aleksandr 2023
 Group {
  name SmartIBK1
- inputs 3
  tile_color 0x990000
  addUserKnob {20 user_tab l SmartIBK}
  addUserKnob {4 screen_type l "screen type" t "Chosoe <i>pick</i> if you want to use screen color value instead of cleanplate input. Hold <i>Ctrl+Alt</i> to choose color from <i>in</i> input." M {green blue pick "" "" ""}}

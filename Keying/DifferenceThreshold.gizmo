@@ -1,7 +1,6 @@
-#! C:/Program Files/Nuke15.0v4/nuke-15.0.4.dll -nx
-version 15.0 v4
-Gizmo {
-inputs 2
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+name DifferenceThreshold1
 addUserKnob {20 user_tab l DifferenceThreshold}
 addUserKnob {41 thr l "difference threshold" T Expression1.thr}
 addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceThreshold v1.0</b> | Pushkarev Aleksandr | 2024</span>"}

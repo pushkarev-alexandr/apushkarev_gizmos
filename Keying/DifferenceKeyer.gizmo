@@ -1,5 +1,6 @@
-Gizmo {
-inputs 3
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+name DifferenceKeyer1
 tile_color 0xff0000
 addUserKnob {20 user_tab l DifferenceKeyer}
 addUserKnob {4 dif_ch l "difference channel" M {red green blue luminance hue saturation ""}}
