@@ -1,7 +1,5 @@
-set cut_paste_input [stack 0]
-version 13.1 v2
+#v1.0 Pushkarev Aleksandr 2023
 Read {
- inputs 0
  file_type jpeg
  file "\[value result_file_path]"
  first {{"\[llength \[value find_files]]>0?startFrame:1"}}
@@ -10,9 +8,6 @@ Read {
  origlast {{"\[llength \$final_lst]>0?startFrame+\[llength \$final_lst]-1:1"}}
  origset true
  name Read1
- selected true
- xpos 115
- ypos -171
  addUserKnob {20 user_tab l "Read Folder"}
  addUserKnob {2 filename l "Folder to Read From"}
  addUserKnob {4 fileType l "Fyle Type Filter" M {exr png jpg hdr}}
@@ -25,4 +20,5 @@ Read {
  result_file_path "\[\nproc getIndex \{llen\} \{\n  set f \[frame]\n  set sf \[value startFrame]\n  if \{\[expr \$f-\$sf]<0\} \{\n    return 0\n  \} elseif \{\$f>=\[expr \$sf+\$llen]\} \{\n    return \[expr \$llen-1]\n  \} else \{return \[expr \$f-\$sf]\}\n\}\nvalue find_files\nset l \[llength \$final_lst]\nif \{\$l>0\} \{lindex \$final_lst \[getIndex \$l]\} \{return \"can't find anything\"\}\n]"
  addUserKnob {43 final_sequence_range +INVISIBLE}
  final_sequence_range "\[\nif \{\$l>0\} \{return \[value startFrame]-\[expr \[value startFrame]+\[llength \$final_lst]-1]\} \{\n  return 0-0\n\}\n]"
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ReadFolder v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
 }

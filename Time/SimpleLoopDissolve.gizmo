@@ -1,5 +1,4 @@
-#created by Pushkarev Aleksandr
-#v1.1
+#v1.1 Pushkarev Aleksandr 2023
 Group {
  name SimpleLoopDissolve1
  knobChanged "node=nuke.thisNode()\nkn=nuke.thisKnob()\ninp = nuke.toNode('Input')\nif kn.name()=='loop_num':\n    appClip=nuke.toNode('AppendClip1')\n    if kn.value()<0:\n        kn.setValue(0)\n    for i in range(appClip.inputs()):\n        appClip.setInput(i,None)\n    for i in range(int(kn.value())+1):\n        appClip.setInput(i,inp)\nelif kn.name()=='dissolve':\n    if kn.value()<0:\n        kn.setValue(0)\nif kn.name()=='loop_num' or kn.name()=='dissolve' or kn.name()=='inputChange':\n    ff = inp.firstFrame()\n    loop_num = node\['loop_num'].value()\n    node\['range_first_frame'].setValue(ff)\n    last_frame = ff+(inp.lastFrame()-ff)*(loop_num+1)+loop_num-node\['dissolve'].value()*loop_num\n    node\['range_last_frame'].setValue(last_frame)"
