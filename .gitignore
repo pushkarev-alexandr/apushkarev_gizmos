@@ -1,14 +1,1 @@
-# Игнорировать все файлы
-*
-
-# Но не игнорировать папки
-!*/
-
-# Включать .gizmo, .nk и .png файлы
-!*.gizmo
-!*.nk
-!*.png
-
-# Включать .gitignore и README.md
-!.gitignore
-!README.md
+*.db
