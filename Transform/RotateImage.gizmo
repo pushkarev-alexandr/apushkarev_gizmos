@@ -1,3 +1,4 @@
+#v1.0 Pushkarev Aleksandr 2025
 Group {
  name RotateImage1
  help "Rotates an input image by 90 degrees left or right. It adjusts the image format automatically by swapping width and height via the Reformat node, ensuring proper orientation and pixel aspect ratio."
