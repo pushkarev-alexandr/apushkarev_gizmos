@@ -1,4 +1,4 @@
-#v1.1 Pushkarev Aleksandr 2024
+#v1.2 Pushkarev Aleksandr 2024
 Group {
  name TrackCheck1
  onCreate "node = nuke.thisNode()\nkn1 = node.knob('ff')\nkn2 = node.knob('lf')\nif kn1.value()==-1 and kn2.value()==-1:\n    range = nuke.activeViewer().node().playbackRange()\n    kn1.setValue(range.first())\n    kn2.setValue(range.last())"
@@ -8,7 +8,7 @@ Group {
  addUserKnob {41 lf l "last frame" T FrameHold1.firstFrame}
  addUserKnob {4 mode M {difference switch ""}}
  addUserKnob {6 sw_frames l "switch frames" -STARTLINE +HIDDEN}
- addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TrackCheck v1.1</b> | Pushkarev Aleksandr | 2024</span>"}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>TrackCheck v1.2</b> | Pushkarev Aleksandr | 2024</span>"}
 }
  Input {
   inputs 0
@@ -50,7 +50,7 @@ push $N3208d200
  }
  Switch {
   inputs 2
-  which {{mode}}
+  which {{parent.mode}}
   name Switch2
   xpos 0
   ypos 372
