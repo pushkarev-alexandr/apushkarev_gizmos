@@ -29,6 +29,7 @@ Group {
  addUserKnob {1 server_address l "server address"}
  server_address http://127.0.0.1:8188
  addUserKnob {22 test_connection l "Test Connection" -STARTLINE T "check_comfyui_server_connection(None, True)"}
+ addUserKnob {22 open_comfy l "Open ComfyUI" T "import webbrowser\n\nwebbrowser.open(nuke.thisNode()\[\"server_address\"].value())" +STARTLINE}
 }
  Read {
   inputs 0
