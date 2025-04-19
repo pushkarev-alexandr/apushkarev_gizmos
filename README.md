@@ -59,6 +59,8 @@
 ### Merge
 - ContactSheetToSequence.gizmo
 - SequenceToContactSheet.gizmo
+### ProPainter
+- ProPainterComfyUI.gizmo
 ### ReadWrite
 - ReadFolder.nk
 - WriteFolder.nk
