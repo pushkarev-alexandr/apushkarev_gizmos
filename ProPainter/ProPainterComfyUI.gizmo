@@ -35,9 +35,7 @@ Group {
   inputs 0
   file_type exr
   origset true
-  raw true
-  in_colorspace scene_linear
-  out_colorspace scene_linear
+  colorspace "Output - sRGB"
   name Read1
   xpos 123
   ypos 228
@@ -86,7 +84,7 @@ push $N99c54c00
   channels rgba
   file_type exr
   first_part rgba
-  raw true
+  colorspace "Output - sRGB"
   create_directories true
   version 39
   ocioColorspace scene_linear
