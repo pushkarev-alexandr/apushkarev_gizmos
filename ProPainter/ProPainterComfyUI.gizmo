@@ -92,9 +92,6 @@ push $N99c54c00
   view sRGB
   name Write1
   xpos -126
-  ypos 169
-  addUserKnob {20 User}
-  addUserKnob {43 csp l colorspace +INVISIBLE}
-  csp "\[set csp \[value colorspace]\nset in \[list \"ACES - ACES2065-1\" \"ACES - ACEScg\" \"Output - sRGB\" \"Output - Rec.709\" \"Utility - Linear - sRGB\" \"Utility - sRGB - Texture\"]\nset out \[list aces acescg srgb rec709 linear texture]\nset i \[lsearch \$in \$csp]\nif \{\[value raw]\} \{return raw\} elseif \{\$i != -1\} \{lindex \$out \$i\}]"
+  ypos 169 
  }
 end_group
