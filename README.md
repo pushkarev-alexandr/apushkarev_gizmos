@@ -25,6 +25,7 @@
 - PositionSampler.gizmo
 ### CG
 - Normalize.gizmo
+- SeamlessTexture.gizmo
 - TangentWorldNormalConvert.gizmo
 - TextureUnwraper.gizmo
 - UnwrapTexture.gizmo

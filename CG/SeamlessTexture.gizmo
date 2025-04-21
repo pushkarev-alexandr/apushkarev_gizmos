@@ -1,0 +1,98 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+name SeamlessTexture1
+addUserKnob {20 user_tab l SeamlessTexture}
+addUserKnob {4 horizontal l "blend side" M {left right ""}}
+horizontal right
+addUserKnob {4 vertical l "" -STARTLINE M {top bottom ""}}
+addUserKnob {14 blend_size l "blend size" R 1 1000}
+blend_size 500
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>SeamlessTexture v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 278
+ypos 494
+}
+Dot {
+name Dot1
+note_font_size 30
+xpos 309
+ypos 586
+}
+set N4e78bc00 [stack 0]
+Mirror2 {
+flop true
+name Mirror2_1
+xpos 344
+ypos 625
+}
+Ramp {
+output alpha
+replace true
+p0 {{horizontal?width-max(blend_size.w,1):max(blend_size.w,1)} 0}
+p1 {{horizontal?width:0} 0}
+name Ramp1
+xpos 344
+ypos 661
+}
+Premult {
+name Premult1
+xpos 344
+ypos 697
+}
+push $N4e78bc00
+Merge2 {
+inputs 2
+name Merge1
+xpos 278
+ypos 746
+}
+Dot {
+name Dot2
+note_font_size 30
+xpos 309
+ypos 792
+}
+set Nbc805c00 [stack 0]
+Mirror2 {
+flip true
+name Mirror2_2
+xpos 344
+ypos 842
+}
+Ramp {
+output alpha
+replace true
+p0 {0 {vertical?max(blend_size.h,1):height-max(blend_size.h,1)}}
+p1 {0 {vertical?0:height}}
+name Ramp2
+xpos 344
+ypos 878
+}
+Premult {
+name Premult2
+xpos 344
+ypos 914
+}
+push $Nbc805c00
+Merge2 {
+inputs 2
+name Merge2
+xpos 278
+ypos 959
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop1
+xpos 278
+ypos 1007
+}
+Output {
+name Output1
+xpos 278
+ypos 1112
+}
+end_group
