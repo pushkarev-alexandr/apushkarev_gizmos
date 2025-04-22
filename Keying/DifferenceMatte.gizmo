@@ -1,9 +1,9 @@
 #v1.0 Pushkarev Aleksandr 2024
 Group {
-name DifferenceThreshold1
-addUserKnob {20 user_tab l DifferenceThreshold}
+name DifferenceMatte1
+addUserKnob {20 user_tab l DifferenceMatte}
 addUserKnob {41 thr l "difference threshold" T Expression1.thr}
-addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceThreshold v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>DifferenceMatte v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
 }
 Input {
 inputs 0
