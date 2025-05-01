@@ -1,0 +1,97 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+ name ChromaticGamma1
+ addUserKnob {20 user_tab l ChromaticGamma}
+ addUserKnob {7 red R -5 5}
+ addUserKnob {7 green R -5 5}
+ addUserKnob {7 blue R -5 5}
+ addUserKnob {7 gamma R 0.1 5}
+ gamma 1
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ChromaticGamma v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  selected true
+  xpos 948
+  ypos -671
+ }
+ Dot {
+  name Dot1
+  note_font_size 30
+  xpos 982
+  ypos -575
+ }
+set Ne7e3e400 [stack 0]
+ Dot {
+  name Dot2
+  xpos 872
+  ypos -575
+ }
+ Expression {
+  temp_name0 half
+  temp_expr0 width/2
+  expr0 -(x-half)/half
+  expr1 -(y-height/2)/half
+  channel2 none
+  channel3 none
+  name Expression1
+  label "scale map"
+  xpos 838
+  ypos -518
+ }
+ Expression {
+  expr0 r>0?pow(r,1/gamma):-pow(-r,1/gamma)
+  expr1 g>0?pow(g,1/gamma):-pow(-g,1/gamma)
+  name Expression2
+  label gamma
+  xpos 838
+  ypos -482
+ }
+push $Ne7e3e400
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 rgba.green
+  to1 forward.v
+  name Copy1
+  xpos 948
+  ypos -488
+ }
+ IDistort {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  uv forward
+  uv_scale {{red}}
+  name IDistort1
+  xpos 948
+  ypos -440
+ }
+ IDistort {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  uv forward
+  uv_scale {{green}}
+  name IDistort2
+  xpos 948
+  ypos -416
+ }
+ IDistort {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  uv forward
+  uv_scale {{blue}}
+  name IDistort3
+  xpos 948
+  ypos -392
+ }
+ Remove {
+  channels forward
+  name Remove1
+  xpos 948
+  ypos -368
+ }
+ Output {
+  name Output1
+  xpos 948
+  ypos -221
+ }
+end_group
