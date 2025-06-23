@@ -39,6 +39,8 @@
 - ChannelToRGB.gizmo
 - HueSaturationTransfer.gizmo
 - matchBlackWhitePoint.gizmo
+### ComfyUI
+- NormalCrafterComfyUI.gizmo
 ### Draw
 - AddGrain.gizmo
 - RandomWindows.gizmo
