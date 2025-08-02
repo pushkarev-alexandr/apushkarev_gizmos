@@ -1,0 +1,29 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+name AlphaThreshold1
+addUserKnob {20 user_tab l AlphaThreshold}
+addUserKnob {7 threshold t "Values grater than this will turn 1 and values less than this will turn 0"}
+threshold 0.5
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>AlphaThreshold v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 0
+}
+Expression {
+expr3 a>thr
+name Expression1
+selected true
+xpos 0
+ypos 143
+addUserKnob {20 User}
+addUserKnob {7 thr}
+thr {{parent.threshold}}
+}
+Output {
+name Output1
+xpos 0
+ypos 300
+}
+end_group
