@@ -1,0 +1,48 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+name EdgeMask1
+addUserKnob {20 user_tab l EdgeMask}
+addUserKnob {41 format l "output format" T Reformat1.format}
+addUserKnob {41 size T Expression1.size}
+addUserKnob {41 blur T Blur1.size}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>EdgeMask v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Reformat {
+inputs 0
+name Reformat1
+xpos 746
+ypos 590
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop1
+xpos 746
+ypos 626
+}
+Expression {
+temp_name0 aa
+temp_expr0 (1-clamp(x/size.w))+(1-clamp((width-x)/size.w))
+temp_name1 bb
+temp_expr1 (1-clamp(y/size.h))+(1-clamp((height-y)/size.h))
+expr3 aa+bb-aa*bb
+name Expression1
+xpos 746
+ypos 685
+addUserKnob {20 User}
+addUserKnob {14 size R 0 500}
+size 200
+}
+Blur {
+channels alpha
+size 50
+name Blur1
+xpos 746
+ypos 709
+}
+Output {
+name Output1
+xpos 746
+ypos 849
+}
+end_group
