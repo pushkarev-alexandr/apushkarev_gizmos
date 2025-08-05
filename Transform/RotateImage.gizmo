@@ -1,39 +1,65 @@
-#v1.0 Pushkarev Aleksandr 2025
+#v1.1 Pushkarev Aleksandr 2025
 Group {
  name RotateImage1
- help "Rotates an input image by 90 degrees left or right. It adjusts the image format automatically by swapping width and height via the Reformat node, ensuring proper orientation and pixel aspect ratio."
- onCreate "def rotate_image_function():\n    reformat = nuke.toNode(\"Reformat1\")\n    transform = nuke.toNode(\"Transform1\")\n\n    rotate_kn = transform\[\"rotate\"]\n    if nuke.thisKnob().name()==\"left\":\n        rotate_kn.setValue(rotate_kn.value() + 90)\n    elif nuke.thisKnob().name()==\"right\":\n        rotate_kn.setValue(rotate_kn.value() - 90)\n    if rotate_kn.value() % 360 == 0: rotate_kn.setValue(0)\n\n    frmt = nuke.toNode(\"Transform1\").format()\n    w = frmt.width()\n    h = frmt.height()\n    p = 1/frmt.pixelAspect()\n    newFormat = None\n    for f in nuke.formats():\n        if all(\[f.width()==h, f.height()==w, f.pixelAspect()==p]):\n            newFormat = f\n            break\n    if not newFormat:\n        p = int(p) if p%1==0 else p\n        format_name =  f\"\{h\}_\{w\}\" if p==1 else f\"\{h\}_\{w\}_\{p\}\"\n        newFormat = nuke.addFormat(f\"\{h\} \{w\} \{p\} \{format_name\}\")\n\n    transform\[\"scale\"].setValue((1, 1) if rotate_kn.value() % 180 == 0 else (p, 1/p))\n    reformat\[\"disable\"].setValue(not reformat\[\"disable\"].value())\n    reformat\[\"format\"].setValue(newFormat.name())\n"
- tile_color 0xa57aaa00
- addUserKnob {20 user_tab l RotateImage}
- addUserKnob {22 left l "rotate left" t "Rotate image 90° left" T rotate_image_function() +STARTLINE}
- addUserKnob {22 right l "rotate right" t "Rotate image 90° right" -STARTLINE T rotate_image_function()}
- addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>RotateImage v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+help "Rotates an input image by 90 degrees left or right. It adjusts the image format automatically by swapping width and height via the Reformat node, ensuring proper orientation and pixel aspect ratio."
+onCreate "def rotate_image_function():\n    reformat = nuke.toNode(\"Reformat1\")\n    transform = nuke.toNode(\"Transform1\")\n    copy_bbox = nuke.toNode(\"CopyBBox1\")\n\n    rotate_kn = transform\[\"rotate\"]\n    if nuke.thisKnob().name()==\"left\":\n        rotate_kn.setValue(rotate_kn.value() + 90)\n    elif nuke.thisKnob().name()==\"right\":\n        rotate_kn.setValue(rotate_kn.value() - 90)\n    if rotate_kn.value() % 360 == 0: rotate_kn.setValue(0)\n\n    frmt = transform.format()\n    w = frmt.width()\n    h = frmt.height()\n    p = 1/frmt.pixelAspect()\n    newFormat = None\n    for f in nuke.formats():\n        if all(\[f.width()==h, f.height()==w, f.pixelAspect()==p]):\n            newFormat = f\n            break\n    if not newFormat:\n        p = int(p) if p%1==0 else p\n        format_name =  f\"\{h\}_\{w\}\" if p==1 else f\"\{h\}_\{w\}_\{p\}\"\n        newFormat = nuke.addFormat(f\"\{h\} \{w\} \{p\} \{format_name\}\")\n\n    transform\[\"scale\"].setValue((1, 1) if rotate_kn.value() % 180 == 0 else (p, 1/p))\n    copy_bbox\[\"disable\"].setValue(not copy_bbox\[\"disable\"].value())\n    reformat\[\"disable\"].setValue(not reformat\[\"disable\"].value())\n    reformat\[\"format\"].setValue(newFormat.name())\n"
+tile_color 0xa57aaa00
+addUserKnob {20 user_tab l RotateImage}
+addUserKnob {22 left l "rotate left" t "Rotate image 90° left" T rotate_image_function() +STARTLINE}
+addUserKnob {22 right l "rotate right" t "Rotate image 90° right" -STARTLINE T rotate_image_function()}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>RotateImage v1.1</b> | Pushkarev Aleksandr | 2025</span>"}
 }
- Input {
-  inputs 0
-  name Input
-  xpos 0
-  ypos 1
- }
- Transform {
-  scale {1 1}
-  center {{width/2} {height/2}}
-  filter impulse
-  name Transform1
-  xpos 0
-  ypos 97
- }
- Reformat {
-  resize none
-  filter impulse
-  name Reformat1
-  xpos 0
-  ypos 166
-  disable true
- }
- Output {
-  name Output1
-  xpos 0
-  ypos 300
- }
+Input {
+inputs 0
+name Input
+xpos 0
+ypos -48
+}
+Dot {
+name Dot1
+note_font_size 30
+xpos 31
+ypos 44
+}
+set N94408400 [stack 0]
+Dot {
+name Dot3
+note_font_size 30
+xpos -79
+ypos 44
+}
+Dot {
+name Dot2
+note_font_size 30
+xpos -79
+ypos 228
+}
+push $N94408400
+Transform {
+scale {1 1}
+center {{width/2} {height/2}}
+filter impulse
+name Transform1
+xpos 0
+ypos 130
+}
+CopyBBox {
+inputs 2
+name CopyBBox1
+xpos 0
+ypos 228
+}
+Reformat {
+resize none
+filter impulse
+name Reformat1
+xpos 0
+ypos 308
+disable true
+}
+Output {
+name Output1
+xpos 0
+ypos 412
+}
 end_group
