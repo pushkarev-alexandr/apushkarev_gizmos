@@ -41,6 +41,8 @@
 - matchBlackWhitePoint.gizmo
 ### ComfyUI
 - NormalCrafterComfyUI.gizmo
+### Curves
+- **WaveOffset.gizmo** - Дополнение к Wave Machine FL. Делает простой офсэт анимации.
 ### Draw
 - AddGrain.gizmo
 - RandomWindows.gizmo
