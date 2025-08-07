@@ -1,0 +1,41 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+ name MergeCryptomatte1
+ help "Combines all layers via Merge with the All mode and additionally merges cryptomatte/manifest metadata."
+ knobChanged "import nuke\nimport json\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name() in \[\"inputChange\", \"update\"]:  # Если подсоединили инпуты или нажали кнопку update\n    node1 = node.input(0)\n    node2 = node.input(1)\n    if all(\[node1, node2]):  # Проверяем что подключили обе ноды, иначе не имеет смысла\n        metadata1 = node1.metadata()\n        metadata2 = node2.metadata()\n        if all(\[metadata1, metadata2]):  # Если подключить к точкам, у них не будет метадаты\n            cryptomatte_data = \{\}\n            for metadata in \[metadata1, metadata2]:\n                for key, value in metadata.items():\n                    if key.startswith(\"exr/cryptomatte/\") and key.endswith(\"/manifest\"):\n                        value_dict = json.loads(value)\n                        cryptomatte_data.setdefault(key, \{\}).update(value_dict)\n            if cryptomatte_data:  # Проверяем что есть необходимая для нас метадата\n                metadata_commands = \[]\n                for key, value in cryptomatte_data.items():\n                    metadata_commands.append(f\"\{\{set \{key\} \{\{\{json.dumps(value)\}\}\}\}\}\")\n                nuke.toNode(\"ModifyMetaData1\")\[\"metadata\"].fromScript(\"\\n\".join(metadata_commands))\n"
+ tile_color 0x4b60c3ff
+ addUserKnob {20 user_tab l MergeCryptomatte}
+ addUserKnob {22 update +STARTLINE}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MergeCryptomatte v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+ Input {
+  inputs 0
+  name A
+  xpos 282
+  ypos 125
+  number 1
+ }
+ Input {
+  inputs 0
+  name B
+  xpos 172
+  ypos 125
+ }
+ Merge2 {
+  inputs 2
+  also_merge all
+  name Merge1
+  xpos 172
+  ypos 224
+ }
+ ModifyMetaData {
+  name ModifyMetaData1
+  xpos 172
+  ypos 323
+ }
+ Output {
+  name Output1
+  xpos 172
+  ypos 422
+ }
+end_group
