@@ -1,16 +1,16 @@
-#v1.0 Pushkarev Aleksandr 2025
+#v1.1 Pushkarev Aleksandr 2025
 Group {
  name MatrixMultiply1
  help "Multiplies two images as if they were matrices (element-wise multiplication)"
  addUserKnob {20 user_tab l MatrixMultiply}
  addUserKnob {26 info l "" +STARTLINE T "Multiplies two images as if they were matrices (element-wise multiplication)"}
- addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MatrixMultiply v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MatrixMultiply v1.1</b> | Pushkarev Aleksandr | 2025</span>"}
 }
  Input {
   inputs 0
   name Input2
   xpos -241
-  ypos 69
+  ypos 16
   number 1
  }
  Assert {
@@ -18,37 +18,50 @@ Group {
   message "Connect input 2!"
   name Assert2
   xpos -241
-  ypos 112
+  ypos 74
  }
  Mirror2 {
   flip true
   name Mirror2_1
   xpos -241
-  ypos 158
+  ypos 126
  }
  Crop {
   box {0 0 {width} {height}}
   name Crop1
   xpos -241
-  ypos 190
+  ypos 162
+ }
+ Dot {
+  name Dot1
+  note_font_size 30
+  xpos -210
+  ypos 248
  }
  Input {
   inputs 0
   name Input1
   xpos -380
-  ypos 65
+  ypos 16
  }
  Assert {
   expression {{"\[exists parent.input0]"}}
   message "Connect input 1!"
   name Assert1
   xpos -380
-  ypos 116
+  ypos 74
+ }
+ Assert {
+  expression {{Input1.width==Input2.height}}
+  message "Input1 width must be equal to Input2 height!"
+  name Assert3
+  xpos -380
+  ypos 132
  }
  BlackOutside {
   name BlackOutside1
   xpos -380
-  ypos 168
+  ypos 190
  }
  Copy {
   inputs 2
@@ -56,14 +69,14 @@ Group {
   to0 rgba.green
   name Copy1
   xpos -380
-  ypos 259
+  ypos 242
  }
  Remove {
   operation keep
   channels {rgba.red rgba.green -rgba.blue none}
   name Remove1
   xpos -380
-  ypos 295
+  ypos 278
  }
  Reformat {
   type "to box"
@@ -74,32 +87,32 @@ Group {
   center false
   name Reformat1
   xpos -380
-  ypos 350
+  ypos 343
  }
  BlinkScript {
-  recompileCount 34
+  recompileCount 36
   ProgramGroup 1
-  KernelDescription "3 \"MatrixMultiply\" iterate pixelWise f2f160f400bc4bc26d0ac0c4bfd0c82baee8471c80aeadb484b9bc3479c0c81a 2 \"src\" Read Random \"dst\" Write Point 0 0 0"
-  kernelSource "kernel MatrixMultiply : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRandom, eEdgeClamped> src;\n  Image<eWrite> dst;\n\n  void process(int2 pos)\n  \{\n    float sum = 0.0f;\n    for (int i = 0; i < 2; i++)\n    \{\n      sum += src(i, pos.y, 0) * src(pos.x, i, 1);\n    \}\n    dst() = float2(sum, 0);\n  \}\n\};"
+  KernelDescription "3 \"MatrixMultiply\" iterate pixelWise 7b048b03aea40f244912430500d31a4eb147392a494e81f3c940f93ac664bec9 2 \"src\" Read Random \"dst\" Write Point 1 \"commonDim\" Int 1 AAAAAA== 1 \"commonDim\" 1 1 Default 0"
+  kernelSource "kernel MatrixMultiply : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRandom, eEdgeClamped> src;\n  Image<eWrite> dst;\n  \n  param:\n    int commonDim;\n\n  void process(int2 pos)\n  \{\n    float sum = 0.0f;\n    for (int i = 0; i < commonDim; i++)\n    \{\n      sum += src(i, pos.y, 0) * src(pos.x, i, 1);\n    \}\n    dst() = float2(sum, 0);\n  \}\n\};"
   rebuild ""
   MatrixMultiply_src {rgba.red rgba.green -rgba.blue none}
+  MatrixMultiply_commonDim {{Input1.width}}
   outputChannels {rgba.red rgba.green -rgba.blue none}
   rebuild_finalise ""
   name BlinkScript1
-  selected true
   xpos -380
-  ypos 403
+  ypos 402
  }
  Remove {
   operation keep
   channels {rgba.red -rgba.green -rgba.blue none}
   name Remove2
   xpos -380
-  ypos 464
+  ypos 473
  }
  Output {
   name Output1
   xpos -380
-  ypos 543
+  ypos 538
  }
 end_group
