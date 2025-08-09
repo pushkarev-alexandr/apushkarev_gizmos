@@ -1,0 +1,105 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+ name MatrixMultiply1
+ help "Multiplies two images as if they were matrices (element-wise multiplication)"
+ addUserKnob {20 user_tab l MatrixMultiply}
+ addUserKnob {26 info l "" +STARTLINE T "Multiplies two images as if they were matrices (element-wise multiplication)"}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MatrixMultiply v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+ Input {
+  inputs 0
+  name Input2
+  xpos -241
+  ypos 69
+  number 1
+ }
+ Assert {
+  expression {{"\[exists parent.input1]"}}
+  message "Connect input 2!"
+  name Assert2
+  xpos -241
+  ypos 112
+ }
+ Mirror2 {
+  flip true
+  name Mirror2_1
+  xpos -241
+  ypos 158
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop1
+  xpos -241
+  ypos 190
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -380
+  ypos 65
+ }
+ Assert {
+  expression {{"\[exists parent.input0]"}}
+  message "Connect input 1!"
+  name Assert1
+  xpos -380
+  ypos 116
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos -380
+  ypos 168
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.green
+  name Copy1
+  xpos -380
+  ypos 259
+ }
+ Remove {
+  operation keep
+  channels {rgba.red rgba.green -rgba.blue none}
+  name Remove1
+  xpos -380
+  ypos 295
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input2.width}}
+  box_height {{Input1.height}}
+  box_fixed true
+  resize none
+  center false
+  name Reformat1
+  xpos -380
+  ypos 350
+ }
+ BlinkScript {
+  recompileCount 34
+  ProgramGroup 1
+  KernelDescription "3 \"MatrixMultiply\" iterate pixelWise f2f160f400bc4bc26d0ac0c4bfd0c82baee8471c80aeadb484b9bc3479c0c81a 2 \"src\" Read Random \"dst\" Write Point 0 0 0"
+  kernelSource "kernel MatrixMultiply : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRandom, eEdgeClamped> src;\n  Image<eWrite> dst;\n\n  void process(int2 pos)\n  \{\n    float sum = 0.0f;\n    for (int i = 0; i < 2; i++)\n    \{\n      sum += src(i, pos.y, 0) * src(pos.x, i, 1);\n    \}\n    dst() = float2(sum, 0);\n  \}\n\};"
+  rebuild ""
+  MatrixMultiply_src {rgba.red rgba.green -rgba.blue none}
+  outputChannels {rgba.red rgba.green -rgba.blue none}
+  rebuild_finalise ""
+  name BlinkScript1
+  selected true
+  xpos -380
+  ypos 403
+ }
+ Remove {
+  operation keep
+  channels {rgba.red -rgba.green -rgba.blue none}
+  name Remove2
+  xpos -380
+  ypos 464
+ }
+ Output {
+  name Output1
+  xpos -380
+  ypos 543
+ }
+end_group
