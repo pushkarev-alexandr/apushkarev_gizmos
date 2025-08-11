@@ -1,10 +1,10 @@
-#v1.1 Pushkarev Aleksandr 2025
+#v1.2 Pushkarev Aleksandr 2025
 Group {
  name MatrixMultiply1
  help "Multiplies two images as if they were matrices (element-wise multiplication)"
  addUserKnob {20 user_tab l MatrixMultiply}
  addUserKnob {26 info l "" +STARTLINE T "Multiplies two images as if they were matrices (element-wise multiplication)"}
- addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MatrixMultiply v1.1</b> | Pushkarev Aleksandr | 2025</span>"}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MatrixMultiply v1.2</b> | Pushkarev Aleksandr | 2025</span>"}
 }
  Input {
   inputs 0
@@ -28,9 +28,9 @@ Group {
  }
  Crop {
   box {0 0 {width} {height}}
-  name Crop1
+  name Crop2
   xpos -241
-  ypos 162
+  ypos 187
  }
  Dot {
   name Dot1
@@ -58,10 +58,11 @@ Group {
   xpos -380
   ypos 132
  }
- BlackOutside {
-  name BlackOutside1
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop1
   xpos -380
-  ypos 190
+  ypos 187
  }
  Copy {
   inputs 2
@@ -85,6 +86,7 @@ Group {
   box_fixed true
   resize none
   center false
+  pbb true
   name Reformat1
   xpos -380
   ypos 343
@@ -103,16 +105,23 @@ Group {
   xpos -380
   ypos 402
  }
+ Crop {
+  box {0 0 {width} {height}}
+  crop false
+  name Crop3
+  xpos -380
+  ypos 438
+ }
  Remove {
   operation keep
   channels {rgba.red -rgba.green -rgba.blue none}
   name Remove2
   xpos -380
-  ypos 473
+  ypos 502
  }
  Output {
   name Output1
   xpos -380
-  ypos 538
+  ypos 567
  }
 end_group
