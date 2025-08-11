@@ -1,0 +1,13 @@
+BlinkScript {
+ inputs 0
+ recompileCount 1
+ ProgramGroup 1
+ KernelDescription "3 \"MatrixCreate\" iterate pixelWise 37c2df6b0e59e4e681e8e4f3f4c64f7ecc119109907380cd928d52618563c47f 1 \"dst\" Write Point 0 0 0"
+ kernelSource "kernel MatrixCreate : ImageComputationKernel<ePixelWise>\n\{\n  Image<eWrite> dst;\n\n  void process(int2 pos)\n  \{\n    int arr\[3]\[4] = \{\n        \{0, 1, 2, 3\},\n        \{4, 5, 6, 7\},\n        \{8, 9, 10, 11\}\n    \};\n    dst() = arr\[3-1-pos.y]\[pos.x];\n  \}\n\};"
+ rebuild ""
+ format "4 3 0 0 4 3 1 4_3"
+ specifiedFormat true
+ rebuild_finalise ""
+ name BlinkScript1
+ help "The Matrix node in Nuke generates an image based on a user-defined matrix. You must specify the format (e.g., resolution) and matrix dimensions (rows and columns). The matrix values are directly defined in the node's code."
+}
