@@ -2,6 +2,7 @@
 Group {
 name ErodeStack1
 knobChanged "kn = nuke.thisKnob()\nif kn.name()==\"size\":\n    kn.setValue(max(min(kn.value(), 50), -50))"
+tile_color 0xcc804e00
 addUserKnob {20 user_tab l ErodeStack}
 addUserKnob {3 size}
 size -1
