@@ -1,0 +1,71 @@
+#v1.0 Pushkarev Aleksandr 2025
+Gizmo {
+ name LinearToEaseOut
+ addUserKnob {20 user_tab l LinearToEaseOut}
+ addUserKnob {3 end l "end frame"}
+ end 1001
+ addUserKnob {22 cur_frame l "current frame" -STARTLINE T "nuke.thisNode()\['end'].setValue(nuke.frame())"}
+ addUserKnob {7 end_value l "end value"}
+ end_value 10
+ addUserKnob {3 len l "ease-out length"}
+ len 5
+ addUserKnob {7 slope R 0.1 10}
+ slope 1.5
+ addUserKnob {41 order T Smoothstep1.order}
+ addUserKnob {41 output T LinearFunction1.output}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>LinearToEaseOut v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+ Output {
+  inputs 0
+  name Output1
+  xpos 0
+  ypos 300
+ }
+ NoOp {
+  inputs 0
+  name Smoothstep1
+  help "Generates a smoothstep animation between two values over a defined frame range.\nSupports adjustable start/end frames, start/end values, and interpolation order (1–6)."
+  knobChanged "kn = nuke.thisKnob()\nif kn.name()==\"order\":\n    kn.setValue(max(1, min(kn.value(), 6)))"
+  xpos 0
+  ypos 168
+  hide_input true
+  addUserKnob {20 user_tab l Smoothstep}
+  addUserKnob {7 X}
+  X {{clamp((frame+parent.len*2-parent.end)/(parent.len*2))}}
+  addUserKnob {7 order_1 +INVISIBLE}
+  order_1 {{-2*pow(X,3)+3*pow2(X)}}
+  addUserKnob {7 order_2 +INVISIBLE}
+  order_2 {{6*pow(X,5)-15*pow(X,4)+10*pow(X,3)}}
+  addUserKnob {7 order_3 +INVISIBLE}
+  order_3 {{-20*pow(X,7)+70*pow(X,6)-84*pow(X,5)+35*pow(X,4)}}
+  addUserKnob {7 order_4 +INVISIBLE}
+  order_4 {{70*pow(X,9)-315*pow(X,8)+540*pow(X,7)-420*pow(X,6)+126*pow(X,5)}}
+  addUserKnob {7 order_5 +INVISIBLE}
+  order_5 {{-252*pow(X,11)+1386*pow(X,10)-3080*pow(X,9)+3465*pow(X,8)-1980*pow(X,7)+462*pow(X,6)}}
+  addUserKnob {7 order_6 +INVISIBLE}
+  order_6 {{924*pow(X,13)-6006*pow(X,12)+16380*pow(X,11)-24024*pow(X,10)+20020*pow(X,9)-9009*pow(X,8)+1716*pow(X,7)}}
+  addUserKnob {3 order t "Minimum is 1\nMaximum is 6"}
+  order 3
+  addUserKnob {7 der l derivative}
+  der {{"\[lindex \{1.5 1.875 2.1875 2.4609375 2.70703125 2.9326171875\} \[expr \[value order]-1]]"}}
+  addUserKnob {7 output}
+  output {{"((\[join \[list order \[value order]] _])-1)*(parent.slope/der*parent.len*2)"}}
+ }
+ NoOp {
+  inputs 0
+  name LinearFunction1
+  xpos 120
+  ypos 167
+  hide_input true
+  addUserKnob {20 user_tab l LinearFunction}
+  addUserKnob {3 ref_frame}
+  ref_frame {{parent.end-parent.len}}
+  addUserKnob {7 m R 0 10}
+  m {{parent.slope}}
+  addUserKnob {7 b R -50 50}
+  b {{parent.Smoothstep1.output(ref_frame)}}
+  addUserKnob {7 output}
+  output {{(frame<ref_frame?(frame-ref_frame)*m+b:Smoothstep1.output)+parent.end_value}}
+  addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>LinearFunction v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+ }
+end_group
