@@ -1,0 +1,371 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+name ErodeStack1
+knobChanged "kn = nuke.thisKnob()\nif kn.name()==\"size\":\n    kn.setValue(max(min(kn.value(), 50), -50))"
+addUserKnob {20 user_tab l ErodeStack}
+addUserKnob {3 size}
+size -1
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>ExponentialErode v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 620
+ypos 615
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode1
+xpos 620
+ypos 639
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode2
+xpos 620
+ypos 687
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode3
+xpos 620
+ypos 735
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode4
+xpos 620
+ypos 783
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode5
+xpos 620
+ypos 831
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode6
+xpos 620
+ypos 879
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode7
+xpos 620
+ypos 927
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode8
+xpos 620
+ypos 975
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode9
+xpos 620
+ypos 1023
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode10
+xpos 620
+ypos 1071
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode11
+xpos 620
+ypos 1119
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode12
+xpos 620
+ypos 1167
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode13
+xpos 620
+ypos 1215
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode14
+xpos 620
+ypos 1263
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode15
+xpos 620
+ypos 1311
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode16
+xpos 620
+ypos 1359
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode17
+xpos 620
+ypos 1407
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode18
+xpos 620
+ypos 1455
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode19
+xpos 620
+ypos 1503
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode20
+xpos 620
+ypos 1551
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode21
+xpos 620
+ypos 1599
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode22
+xpos 620
+ypos 1647
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode23
+xpos 620
+ypos 1695
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode24
+xpos 620
+ypos 1743
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode25
+xpos 620
+ypos 1791
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode26
+xpos 620
+ypos 1839
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode27
+xpos 620
+ypos 1887
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode28
+xpos 620
+ypos 1935
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode29
+xpos 620
+ypos 1983
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode30
+xpos 620
+ypos 2031
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode31
+xpos 620
+ypos 2079
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode32
+xpos 620
+ypos 2127
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode33
+xpos 620
+ypos 2175
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode34
+xpos 620
+ypos 2223
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode35
+xpos 620
+ypos 2271
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode36
+xpos 620
+ypos 2319
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode37
+xpos 620
+ypos 2367
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode38
+xpos 620
+ypos 2415
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode39
+xpos 620
+ypos 2463
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode40
+xpos 620
+ypos 2511
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode41
+xpos 620
+ypos 2559
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode42
+xpos 620
+ypos 2607
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode43
+xpos 620
+ypos 2655
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode44
+xpos 620
+ypos 2703
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode45
+xpos 620
+ypos 2751
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode46
+xpos 620
+ypos 2799
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode47
+xpos 620
+ypos 2847
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode48
+xpos 620
+ypos 2895
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode49
+xpos 620
+ypos 2943
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Erode {
+size {{parent.size?parent.size/abs(parent.size):0}}
+name Erode50
+xpos 620
+ypos 2991
+disable {{"\[string range \[value name] 5 end]>abs(parent.size)"}}
+}
+Output {
+name Output1
+xpos 620
+ypos 3039
+}
+end_group
