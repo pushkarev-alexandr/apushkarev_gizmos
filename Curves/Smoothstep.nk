@@ -1,3 +1,4 @@
+#v1.0 Pushkarev Aleksandr 2025
 NoOp {
 name Smoothstep1
 help "Generates a smoothstep animation between two values over a defined frame range.\nSupports adjustable start/end frames, start/end values, and interpolation order (1–6)."

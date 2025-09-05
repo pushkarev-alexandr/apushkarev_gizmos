@@ -1,0 +1,15 @@
+#v1.0 Pushkarev Aleksandr 2025
+NoOp {
+name LinearFunction1
+hide_input true
+addUserKnob {20 user_tab l LinearFunction}
+addUserKnob {3 ref_frame}
+ref_frame 1001
+addUserKnob {22 cur_frame l "current frame" -STARTLINE T "nuke.thisNode()\['ref_frame'].setValue(nuke.frame())"}
+addUserKnob {7 m R 0 10}
+m 1
+addUserKnob {7 b R -50 50}
+addUserKnob {7 output}
+output {{(frame-ref_frame)*m+b}}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>LinearFunction v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
