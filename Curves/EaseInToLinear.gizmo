@@ -8,7 +8,7 @@ Gizmo {
  addUserKnob {7 start_value l "start value"}
  addUserKnob {3 len l "ease-in length"}
  len 5
- addUserKnob {7 slope R 0.1 10}
+ addUserKnob {7 slope R -10 10}
  slope 1.5
  addUserKnob {41 order T Smoothstep1.order}
  addUserKnob {41 output T LinearFunction1.output}
