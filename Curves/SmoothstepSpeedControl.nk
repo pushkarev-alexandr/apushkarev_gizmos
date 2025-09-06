@@ -1,0 +1,41 @@
+#v1.0 Pushkarev Aleksandr 2025
+NoOp {
+name SmoothstepSpeedControl1
+knobChanged "node = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()==\"order\":\n    kn.setValue(max(1, min(kn.value(), 6)))\nif kn.name() in \[\"speed\", \"from\", \"to\", \"ff\", \"order\"]:\n    last_frame = int(node\[\"ff\"].value() + node\[\"scale\"].value(0))\n    node\[\"lf\"].setValue(last_frame)\n"
+hide_input true
+addUserKnob {20 user_tab l SmoothstepSpeedControl}
+addUserKnob {7 speed R 0.01 3}
+speed 1.5
+addUserKnob {7 der l derivative +INVISIBLE}
+der {{"\[lindex \{1.5 1.875 2.1875 2.4609375 2.70703125 2.9326171875\} \[expr \[value order]-1]]" i}}
+addUserKnob {7 rel l relative +INVISIBLE}
+rel {{der/speed i}}
+addUserKnob {14 scale +INVISIBLE R 0 100}
+scale {{rel*scale.h} {to-from}}
+addUserKnob {7 X +INVISIBLE}
+X {{clamp((t-ff)/scale.w)}}
+addUserKnob {7 order_1 +INVISIBLE}
+order_1 {{-2*pow(X,3)+3*pow2(X) i}}
+addUserKnob {7 order_2 +INVISIBLE}
+order_2 {{6*pow(X,5)-15*pow(X,4)+10*pow(X,3) i}}
+addUserKnob {7 order_3 +INVISIBLE}
+order_3 {{-20*pow(X,7)+70*pow(X,6)-84*pow(X,5)+35*pow(X,4) i}}
+addUserKnob {7 order_4 +INVISIBLE}
+order_4 {{70*pow(X,9)-315*pow(X,8)+540*pow(X,7)-420*pow(X,6)+126*pow(X,5) i}}
+addUserKnob {7 order_5 +INVISIBLE}
+order_5 {{-252*pow(X,11)+1386*pow(X,10)-3080*pow(X,9)+3465*pow(X,8)-1980*pow(X,7)+462*pow(X,6) i}}
+addUserKnob {7 order_6 +INVISIBLE}
+order_6 {{924*pow(X,13)-6006*pow(X,12)+16380*pow(X,11)-24024*pow(X,10)+20020*pow(X,9)-9009*pow(X,8)+1716*pow(X,7) i}}
+addUserKnob {7 from l "from value"}
+from 5
+addUserKnob {7 to l "to value"}
+to 15
+addUserKnob {3 ff l range}
+addUserKnob {3 lf l "" -STARTLINE +DISABLED}
+lf 10
+addUserKnob {3 order t "Minimum is 1\nMaximum is 6"}
+order 1
+addUserKnob {7 output}
+output {{"(\[join \[list order \[value order]] _])*scale.h+from"}}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>SmoothstepSpeedControl v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
