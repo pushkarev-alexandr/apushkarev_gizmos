@@ -1,0 +1,12 @@
+#v1.0 Pushkarev Aleksandr 2025
+NoOp {
+name PositionAnimationTransform1
+help "This node applies a transform to the specified input position.\nYou need to either copy the animation into the input position or link the required point.\nIn the transform/tracker field, specify the name of the node that performs the transformation (either a Tracker node or a Transform node).\nYou can fill in this field using the Set Selected button."
+addUserKnob {20 user_tab l PositionAnimationTransform}
+addUserKnob {12 input_pos l "input position"}
+addUserKnob {1 tr_node l "transform/tracker node" t "Name of Transform or Tracker node that will transform input position"}
+addUserKnob {22 set_selected l "set selected" -STARTLINE T "nodes = nuke.selectedNodes()\nif nodes:\n    nuke.thisNode()\[\"tr_node\"].setValue(nodes\[-1].name())"}
+addUserKnob {12 output_pos l output}
+output_pos {{"(input_pos.x-\[value tr_node].center.x)*\[value tr_node].scale.w*cos(radians(\[value tr_node].rotate))-(input_pos.y-\[value tr_node].center.y)*\[value tr_node].scale.h*sin(radians(\[value tr_node].rotate))+\[value tr_node].center.x+\[value tr_node].translate.x"} {"(input_pos.x-\[value tr_node].center.x)*\[value tr_node].scale.w*sin(radians(\[value tr_node].rotate))+(input_pos.y-\[value tr_node].center.y)*\[value tr_node].scale.h*cos(radians(\[value tr_node].rotate))+\[value tr_node].center.y+\[value tr_node].translate.y"}}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>PositionAnimationTransform v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
