@@ -1,5 +1,5 @@
 #v1.0 Pushkarev Aleksandr 2025
-Gizmo {
+Group {
  name EaseInToLinear1
  addUserKnob {20 user_tab l EaseInToLinear}
  addUserKnob {3 start l "start frame"}
