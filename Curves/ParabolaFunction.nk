@@ -1,7 +1,6 @@
 #v1.0 Pushkarev Aleksandr 2025
 NoOp {
 name ParabolaFunction1
-onCreate "kn = nuke.thisNode()\[\"ref_frame\"]\nif kn.value()==-1:\n    kn.setValue(nuke.frame())"
 hide_input true
 addUserKnob {20 user_tab l ParabolaFunction}
 addUserKnob {7 from l "from value"}
