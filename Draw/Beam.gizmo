@@ -1,0 +1,146 @@
+#v1.0 Pushkarev Aleksandr 2023
+Group {
+name Beam1
+addUserKnob {20 user_tab l Beam}
+addUserKnob {7 base}
+addUserKnob {7 line_width l width}
+line_width 0.5
+addUserKnob {7 length}
+length 0.5
+addUserKnob {12 position}
+position {500 500}
+addUserKnob {7 rotation R -360 360}
+addUserKnob {41 gamma T Grade1.gamma}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>Beam v1.0</b> | Pushkarev Aleksandr | 2023</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 729
+ypos 407
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop1
+xpos 729
+ypos 480
+}
+Remove {
+channels rgba
+name Remove1
+xpos 729
+ypos 504
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 white -1 -1 rgba.red 0 0 white -1 -1 rgba.green 0 1 white -1 -1 rgba.blue 0 2 white -1 -1 rgba.alpha 0 3"
+name Shuffle1
+xpos 729
+ypos 528
+}
+Dot {
+name Dot211
+note_font_size 30
+xpos 760
+ypos 621
+}
+set N4e9da800 [stack 0]
+Transform {
+translate {0 {height}}
+rotate {{atan2(height/2,width)*(180/pi)*(1-base)}}
+scale {2 1}
+center {{width} 0}
+shutteroffset centred
+name Transform2
+xpos 860
+ypos 708
+}
+Crop {
+box {0 0 {width} {height}}
+crop false
+name Crop2
+xpos 860
+ypos 732
+}
+set C63d0e000 [stack 0]
+push $N4e9da800
+Transform {
+translate {0 {-height}}
+rotate {{-atan2(height/2,width)*(180/pi)*(1-base)}}
+scale {2 1}
+center {{width} {height}}
+shutteroffset centred
+name Transform1
+xpos 729
+ypos 712
+}
+clone $C63d0e000 {
+xpos 729
+ypos 736
+selected false
+}
+Merge2 {
+inputs 2
+name Merge1
+xpos 729
+ypos 808
+}
+Invert {
+name Invert1
+xpos 729
+ypos 832
+}
+Dot {
+name Dot1
+note_font_size 30
+xpos 760
+ypos 926
+}
+set N3ebe7c00 [stack 0]
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 black -1 -1 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba.blue 0 2 black -1 -1 rgba.alpha 0 3"
+name Shuffle2
+xpos 807
+ypos 1002
+}
+Ramp {
+p0 {{width} {height/2}}
+p1 {0 {height/2}}
+name Ramp1
+xpos 807
+ypos 1026
+}
+Grade {
+channels rgba
+name Grade1
+xpos 807
+ypos 1050
+}
+push $N3ebe7c00
+Merge2 {
+inputs 2
+operation multiply
+name Merge2
+xpos 729
+ypos 1093
+}
+Transform {
+translate {{position.x} {position.y-center.y}}
+rotate {{rotation}}
+scale {{length} {line_width}}
+center {0 {height/2}}
+shutteroffset centred
+name Transform3
+xpos 729
+ypos 1160
+}
+Output {
+name Output1
+xpos 729
+ypos 1263
+}
+end_group
