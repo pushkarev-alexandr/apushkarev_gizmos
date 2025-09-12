@@ -1,0 +1,112 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+name MatteCheck1
+addUserKnob {20 user_tab l MatteCheck}
+addUserKnob {4 mode M {multiply geometric}}
+addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>MatteCheck v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+Input {
+inputs 0
+name Input
+xpos 0
+ypos -4
+}
+Dot {
+name Dot21
+note_font_size 30
+xpos 31
+ypos 84
+}
+set Nc4e63400 [stack 0]
+Dot {
+name Dot1
+note_font_size 30
+xpos -79
+ypos 84
+}
+Saturation {
+saturation 0
+name Saturation1
+xpos -110
+ypos 136
+}
+Input {
+inputs 0
+name matte
+xpos -237
+ypos -4
+number 1
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.alpha 0 3 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba.blue 0 2 rgba.alpha 0 3 rgba.alpha 0 3"
+name Shuffle1
+xpos -237
+ypos 84
+}
+Dot {
+name Dot2
+note_font_size 30
+xpos -206
+ypos 172
+}
+set Nf3e1400 [stack 0]
+Merge2 {
+inputs 2
+operation multiply
+output rgb
+name Merge2
+xpos -110
+ypos 172
+}
+push $Nc4e63400
+Merge2 {
+inputs 2
+name Merge1
+xpos 0
+ypos 172
+disable {{parent.mode}}
+}
+Dot {
+name Dot98
+note_font_size 30
+xpos 31
+ypos 260
+}
+set Nbbba2400 [stack 0]
+Dot {
+name Dot3
+note_font_size 30
+xpos -79
+ypos 260
+}
+push $Nf3e1400
+Dot {
+name Dot4
+note_font_size 30
+xpos -206
+ypos 348
+}
+Merge2 {
+inputs 2
+operation geometric
+output rgb
+name Merge4
+xpos -110
+ypos 348
+}
+push $Nbbba2400
+Merge2 {
+inputs 2
+name Merge3
+xpos 0
+ypos 348
+disable {{!parent.mode}}
+}
+Output {
+name Output1
+xpos 0
+ypos 436
+}
+end_group
