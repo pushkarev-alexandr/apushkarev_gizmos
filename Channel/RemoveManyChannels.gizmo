@@ -1,0 +1,26 @@
+#v1.0 Pushkarev Aleksandr 2025
+Group {
+ name RemoveManyChannels1
+ tile_color 0x9e3c6300
+ addUserKnob {20 user_tab l RemoveManyChannels}
+ addUserKnob {41 channels T Remove1.channels}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>RemoveManyChannels v1.0</b> | Pushkarev Aleksandr | 2025</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+ }
+ Remove {
+  channels none
+  name Remove1
+  knobChanged "import re\n\nch_name = re.compile('channels\\d?')\n\ndef get_knob(node, kn_name):\n    for name, knob in node.knobs().items():\n        if name == kn_name:\n            return knob\n    return None\n\ndef get_kn_name(remove_str, channel_str):\n    remove_num = int(remove_str.replace('Remove', ''))\n    offset = (remove_num - 1) * 4\n    if channel_str == 'channels':\n        channel_num = 1\n    else:\n        channel_num = int(channel_str.replace('channels', ''))\n    final_num = channel_num + offset\n    if final_num == 1:\n        return 'channels'\n    return f'channels\{final_num\}'\n\ndef check_remove(remove_i):\n    if not nuke.toNode(f'Remove\{remove_i\}'):\n        remove = nuke.createNode('Remove', inpanel=False)\n        remove\['channels'].setValue('none')\n        output = nuke.toNode('Output1')\n        remove.setInput(0, output.input(0))\n        output.setInput(0, remove)\n        output.setYpos(output.ypos() + remove.screenHeight())\n        remove.autoplace()\n        remove\['knobChanged'].setValue(nuke.toNode('Remove1')\['knobChanged'].value())\n\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif ch_name.fullmatch(kn.name()):\n    parent = node.parent()\n    if kn.value() == 'none':\n        kn_name = get_kn_name(node.name(), kn.name())\n        if kn_name != 'channels':\n            kn = get_knob(parent, kn_name)\n            if kn:\n                parent.removeKnob(kn)\n    else:\n        if parent\['channels'].value() != 'none':\n            i = 2\n            kn = parent.knob(f'channels\{i\}')\n            while kn:\n                i += 1\n                kn = parent.knob(f'channels\{i\}')\n            remove_i = (i - 1) // 4 + 1\n            check_remove(remove_i)\n            link_knob = nuke.Link_Knob(f'channels\{i\}', 'and')\n            link_knob.makeLink(f'Remove\{remove_i\}', f'channels\{(i - 1) % 4 + 1\}'.rstrip('1'))\n            \n            cred_kn_name = 'version_author'\n            cred_text = r'<span style=\"color:#666\"><br/><b>RemoveManyChannels v1.0</b> | Pushkarev Aleksandr | 2025</span>'\n            cred_kn = parent.knob(cred_kn_name)\n            if cred_kn:\n                parent.removeKnob(cred_kn)\n            parent.addKnob(link_knob)\n            parent.addKnob(nuke.Text_Knob(cred_kn_name, '', cred_text))\n"
+  xpos 0
+  ypos 42
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 241
+ }
+end_group
