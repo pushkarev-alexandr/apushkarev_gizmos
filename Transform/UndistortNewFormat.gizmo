@@ -1,0 +1,75 @@
+#v1.0 Pushkarev Aleksandr 2024
+Group {
+ name UndistortNewFormat1
+ addUserKnob {20 user_tab l UndistortNewFormat}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>UndistortNewFormat v1.0</b> | Pushkarev Aleksandr | 2024</span>"}
+}
+ Input {
+  inputs 0
+  name undistort_stmap
+  xpos 168
+  number 1
+ }
+ Grade {
+  add -0.5
+  black_clamp false
+  name Grade1
+  xpos 168
+  ypos 96
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  multiply {{undistort_stmap.width/in.width}}
+  black_clamp false
+  name Grade2
+  xpos 168
+  ypos 120
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  multiply {{undistort_stmap.height/in.height}}
+  black_clamp false
+  name Grade3
+  xpos 168
+  ypos 144
+ }
+ Grade {
+  add 0.5
+  black_clamp false
+  name Grade4
+  xpos 168
+  ypos 168
+ }
+ Reformat {
+  type "to box"
+  format "2048 1152 0 0 2048 1152 1 2048_1152"
+  box_width {{in.width}}
+  box_height {{in.height}}
+  resize none
+  name Reformat1
+  xpos 168
+  ypos 229
+ }
+ Dot {
+  name Dot1
+  xpos 199
+  ypos 342
+ }
+ Input {
+  inputs 0
+  name in
+  xpos 0
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap1
+  xpos 0
+  ypos 336
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 545
+ }
+end_group
