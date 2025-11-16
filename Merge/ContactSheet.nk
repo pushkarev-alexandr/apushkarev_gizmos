@@ -1,0 +1,14 @@
+#v1.0 Pushkarev Aleksandr 2023
+ContactSheet {
+ width {{width*columns*mult*pixel_aspect}}
+ height {{rows?height*rows*mult:height}}
+ rows {{splitinputs?ceil((abs(endframe-startframe)+1)/columns):ceil(inputs/columns)}}
+ columns 1
+ center true
+ roworder TopBottom
+ knobChanged "import math\nnode = nuke.thisNode()\nkn = nuke.thisKnob()\nif kn.name()=='inputChange' and node.inputs()!=node\['cur_inputs_number'].value():\n    node.inputs(),node\['cur_inputs_number'].setValue(node.inputs())\n    colKn = node.knob('columns')\n    n = node.inputs()\n    if n==3:\n        colKn.setValue(2)\n    elif n==0:\n        colKn.setValue(1)\n    else:\n        colKn.setValue(math.floor(n/math.sqrt(n)))"
+ addUserKnob {20 user_tab l Resolution}
+ addUserKnob {7 mult l "Resolution Multiplier"}
+ mult 1
+ addUserKnob {3 cur_inputs_number l "inputs number" +HIDDEN}
+}
