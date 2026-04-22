@@ -1,0 +1,58 @@
+#v1.0 Pushkarev Aleksandr 2026
+Group {
+ name Line1
+ addUserKnob {20 user_tab l Line}
+ addUserKnob {12 point1}
+ point1 {442 472}
+ addUserKnob {12 point2}
+ point2 {812 296}
+ addUserKnob {7 thickness R 0 10}
+ thickness 3
+ addUserKnob {19 color}
+ color {1 1 1 1}
+ addUserKnob {6 color_rgba_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>Line v1.0</b> | Pushkarev Aleksandr | 2026</span>"}
+}
+ Constant {
+  inputs 0
+  name Constant1
+  xpos 254
+  ypos -212
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 144
+  ypos -278
+ }
+ Switch {
+  inputs 2
+  which {{"!\[exists parent.input]"}}
+  name Switch1
+  xpos 144
+  ypos -195
+ }
+ BlinkScript {
+  isBaked true
+  recompileCount 5
+  ProgramGroup 1
+  KernelDescription "3 \"Line\" iterate pixelWise ea0f6f373d4e381219d4250e54003c8dfee5742e916c1b47112db77b9d94f7f7 2 \"src\" Read Point \"dst\" Write Point 4 \"point1\" Float 2 AACgQwAANEM= \"point2\" Float 2 AABwRAAAB0Q= \"Thickness\" Float 1 AABAQA== \"Line Color\" Float 4 AACAPwAAgD8AAIA/AACAPw== 4 \"point1\" 2 1 ProxyScale \"point2\" 2 1 ProxyScale \"thickness\" 1 1 ProxyScale \"lineColor\" 4 1 Default 0"
+  kernelSource "// Line kernel: draws an anti-aliased line segment between two user points.\nkernel Line : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> src;\n  Image<eWrite, eAccessPoint> dst;\n\nparam:\n  float2 point1;\n  float2 point2;\n  float thickness;\n  float4 lineColor;\n\n  void define() \{\n    defineParam(point1, \"point1\", float2(320.0f, 180.0f), eParamProxyScale);\n    defineParam(point2, \"point2\", float2(960.0f, 540.0f), eParamProxyScale);\n    defineParam(thickness, \"Thickness\", 3.0f, eParamProxyScale);\n    defineParam(lineColor, \"Line Color\", float4(1.0f, 1.0f, 1.0f, 1.0f));\n  \}\n\n  void process(int2 pos)\n  \{\n    const float2 p = float2(float(pos.x), float(pos.y));\n    const float2 a = point1;\n    const float2 b = point2;\n    const float2 ab = b - a;\n    const float2 ap = p - a;\n\n    const float abLen2 = dot(ab, ab);\n    float t = 0.0f;\n\n    if (abLen2 > 1.0e-6f) \{\n      t = clamp(dot(ap, ab) / abLen2, 0.0f, 1.0f);\n    \}\n\n    const float2 closest = a + ab * t;\n    const float2 d = p - closest;\n    const float distanceToLine = sqrt(dot(d, d));\n\n    const float halfThickness = max(thickness * 0.5f, 0.001f);\n\n    // Soft edge for better visual quality.\n    const float lineMask = clamp(halfThickness + 0.5f - distanceToLine, 0.0f, 1.0f);\n    const float drawAmount = lineMask * clamp(lineColor.w, 0.0f, 1.0f);\n\n    const int rgbComps = min(dst.kComps, 3);\n    for (int c = 0; c < rgbComps; ++c) \{\n      const float srcValue = (c < src.kComps) ? src(c) : 0.0f;\n      const float outValue = srcValue * (1.0f - drawAmount) + lineColor\[c] * drawAmount;\n      dst(c) = outValue;\n    \}\n\n    // Preserve or blend alpha when destination has alpha.\n    if (dst.kComps > 3) \{\n      const float srcAlpha = (src.kComps > 3) ? src(3) : 1.0f;\n      const float outAlpha = srcAlpha * (1.0f - drawAmount) + drawAmount;\n      dst(3) = outAlpha;\n    \}\n  \}\n\};\n"
+  rebuild ""
+  inputGroup 0
+  Line_point1 {{parent.point1.x} {parent.point1.y}}
+  Line_point2 {{parent.point2.x} {parent.point2.y}}
+  Line_Thickness {{parent.thickness}}
+  "Line_Line Color" {{parent.color} {parent.color} {parent.color} {parent.color}}
+  outputGroup 0
+  rebuild_finalise ""
+  name BlinkScript1
+  xpos 144
+  ypos -61
+ }
+ Output {
+  name Output1
+  xpos 144
+  ypos 75
+ }
+end_group

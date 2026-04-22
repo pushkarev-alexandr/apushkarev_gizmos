@@ -1,0 +1,94 @@
+#v1.0 Pushkarev Aleksandr 2026
+Group {
+ name FixInfinite1
+ tile_color 0xcc804e00
+ addUserKnob {20 user_tab l FixInfinite}
+ addUserKnob {4 type M {Median EdgeExtend ""}}
+ addUserKnob {26 version_author l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>FixInfinite v1.0</b> | Pushkarev Aleksandr | 2026</span>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 380
+  ypos 56
+ }
+ Dot {
+  name Dot1
+  note_font_size 30
+  xpos 411
+  ypos 132
+ }
+set N96c14000 [stack 0]
+ Expression {
+  expr3 isinf(r)||isinf(g)||isinf(b)
+  name Expression1
+  label "inf matte"
+  xpos 380
+  ypos 198
+ }
+ Dot {
+  name Dot2
+  note_font_size 30
+  xpos 411
+  ypos 288
+ }
+set N96c14400 [stack 0]
+push $N96c14000
+ Dot {
+  name Dot3
+  note_font_size 30
+  xpos 544
+  ypos 132
+ }
+ Expression {
+  expr0 (isinf(r)||isinf(g)||isinf(b))?0:r
+  expr1 (isinf(r)||isinf(g)||isinf(b))?0:g
+  expr2 (isinf(r)||isinf(g)||isinf(b))?0:b
+  name Expression2
+  label "inf fix"
+  xpos 513
+  ypos 198
+ }
+ EdgeExtend {
+  inputs 2
+  matte "Matte Inverted Alpha"
+  detailAmount 0
+  premultiply false
+  name EdgeExtend1
+  xpos 513
+  ypos 287
+ }
+ Dot {
+  name Dot5
+  note_font_size 30
+  xpos 544
+  ypos 381
+ }
+push $N96c14400
+push $N96c14000
+ Dot {
+  name Dot4
+  note_font_size 30
+  xpos 282
+  ypos 132
+ }
+ Median {
+  inputs 1+1
+  size 1
+  ignore_top_line false
+  name Median1
+  xpos 251
+  ypos 287
+ }
+ Switch {
+  inputs 2
+  name Switch1
+  xpos 251
+  ypos 374
+ }
+ Output {
+  name Output1
+  xpos 251
+  ypos 474
+ }
+end_group
